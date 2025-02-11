@@ -39,6 +39,7 @@ sudo apt-get install -y nvidia-container-toolkit
 sudo nvidia-ctk runtime configure --runtime=docker
 ```
 The `nvidia-ctk` command modifies the `/etc/docker/daemon.json file` on the host. The file is updated so that Docker can use the NVIDIA Container Runtime.
+
 5. Restart the Docker daemon:
 ```
 sudo systemctl restart docker
