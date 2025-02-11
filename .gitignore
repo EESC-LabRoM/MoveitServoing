@@ -1,0 +1,16 @@
+# Ignore build log files
+*.log
+
+# Ignore typical CMake build artifacts and directories
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Ignore out-of-source build directories (if you use a directory named "build" or any "cmake-build-*")
+build/
+cmake-build-*/
+
+# Ignore the devel folder (common in ROS/catkin workspaces)
+devel/
+
