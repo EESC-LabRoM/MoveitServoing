@@ -12,6 +12,40 @@ The current version is working for a UR5 robot. I'm using a ros noetic docker.
 
 'pose_tracking.launch' is the launch file.
 
+## Requirements
+### Docker Engine
+1. [Install Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
+
+### NVIDIA Container Toolkit
+You can find how to Install the NVIDIA Container Toolkit [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), but these are the main commands:
+
+1. Configure the production repository:
+```
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+  && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+```
+2. Update the packages list from the repository:
+```
+sudo apt-get update
+```
+3. Install the NVIDIA Container Toolkit packages:
+```
+sudo apt-get install -y nvidia-container-toolkit
+```
+4. Configure the container runtime by using the `nvidia-ctk` command:
+```
+sudo nvidia-ctk runtime configure --runtime=docker
+```
+The `nvidia-ctk` command modifies the `/etc/docker/daemon.json file` on the host. The file is updated so that Docker can use the NVIDIA Container Runtime.
+5. Restart the Docker daemon:
+```
+sudo systemctl restart docker
+```
+
+
+
 ## How to setup the workspace
 1. Download the docker project available at:  [Google Drive](https://drive.google.com/file/d/15ymq-2cHyd-nZnVOon3Vma5lJJu2II5L/view?usp=drive_link)
 2. You will need to have a catkin workspace setup:
