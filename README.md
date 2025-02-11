@@ -25,7 +25,17 @@ cd ~/ws_moveit/
 ```
 docker load -i my-docker-project.tar
 ```
-5. Re-build and re-source the workspace.
+5. Run the docker:
+```
+docker run -it \
+    --net=host \
+    --gpus all \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+    -v ~/ws_moveit:/root/ws_moveit \
+    moveit_servoing:updated
+```
+6. Re-build and re-source the workspace.
 ```
 cd ~/ws_moveit/
 
@@ -33,7 +43,7 @@ catkin build
 
 source devel/setup.bash
 ```
-6. Launch the Gazebo simulation:
+7. Launch the Gazebo simulation:
 ```
 roscore
 
@@ -43,20 +53,20 @@ roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch sim:=true
 
 roslaunch ur5_moveit_config moveit_rviz.launch config:=true
 ```
-7. In RViz, grab the red/blue/green "interactive marker" and drag the robot to a non-singular position (not all zero joint angles) that is not close to a joint limit. Click "plan and execute" to move the robot to that pose.
+8. In RViz, grab the red/blue/green "interactive marker" and drag the robot to a non-singular position (not all zero joint angles) that is not close to a joint limit. Click "plan and execute" to move the robot to that pose.
 
-8. Switch to a compatible type of ros-control controller. It should be a JointGroupVelocityController or a JointGroupPositionController, not a trajectory controller like MoveIt usually requires.
+9. Switch to a compatible type of ros-control controller. It should be a JointGroupVelocityController or a JointGroupPositionController, not a trajectory controller like MoveIt usually requires.
 ```
 stop_controllers: ['arm_controller']
 strictness: 0
 start_asap: false
 timeout: 0.0"
 ```
-9. Launch the servo node.
+10. Launch the servo node.
 ```
 roslaunch moveit_servo pose_tracking_servo.launch
 ```
-10. You can publish example servo commands from the command line with:
+11. You can publish example servo commands from the command line with:
 ```
 rosrun tf2_ros static_transform_publisher 0.2 0 1.0 0 0 0 1 base_link ee_target
 ```
