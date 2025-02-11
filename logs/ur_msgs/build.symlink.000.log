@@ -1,0 +1,102 @@
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/srv/SetPayload.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/srv/_package_SetIO.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/srv/_package_SetSpeedSliderFraction.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/srv/SetIO.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/srv/_package_SetPayload.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/srv/_package.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/srv/ur_msgs-srv.asd
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/srv/SetSpeedSliderFraction.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/ur_msgs-msg.asd
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/_package_Digital.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/_package_Analog.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/ToolDataMsg.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/_package_RobotStateRTMsg.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/IOStates.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/_package_RobotModeDataMsg.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/RobotStateRTMsg.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/_package_IOStates.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/_package.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/MasterboardDataMsg.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/Analog.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/RobotModeDataMsg.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/_package_ToolDataMsg.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/Digital.lisp
+Symlinking /root/ws_moveit/devel/share/common-lisp/ros/ur_msgs/msg/_package_MasterboardDataMsg.lisp
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/manifest.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/srv/SetIO.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/srv/SetPayload.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/srv/SetSpeedSliderFraction.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/msg/Digital.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/msg/RobotStateRTMsg.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/msg/Analog.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/msg/IOStates.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/msg/RobotModeDataMsg.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/msg/ToolDataMsg.l
+Symlinking /root/ws_moveit/devel/share/roseus/ros/ur_msgs/msg/MasterboardDataMsg.l
+Symlinking /root/ws_moveit/devel/share/ur_msgs/cmake/ur_msgsConfig.cmake
+Symlinking /root/ws_moveit/devel/share/ur_msgs/cmake/ur_msgs-msg-extras.cmake
+Symlinking /root/ws_moveit/devel/share/ur_msgs/cmake/ur_msgsConfig-version.cmake
+Symlinking /root/ws_moveit/devel/share/ur_msgs/cmake/ur_msgs-msg-paths.cmake
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/_index.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/srv/SetIO.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/srv/SetPayload.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/srv/_index.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/srv/SetSpeedSliderFraction.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/msg/ToolDataMsg.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/msg/MasterboardDataMsg.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/msg/_index.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/msg/RobotStateRTMsg.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/msg/IOStates.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/msg/Digital.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/msg/RobotModeDataMsg.js
+Symlinking /root/ws_moveit/devel/share/gennodejs/ros/ur_msgs/msg/Analog.js
+Symlinking /root/ws_moveit/devel/lib/pkgconfig/ur_msgs.pc
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/__init__.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/srv/_SetSpeedSliderFraction.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/srv/_SetIO.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/srv/_SetPayload.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/srv/__init__.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/msg/_IOStates.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/msg/_RobotModeDataMsg.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/msg/_Digital.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/msg/_RobotStateRTMsg.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/msg/_Analog.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/msg/_ToolDataMsg.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/msg/__init__.py
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/ur_msgs/msg/_MasterboardDataMsg.py
+Symlinking /root/ws_moveit/devel/include/ur_msgs/RobotModeDataMsg.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/Digital.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/ToolDataMsg.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/IOStates.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/SetPayload.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/SetPayloadRequest.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/Analog.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/SetIORequest.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/SetSpeedSliderFraction.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/SetSpeedSliderFractionResponse.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/RobotStateRTMsg.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/SetIO.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/SetSpeedSliderFractionRequest.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/SetPayloadResponse.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/MasterboardDataMsg.h
+Symlinking /root/ws_moveit/devel/include/ur_msgs/SetIOResponse.h
+Could not clean linked files.
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/catkin_tools/execution/stages.py", line 177, in function_proxy
+    return function(logger, event_queue, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 348, in link_devel_products
+    clean_linked_files(logger, event_queue, metadata_path, files_that_collide, files_to_clean, dry_run=False)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in clean_linked_files
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in <listcomp>
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+ValueError: not enough values to unpack (expected 2, got 0)
+
+Stage `symlink` failed with arguments:
+  package: {'package_format': 2, 'name': 'ur_msgs', 'version': '1.2.7', 'version_compatibility': None, 'description': 'The ur_msgs package', 'plaintext_description': 'The ur_msgs package', 'maintainers': [<catkin_pkg.package.Person object at 0x732fbc51c5b0>, <catkin_pkg.package.Person object at 0x732fbc51c610>, <catkin_pkg.package.Person object at 0x732fbc51c640>], 'licenses': ['BSD'], 'urls': [], 'authors': [<catkin_pkg.package.Person object at 0x732fbc51c5e0>, <catkin_pkg.package.Person object at 0x732fbc51c6d0>], 'build_depends': [Dependency(name='message_generation', evaluated_condition=True), Dependency(name='std_msgs', evaluated_condition=True)], 'buildtool_depends': [Dependency(name='catkin', evaluated_condition=True)], 'build_export_depends': [Dependency(name='std_msgs', evaluated_condition=True)], 'buildtool_export_depends': [], 'exec_depends': [Dependency(name='message_runtime', evaluated_condition=True), Dependency(name='std_msgs', evaluated_condition=True)], 'test_depends': [], 'doc_depends': [], 'conflicts': [], 'replaces': [], 'group_depends': [], 'member_of_groups': [], 'exports': [], 'filename': '/root/ws_moveit/src/universal_robot/ur_msgs/package.xml'}
+  package_path: universal_robot/ur_msgs
+  devel_manifest_path: /root/ws_moveit/.catkin_tools/profiles/default/packages/ur_msgs
+  source_devel_path: /root/ws_moveit/devel/.private/ur_msgs
+  dest_devel_path: /root/ws_moveit/devel
+  metadata_path: /root/ws_moveit/.catkin_tools/profiles/default
+  prebuild: False

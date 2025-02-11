@@ -1,0 +1,5 @@
+universal_robot/ur_gazebo
+/root/ws_moveit/devel/.private/ur_gazebo/cmake.lock /root/ws_moveit/devel/./cmake.lock
+/root/ws_moveit/devel/.private/ur_gazebo/share/ur_gazebo/cmake/ur_gazeboConfig-version.cmake /root/ws_moveit/devel/share/ur_gazebo/cmake/ur_gazeboConfig-version.cmake
+/root/ws_moveit/devel/.private/ur_gazebo/share/ur_gazebo/cmake/ur_gazeboConfig.cmake /root/ws_moveit/devel/share/ur_gazebo/cmake/ur_gazeboConfig.cmake
+/root/ws_moveit/devel/.private/ur_gazebo/lib/pkgconfig/ur_gazebo.pc /root/ws_moveit/devel/lib/pkgconfig/ur_gazebo.pc

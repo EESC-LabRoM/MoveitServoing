@@ -1,0 +1,20 @@
+Could not clean linked files.
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/catkin_tools/execution/stages.py", line 177, in function_proxy
+    return function(logger, event_queue, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 348, in link_devel_products
+    clean_linked_files(logger, event_queue, metadata_path, files_that_collide, files_to_clean, dry_run=False)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in clean_linked_files
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in <listcomp>
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+ValueError: not enough values to unpack (expected 2, got 0)
+
+Stage `symlink` failed with arguments:
+  package: {'package_format': 2, 'name': 'srdfdom', 'version': '0.6.4', 'version_compatibility': None, 'description': 'Parser for Semantic Robot Description Format (SRDF).', 'plaintext_description': 'Parser for Semantic Robot Description Format (SRDF).', 'maintainers': [<catkin_pkg.package.Person object at 0x732fbc5c9cd0>], 'licenses': ['BSD'], 'urls': [<catkin_pkg.package.Url object at 0x732fbc5c9dc0>, <catkin_pkg.package.Url object at 0x732fbc5c9e50>, <catkin_pkg.package.Url object at 0x732fbc5c9e80>], 'authors': [<catkin_pkg.package.Person object at 0x732fbc5c9eb0>, <catkin_pkg.package.Person object at 0x732fbc5c9ee0>], 'build_depends': [Dependency(name='cmake_modules', evaluated_condition=True), Dependency(name='libconsole-bridge-dev', evaluated_condition=True), Dependency(name='boost', evaluated_condition=True), Dependency(name='urdf', evaluated_condition=True), Dependency(name='tinyxml2', evaluated_condition=True)], 'buildtool_depends': [Dependency(name='catkin', evaluated_condition=True)], 'build_export_depends': [Dependency(name='boost', evaluated_condition=True), Dependency(name='urdf', evaluated_condition=True), Dependency(name='tinyxml2', evaluated_condition=True)], 'buildtool_export_depends': [], 'exec_depends': [Dependency(name='urdfdom_py', evaluated_condition=True), Dependency(name='boost', evaluated_condition=True), Dependency(name='urdf', evaluated_condition=True), Dependency(name='tinyxml2', evaluated_condition=True)], 'test_depends': [Dependency(name='rostest', evaluated_condition=True)], 'doc_depends': [], 'conflicts': [], 'replaces': [], 'group_depends': [], 'member_of_groups': [], 'exports': [], 'filename': '/root/ws_moveit/src/srdfdom/package.xml'}
+  package_path: srdfdom
+  devel_manifest_path: /root/ws_moveit/.catkin_tools/profiles/default/packages/srdfdom
+  source_devel_path: /root/ws_moveit/devel/.private/srdfdom
+  dest_devel_path: /root/ws_moveit/devel
+  metadata_path: /root/ws_moveit/.catkin_tools/profiles/default
+  prebuild: False

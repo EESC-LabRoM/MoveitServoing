@@ -1,0 +1,23 @@
+Symlinking /root/ws_moveit/devel/share/moveit_resources_fanuc_description/cmake/moveit_resources_fanuc_descriptionConfig-version.cmake
+Symlinking /root/ws_moveit/devel/share/moveit_resources_fanuc_description/cmake/moveit_resources_fanuc_descriptionConfig.cmake
+Symlinking /root/ws_moveit/devel/lib/pkgconfig/moveit_resources_fanuc_description.pc
+Could not clean linked files.
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/catkin_tools/execution/stages.py", line 177, in function_proxy
+    return function(logger, event_queue, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 348, in link_devel_products
+    clean_linked_files(logger, event_queue, metadata_path, files_that_collide, files_to_clean, dry_run=False)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in clean_linked_files
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in <listcomp>
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+ValueError: not enough values to unpack (expected 2, got 0)
+
+Stage `symlink` failed with arguments:
+  package: {'package_format': 1, 'name': 'moveit_resources_fanuc_description', 'version': '0.8.3', 'version_compatibility': None, 'description': 'Fanuc Resources used for MoveIt! testing', 'plaintext_description': 'Fanuc Resources used for MoveIt! testing', 'maintainers': [<catkin_pkg.package.Person object at 0x732fbc6f2550>], 'licenses': ['BSD'], 'urls': [<catkin_pkg.package.Url object at 0x732fbc6f25e0>, <catkin_pkg.package.Url object at 0x732fbc6f2610>, <catkin_pkg.package.Url object at 0x732fbc6f2670>], 'authors': [<catkin_pkg.package.Person object at 0x732fbc6f26d0>, <catkin_pkg.package.Person object at 0x732fbc6f2730>], 'build_depends': [], 'buildtool_depends': [Dependency(name='catkin', evaluated_condition=True)], 'build_export_depends': [], 'buildtool_export_depends': [], 'exec_depends': [], 'test_depends': [], 'doc_depends': [], 'conflicts': [], 'replaces': [], 'group_depends': [], 'member_of_groups': [], 'exports': [], 'filename': '/root/ws_moveit/src/moveit_resources/fanuc_description/package.xml'}
+  package_path: moveit_resources/fanuc_description
+  devel_manifest_path: /root/ws_moveit/.catkin_tools/profiles/default/packages/moveit_resources_fanuc_description
+  source_devel_path: /root/ws_moveit/devel/.private/moveit_resources_fanuc_description
+  dest_devel_path: /root/ws_moveit/devel
+  metadata_path: /root/ws_moveit/.catkin_tools/profiles/default
+  prebuild: False

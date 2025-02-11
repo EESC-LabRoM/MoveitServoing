@@ -1,0 +1,5 @@
+universal_robot/ur_bringup
+/root/ws_moveit/devel/.private/ur_bringup/cmake.lock /root/ws_moveit/devel/./cmake.lock
+/root/ws_moveit/devel/.private/ur_bringup/share/ur_bringup/cmake/ur_bringupConfig.cmake /root/ws_moveit/devel/share/ur_bringup/cmake/ur_bringupConfig.cmake
+/root/ws_moveit/devel/.private/ur_bringup/share/ur_bringup/cmake/ur_bringupConfig-version.cmake /root/ws_moveit/devel/share/ur_bringup/cmake/ur_bringupConfig-version.cmake
+/root/ws_moveit/devel/.private/ur_bringup/lib/pkgconfig/ur_bringup.pc /root/ws_moveit/devel/lib/pkgconfig/ur_bringup.pc

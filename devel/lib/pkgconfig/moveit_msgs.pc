@@ -1,0 +1,1 @@
+/root/ws_moveit/devel/.private/moveit_msgs/lib/pkgconfig/moveit_msgs.pc

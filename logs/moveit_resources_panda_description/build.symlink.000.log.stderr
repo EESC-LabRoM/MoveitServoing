@@ -1,0 +1,20 @@
+Could not clean linked files.
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/catkin_tools/execution/stages.py", line 177, in function_proxy
+    return function(logger, event_queue, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 348, in link_devel_products
+    clean_linked_files(logger, event_queue, metadata_path, files_that_collide, files_to_clean, dry_run=False)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in clean_linked_files
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in <listcomp>
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+ValueError: not enough values to unpack (expected 2, got 0)
+
+Stage `symlink` failed with arguments:
+  package: {'package_format': 1, 'name': 'moveit_resources_panda_description', 'version': '0.8.3', 'version_compatibility': None, 'description': 'panda Resources used for MoveIt! testing', 'plaintext_description': 'panda Resources used for MoveIt! testing', 'maintainers': [<catkin_pkg.package.Person object at 0x732fbc6f7ac0>], 'licenses': ['BSD'], 'urls': [<catkin_pkg.package.Url object at 0x732fbc6f7b50>, <catkin_pkg.package.Url object at 0x732fbc6f7b80>, <catkin_pkg.package.Url object at 0x732fbc6f7be0>], 'authors': [<catkin_pkg.package.Person object at 0x732fbc6f7c40>, <catkin_pkg.package.Person object at 0x732fbc6f7ca0>], 'build_depends': [Dependency(name='xacro', evaluated_condition=True)], 'buildtool_depends': [Dependency(name='catkin', evaluated_condition=True)], 'build_export_depends': [], 'buildtool_export_depends': [], 'exec_depends': [], 'test_depends': [], 'doc_depends': [], 'conflicts': [], 'replaces': [], 'group_depends': [], 'member_of_groups': [], 'exports': [], 'filename': '/root/ws_moveit/src/moveit_resources/panda_description/package.xml'}
+  package_path: moveit_resources/panda_description
+  devel_manifest_path: /root/ws_moveit/.catkin_tools/profiles/default/packages/moveit_resources_panda_description
+  source_devel_path: /root/ws_moveit/devel/.private/moveit_resources_panda_description
+  dest_devel_path: /root/ws_moveit/devel
+  metadata_path: /root/ws_moveit/.catkin_tools/profiles/default
+  prebuild: False

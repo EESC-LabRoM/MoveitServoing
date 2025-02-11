@@ -1,0 +1,6 @@
+Symlinking /root/ws_moveit/devel/share/srdfdom/cmake/srdfdomConfig.cmake
+Symlinking /root/ws_moveit/devel/share/srdfdom/cmake/srdfdomConfig-version.cmake
+Symlinking /root/ws_moveit/devel/lib/libsrdfdom.so
+Symlinking /root/ws_moveit/devel/lib/libsrdfdom.so.0.6.4
+Symlinking /root/ws_moveit/devel/lib/pkgconfig/srdfdom.pc
+Symlinking /root/ws_moveit/devel/lib/python3/dist-packages/srdfdom/__init__.py
