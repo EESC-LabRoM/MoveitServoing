@@ -2,7 +2,7 @@
 
 This is the main repository for running the movit servoing packager for the real-time control of robotic arms.
 
-The current version is working for a UR5 robot.
+The current version is working for a UR5 robot. I'm using a ros noetic docker.
 
 'pose_tracking_servo.cpp' looks for target_pose and moves to it.
 
