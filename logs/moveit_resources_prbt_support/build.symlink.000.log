@@ -1,0 +1,23 @@
+Symlinking /root/ws_moveit/devel/share/moveit_resources_prbt_support/cmake/moveit_resources_prbt_supportConfig-version.cmake
+Symlinking /root/ws_moveit/devel/share/moveit_resources_prbt_support/cmake/moveit_resources_prbt_supportConfig.cmake
+Symlinking /root/ws_moveit/devel/lib/pkgconfig/moveit_resources_prbt_support.pc
+Could not clean linked files.
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/catkin_tools/execution/stages.py", line 177, in function_proxy
+    return function(logger, event_queue, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 348, in link_devel_products
+    clean_linked_files(logger, event_queue, metadata_path, files_that_collide, files_to_clean, dry_run=False)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in clean_linked_files
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in <listcomp>
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+ValueError: not enough values to unpack (expected 2, got 0)
+
+Stage `symlink` failed with arguments:
+  package: {'package_format': 2, 'name': 'moveit_resources_prbt_support', 'version': '0.8.3', 'version_compatibility': None, 'description': 'Mechanical, kinematic and visual description\n  of the Pilz light weight arm PRBT.', 'plaintext_description': 'Mechanical, kinematic and visual description of the Pilz light weight arm PRBT.', 'maintainers': [<catkin_pkg.package.Person object at 0x732fbc6f7100>, <catkin_pkg.package.Person object at 0x732fbc6f7130>, <catkin_pkg.package.Person object at 0x732fbc6f7190>, <catkin_pkg.package.Person object at 0x732fbc6f71f0>], 'licenses': ['Apache 2.0'], 'urls': [<catkin_pkg.package.Url object at 0x732fbc6f72b0>, <catkin_pkg.package.Url object at 0x732fbc6f72e0>, <catkin_pkg.package.Url object at 0x732fbc6f7340>], 'authors': [], 'build_depends': [], 'buildtool_depends': [Dependency(name='catkin', evaluated_condition=True)], 'build_export_depends': [], 'buildtool_export_depends': [], 'exec_depends': [Dependency(name='xacro', evaluated_condition=True)], 'test_depends': [], 'doc_depends': [], 'conflicts': [], 'replaces': [], 'group_depends': [], 'member_of_groups': [], 'exports': [], 'filename': '/root/ws_moveit/src/moveit_resources/prbt_support/package.xml'}
+  package_path: moveit_resources/prbt_support
+  devel_manifest_path: /root/ws_moveit/.catkin_tools/profiles/default/packages/moveit_resources_prbt_support
+  source_devel_path: /root/ws_moveit/devel/.private/moveit_resources_prbt_support
+  dest_devel_path: /root/ws_moveit/devel
+  metadata_path: /root/ws_moveit/.catkin_tools/profiles/default
+  prebuild: False

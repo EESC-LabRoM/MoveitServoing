@@ -1,0 +1,1 @@
+/root/ws_moveit/devel/.private/moveit_chomp_optimizer_adapter/lib/pkgconfig/moveit_chomp_optimizer_adapter.pc

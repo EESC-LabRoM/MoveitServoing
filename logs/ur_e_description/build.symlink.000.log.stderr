@@ -1,0 +1,20 @@
+Could not clean linked files.
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/catkin_tools/execution/stages.py", line 177, in function_proxy
+    return function(logger, event_queue, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 348, in link_devel_products
+    clean_linked_files(logger, event_queue, metadata_path, files_that_collide, files_to_clean, dry_run=False)
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in clean_linked_files
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+  File "/usr/lib/python3/dist-packages/catkin_tools/jobs/catkin.py", line 106, in <listcomp>
+    dest_collisions = dict([(path, int(count)) for path, count in collisions_reader])
+ValueError: not enough values to unpack (expected 2, got 0)
+
+Stage `symlink` failed with arguments:
+  package: {'package_format': 2, 'name': 'ur_e_description', 'version': '1.2.7', 'version_compatibility': None, 'description': 'URDF description for Universal UR5/10 robot arms', 'plaintext_description': 'URDF description for Universal UR5/10 robot arms', 'maintainers': [<catkin_pkg.package.Person object at 0x732fbc557a30>, <catkin_pkg.package.Person object at 0x732fbc557a90>, <catkin_pkg.package.Person object at 0x732fbc557ac0>], 'licenses': ['BSD'], 'urls': [<catkin_pkg.package.Url object at 0x732fbc557a60>], 'authors': [<catkin_pkg.package.Person object at 0x732fbc557b50>, <catkin_pkg.package.Person object at 0x732fbc557b80>, <catkin_pkg.package.Person object at 0x732fbc557bb0>, <catkin_pkg.package.Person object at 0x732fbc557be0>], 'build_depends': [], 'buildtool_depends': [Dependency(name='catkin', evaluated_condition=True)], 'build_export_depends': [], 'buildtool_export_depends': [], 'exec_depends': [Dependency(name='joint_state_publisher', evaluated_condition=True), Dependency(name='robot_state_publisher', evaluated_condition=True), Dependency(name='rviz', evaluated_condition=True), Dependency(name='urdf', evaluated_condition=True), Dependency(name='xacro', evaluated_condition=True)], 'test_depends': [], 'doc_depends': [], 'conflicts': [], 'replaces': [], 'group_depends': [], 'member_of_groups': [], 'exports': [], 'filename': '/root/ws_moveit/src/universal_robot/ur_e_description/package.xml'}
+  package_path: universal_robot/ur_e_description
+  devel_manifest_path: /root/ws_moveit/.catkin_tools/profiles/default/packages/ur_e_description
+  source_devel_path: /root/ws_moveit/devel/.private/ur_e_description
+  dest_devel_path: /root/ws_moveit/devel
+  metadata_path: /root/ws_moveit/.catkin_tools/profiles/default
+  prebuild: False

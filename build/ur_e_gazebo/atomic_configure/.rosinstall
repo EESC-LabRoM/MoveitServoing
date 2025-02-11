@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /root/ws_moveit/devel/.private/ur_e_gazebo/setup.sh

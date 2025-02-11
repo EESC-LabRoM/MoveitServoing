@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /root/ws_moveit/devel/.private/moveit_resources_pr2_description/setup.sh

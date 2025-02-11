@@ -1,0 +1,1 @@
+/root/ws_moveit/devel/.private/moveit_setup_assistant/lib/pkgconfig/moveit_setup_assistant.pc

@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /root/ws_moveit/devel/.private/pilz_industrial_motion_planner/setup.sh

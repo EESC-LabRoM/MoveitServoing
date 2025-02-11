@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /root/ws_moveit/devel/.private/rviz_visual_tools/setup.sh

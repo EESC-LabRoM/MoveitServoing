@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/setup.sh

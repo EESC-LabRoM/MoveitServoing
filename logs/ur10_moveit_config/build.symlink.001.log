@@ -1,0 +1,3 @@
+Symlinking /root/ws_moveit/devel/share/ur10_moveit_config/cmake/ur10_moveit_configConfig-version.cmake
+Symlinking /root/ws_moveit/devel/share/ur10_moveit_config/cmake/ur10_moveit_configConfig.cmake
+Symlinking /root/ws_moveit/devel/lib/pkgconfig/ur10_moveit_config.pc
