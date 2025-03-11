@@ -1,0 +1,59 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    spot_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    spot_gripper_controller:
+      type: position_controllers/GripperActionController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+spot_arm_controller:
+  ros__parameters:
+    joints:
+      - arm0.sh0
+      - arm0.sh1
+      - arm0.el0
+      - arm0.el1
+      - arm0.wr0
+      - arm0.wr1
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    goal_tolerance: 0.05  # Ajuste para evitar loops no planejamento
+    stop_tolerance: 0.05
+    state_publish_rate: 50.0  # Corrigido para `double`
+    action_monitor_rate: 20.0  # Corrigido para `double`
+
+spot_gripper_controller:
+  ros__parameters:
+    joint: arm0.f1x
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+    goal_tolerance: 0.01
+    stop_tolerance: 0.01
+    state_publish_rate: 50.0  # Corrigido para `double`
+
+joint_state_broadcaster:
+  ros__parameters:
+    joints:
+      - fl.hx
+      - fl.hy
+      - fl.kn
+      - fr.hx
+      - fr.hy
+      - fr.kn
+      - hl.hx
+      - hl.hy
+      - hl.kn
+      - hr.hx
+      - hr.hy
+      - hr.kn
+
