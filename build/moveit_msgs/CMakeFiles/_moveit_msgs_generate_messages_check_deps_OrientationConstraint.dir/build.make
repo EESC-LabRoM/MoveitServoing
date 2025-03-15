@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /root/ws_moveit/build/moveit_msgs
 include CMakeFiles/_moveit_msgs_generate_messages_check_deps_OrientationConstraint.dir/progress.make
 
 CMakeFiles/_moveit_msgs_generate_messages_check_deps_OrientationConstraint:
-	catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py moveit_msgs /root/ws_moveit/src/moveit_msgs/msg/OrientationConstraint.msg geometry_msgs/Quaternion:std_msgs/Header
+	catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py moveit_msgs /root/ws_moveit/src/moveit_msgs/msg/OrientationConstraint.msg std_msgs/Header:geometry_msgs/Quaternion
 
 _moveit_msgs_generate_messages_check_deps_OrientationConstraint: CMakeFiles/_moveit_msgs_generate_messages_check_deps_OrientationConstraint
 _moveit_msgs_generate_messages_check_deps_OrientationConstraint: CMakeFiles/_moveit_msgs_generate_messages_check_deps_OrientationConstraint.dir/build.make

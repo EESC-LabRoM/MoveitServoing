@@ -1,0 +1,5 @@
+spot_robot
+/root/ws_moveit/devel/.private/spot_robot/cmake.lock /root/ws_moveit/devel/./cmake.lock
+/root/ws_moveit/devel/.private/spot_robot/share/spot_robot/cmake/spot_robotConfig.cmake /root/ws_moveit/devel/share/spot_robot/cmake/spot_robotConfig.cmake
+/root/ws_moveit/devel/.private/spot_robot/share/spot_robot/cmake/spot_robotConfig-version.cmake /root/ws_moveit/devel/share/spot_robot/cmake/spot_robotConfig-version.cmake
+/root/ws_moveit/devel/.private/spot_robot/lib/pkgconfig/spot_robot.pc /root/ws_moveit/devel/lib/pkgconfig/spot_robot.pc

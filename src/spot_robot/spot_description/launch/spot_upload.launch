@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface" />
+
+  <!-- Carregar modelo do Spot -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find spot_description)/urdf/spot.urdf.xacro' transmission_hw_interface:=$(arg transmission_hw_interface)" />
+</launch>

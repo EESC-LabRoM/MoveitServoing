@@ -234,7 +234,7 @@
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
-	"PARALLEL" : 14,
+	"PARALLEL" : 8,
 	"PARSE_CACHE_FILE" : "/root/ws_moveit/build/moveit_setup_assistant/CMakeFiles/moveit_setup_assistant_widgets_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "/usr/lib/qt5/bin/moc",
 	"QT_UIC_EXECUTABLE" : "",

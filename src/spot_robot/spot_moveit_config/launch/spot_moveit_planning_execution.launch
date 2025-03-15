@@ -1,0 +1,7 @@
+<launch>
+  <arg name="sim" default="false"/>
+  
+  <remap if="$(arg sim)" from="/follow_joint_trajectory" to="/spot_controller/follow_joint_trajectory"/>
+  
+  <include file="$(find spot_moveit_config)/launch/move_group.launch"/>
+</launch>

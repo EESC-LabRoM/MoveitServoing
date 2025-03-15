@@ -9,6 +9,7 @@
 # modified environment variables
 export CMAKE_PREFIX_PATH="/root/ws_moveit/devel/.private/srdfdom:$CMAKE_PREFIX_PATH"
 export LD_LIBRARY_PATH="/root/ws_moveit/devel/.private/srdfdom/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/root/ws_moveit/devel/.private/srdfdom/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/root/ws_moveit/build/srdfdom'
 export PYTHONPATH="/root/ws_moveit/devel/.private/srdfdom/lib/python3/dist-packages:$PYTHONPATH"
 export ROSLISP_PACKAGE_DIRECTORIES="/root/ws_moveit/devel/.private/srdfdom/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"

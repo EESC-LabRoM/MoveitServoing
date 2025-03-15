@@ -9,6 +9,7 @@
 # modified environment variables
 export CMAKE_PREFIX_PATH="/root/ws_moveit/devel/.private/ur_driver:$CMAKE_PREFIX_PATH"
 export LD_LIBRARY_PATH="/root/ws_moveit/devel/.private/ur_driver/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/root/ws_moveit/devel/.private/ur_driver/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/root/ws_moveit/build/ur_driver'
 export PYTHONPATH="/root/ws_moveit/devel/.private/ur_driver/lib/python3/dist-packages:$PYTHONPATH"
 export ROSLISP_PACKAGE_DIRECTORIES="/root/ws_moveit/devel/.private/ur_driver/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"

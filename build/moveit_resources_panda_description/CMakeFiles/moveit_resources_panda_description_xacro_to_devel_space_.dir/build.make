@@ -66,8 +66,8 @@ CMakeFiles/moveit_resources_panda_description_xacro_to_devel_space_: /root/ws_mo
 	/usr/bin/cmake -E make_directory /root/ws_moveit/devel/.private/moveit_resources_panda_description/share/moveit_resources_panda_description/robots
 
 /root/ws_moveit/src/moveit_resources/panda_description/urdf/panda.urdf: /root/ws_moveit/src/moveit_resources/panda_description/urdf/panda_arm_hand.urdf.xacro
-/root/ws_moveit/src/moveit_resources/panda_description/urdf/panda.urdf: /root/ws_moveit/src/moveit_resources/panda_description/urdf/hand.xacro
 /root/ws_moveit/src/moveit_resources/panda_description/urdf/panda.urdf: /root/ws_moveit/src/moveit_resources/panda_description/urdf/panda_arm.xacro
+/root/ws_moveit/src/moveit_resources/panda_description/urdf/panda.urdf: /root/ws_moveit/src/moveit_resources/panda_description/urdf/hand.xacro
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/root/ws_moveit/build/moveit_resources_panda_description/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "xacro: generating /root/ws_moveit/src/moveit_resources/panda_description/urdf/panda.urdf from urdf/panda_arm_hand.urdf.xacro"
 	cd /root/ws_moveit/src/moveit_resources/panda_description && /root/ws_moveit/build/moveit_resources_panda_description/catkin_generated/env_cached.sh xacro -o /root/ws_moveit/src/moveit_resources/panda_description/urdf/panda.urdf urdf/panda_arm_hand.urdf.xacro
 

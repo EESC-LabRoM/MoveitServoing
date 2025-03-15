@@ -8,6 +8,8 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/root/ws_moveit/devel/.private/pilz_industrial_motion_planner_testutils:$CMAKE_PREFIX_PATH"
+export LD_LIBRARY_PATH="/root/ws_moveit/devel/.private/pilz_industrial_motion_planner_testutils/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/root/ws_moveit/devel/.private/pilz_industrial_motion_planner_testutils/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/root/ws_moveit/build/pilz_industrial_motion_planner_testutils'
 export ROSLISP_PACKAGE_DIRECTORIES="/root/ws_moveit/devel/.private/pilz_industrial_motion_planner_testutils/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/root/ws_moveit/src/moveit/moveit_planners/pilz_industrial_motion_planner_testutils:$ROS_PACKAGE_PATH"

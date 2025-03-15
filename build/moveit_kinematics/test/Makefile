@@ -168,34 +168,109 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
-.PHONY : test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+test/CMakeFiles/benchmark_ik.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/benchmark_ik.dir/rule
+.PHONY : test/CMakeFiles/benchmark_ik.dir/rule
 
 # Convenience name for target.
-_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test: test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+benchmark_ik: test/CMakeFiles/benchmark_ik.dir/rule
 
-.PHONY : _run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test
+.PHONY : benchmark_ik
 
 # fast build rule for target.
-_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build.make test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build
-.PHONY : _run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast
+benchmark_ik/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/benchmark_ik.dir/build.make test/CMakeFiles/benchmark_ik.dir/build
+.PHONY : benchmark_ik/fast
 
 # Convenience name for target.
-test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
-.PHONY : test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+test/CMakeFiles/run_tests_moveit_kinematics.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics.dir/rule
+.PHONY : test/CMakeFiles/run_tests_moveit_kinematics.dir/rule
 
 # Convenience name for target.
-run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test: test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+run_tests_moveit_kinematics: test/CMakeFiles/run_tests_moveit_kinematics.dir/rule
 
-.PHONY : run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test
+.PHONY : run_tests_moveit_kinematics
 
 # fast build rule for target.
-run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build
-.PHONY : run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast
+run_tests_moveit_kinematics/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics.dir/build
+.PHONY : run_tests_moveit_kinematics/fast
+
+# Convenience name for target.
+test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+.PHONY : test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+
+# Convenience name for target.
+_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test: test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+
+.PHONY : _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test
+
+# fast build rule for target.
+_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build.make test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build
+.PHONY : _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast
+
+# Convenience name for target.
+test/CMakeFiles/test_kinematics_plugin.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_kinematics_plugin.dir/rule
+.PHONY : test/CMakeFiles/test_kinematics_plugin.dir/rule
+
+# Convenience name for target.
+test_kinematics_plugin: test/CMakeFiles/test_kinematics_plugin.dir/rule
+
+.PHONY : test_kinematics_plugin
+
+# fast build rule for target.
+test_kinematics_plugin/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/test_kinematics_plugin.dir/build.make test/CMakeFiles/test_kinematics_plugin.dir/build
+.PHONY : test_kinematics_plugin/fast
+
+# Convenience name for target.
+test/CMakeFiles/_run_tests_moveit_kinematics.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/_run_tests_moveit_kinematics.dir/rule
+.PHONY : test/CMakeFiles/_run_tests_moveit_kinematics.dir/rule
+
+# Convenience name for target.
+_run_tests_moveit_kinematics: test/CMakeFiles/_run_tests_moveit_kinematics.dir/rule
+
+.PHONY : _run_tests_moveit_kinematics
+
+# fast build rule for target.
+_run_tests_moveit_kinematics/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/_run_tests_moveit_kinematics.dir/build.make test/CMakeFiles/_run_tests_moveit_kinematics.dir/build
+.PHONY : _run_tests_moveit_kinematics/fast
+
+# Convenience name for target.
+test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/rule
+.PHONY : test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/rule
+
+# Convenience name for target.
+run_tests_moveit_kinematics_rostest: test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/rule
+
+.PHONY : run_tests_moveit_kinematics_rostest
+
+# fast build rule for target.
+run_tests_moveit_kinematics_rostest/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/build
+.PHONY : run_tests_moveit_kinematics_rostest/fast
+
+# Convenience name for target.
+test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule
+.PHONY : test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule
+
+# Convenience name for target.
+run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test: test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule
+
+.PHONY : run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test
+
+# fast build rule for target.
+run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/build
+.PHONY : run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test/fast
 
 # Convenience name for target.
 test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule:
@@ -228,231 +303,6 @@ _run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_
 .PHONY : _run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test/fast
 
 # Convenience name for target.
-test/CMakeFiles/moveit_ros_planning_gencfg.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/moveit_ros_planning_gencfg.dir/rule
-.PHONY : test/CMakeFiles/moveit_ros_planning_gencfg.dir/rule
-
-# Convenience name for target.
-moveit_ros_planning_gencfg: test/CMakeFiles/moveit_ros_planning_gencfg.dir/rule
-
-.PHONY : moveit_ros_planning_gencfg
-
-# fast build rule for target.
-moveit_ros_planning_gencfg/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/moveit_ros_planning_gencfg.dir/build.make test/CMakeFiles/moveit_ros_planning_gencfg.dir/build
-.PHONY : moveit_ros_planning_gencfg/fast
-
-# Convenience name for target.
-test/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/rule
-.PHONY : test/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_cpp: test/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_cpp
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_cpp/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/build.make test/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_cpp/fast
-
-# Convenience name for target.
-test/CMakeFiles/benchmark_ik.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/benchmark_ik.dir/rule
-.PHONY : test/CMakeFiles/benchmark_ik.dir/rule
-
-# Convenience name for target.
-benchmark_ik: test/CMakeFiles/benchmark_ik.dir/rule
-
-.PHONY : benchmark_ik
-
-# fast build rule for target.
-benchmark_ik/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/benchmark_ik.dir/build.make test/CMakeFiles/benchmark_ik.dir/build
-.PHONY : benchmark_ik/fast
-
-# Convenience name for target.
-test/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/rule
-.PHONY : test/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_eus: test/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_eus
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_eus/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/build.make test/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_eus/fast
-
-# Convenience name for target.
-test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
-.PHONY : test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
-
-# Convenience name for target.
-run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test: test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
-
-.PHONY : run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test
-
-# fast build rule for target.
-run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build
-.PHONY : run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast
-
-# Convenience name for target.
-test/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/rule
-.PHONY : test/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_py: test/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_py
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_py/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build.make test/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_py/fast
-
-# Convenience name for target.
-test/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/rule
-.PHONY : test/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_lisp: test/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_lisp
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_lisp/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build.make test/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_lisp/fast
-
-# Convenience name for target.
-test/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule
-.PHONY : test/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_gencfg: test/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule
-
-.PHONY : dynamic_reconfigure_gencfg
-
-# fast build rule for target.
-dynamic_reconfigure_gencfg/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/dynamic_reconfigure_gencfg.dir/build.make test/CMakeFiles/dynamic_reconfigure_gencfg.dir/build
-.PHONY : dynamic_reconfigure_gencfg/fast
-
-# Convenience name for target.
-test/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/rule
-.PHONY : test/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_nodejs: test/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_nodejs
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_nodejs/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build.make test/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_nodejs/fast
-
-# Convenience name for target.
-test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
-.PHONY : test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
-
-# Convenience name for target.
-_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test: test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
-
-.PHONY : _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test
-
-# fast build rule for target.
-_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build.make test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build
-.PHONY : _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast
-
-# Convenience name for target.
-test/CMakeFiles/_run_tests_moveit_kinematics.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/_run_tests_moveit_kinematics.dir/rule
-.PHONY : test/CMakeFiles/_run_tests_moveit_kinematics.dir/rule
-
-# Convenience name for target.
-_run_tests_moveit_kinematics: test/CMakeFiles/_run_tests_moveit_kinematics.dir/rule
-
-.PHONY : _run_tests_moveit_kinematics
-
-# fast build rule for target.
-_run_tests_moveit_kinematics/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/_run_tests_moveit_kinematics.dir/build.make test/CMakeFiles/_run_tests_moveit_kinematics.dir/build
-.PHONY : _run_tests_moveit_kinematics/fast
-
-# Convenience name for target.
-test/CMakeFiles/test_kinematics_plugin.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_kinematics_plugin.dir/rule
-.PHONY : test/CMakeFiles/test_kinematics_plugin.dir/rule
-
-# Convenience name for target.
-test_kinematics_plugin: test/CMakeFiles/test_kinematics_plugin.dir/rule
-
-.PHONY : test_kinematics_plugin
-
-# fast build rule for target.
-test_kinematics_plugin/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/test_kinematics_plugin.dir/build.make test/CMakeFiles/test_kinematics_plugin.dir/build
-.PHONY : test_kinematics_plugin/fast
-
-# Convenience name for target.
-test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule
-.PHONY : test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule
-
-# Convenience name for target.
-run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test: test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule
-
-.PHONY : run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test
-
-# fast build rule for target.
-run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/build
-.PHONY : run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test/fast
-
-# Convenience name for target.
-test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/rule
-.PHONY : test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/rule
-
-# Convenience name for target.
-run_tests_moveit_kinematics_rostest: test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/rule
-
-.PHONY : run_tests_moveit_kinematics_rostest
-
-# fast build rule for target.
-run_tests_moveit_kinematics_rostest/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics_rostest.dir/build
-.PHONY : run_tests_moveit_kinematics_rostest/fast
-
-# Convenience name for target.
-test/CMakeFiles/run_tests_moveit_kinematics.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics.dir/rule
-.PHONY : test/CMakeFiles/run_tests_moveit_kinematics.dir/rule
-
-# Convenience name for target.
-run_tests_moveit_kinematics: test/CMakeFiles/run_tests_moveit_kinematics.dir/rule
-
-.PHONY : run_tests_moveit_kinematics
-
-# fast build rule for target.
-run_tests_moveit_kinematics/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics.dir/build
-.PHONY : run_tests_moveit_kinematics/fast
-
-# Convenience name for target.
 test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule:
 	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule
 .PHONY : test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/rule
@@ -466,6 +316,21 @@ _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_
 _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test/fast:
 	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/build.make test/CMakeFiles/_run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test.dir/build
 .PHONY : _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test/fast
+
+# Convenience name for target.
+test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/rule
+.PHONY : test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/rule
+
+# Convenience name for target.
+_run_tests_moveit_kinematics_rostest: test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/rule
+
+.PHONY : _run_tests_moveit_kinematics_rostest
+
+# fast build rule for target.
+_run_tests_moveit_kinematics_rostest/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/build.make test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/build
+.PHONY : _run_tests_moveit_kinematics_rostest/fast
 
 # Convenience name for target.
 test/CMakeFiles/clean_test_results_moveit_kinematics.dir/rule:
@@ -483,19 +348,49 @@ clean_test_results_moveit_kinematics/fast:
 .PHONY : clean_test_results_moveit_kinematics/fast
 
 # Convenience name for target.
-test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/rule
-.PHONY : test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/rule
+test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+.PHONY : test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
 
 # Convenience name for target.
-_run_tests_moveit_kinematics_rostest: test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/rule
+run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test: test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
 
-.PHONY : _run_tests_moveit_kinematics_rostest
+.PHONY : run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test
 
 # fast build rule for target.
-_run_tests_moveit_kinematics_rostest/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/build.make test/CMakeFiles/_run_tests_moveit_kinematics_rostest.dir/build
-.PHONY : _run_tests_moveit_kinematics_rostest/fast
+run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build
+.PHONY : run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast
+
+# Convenience name for target.
+test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+.PHONY : test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+
+# Convenience name for target.
+run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test: test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+
+.PHONY : run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test
+
+# fast build rule for target.
+run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build.make test/CMakeFiles/run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build
+.PHONY : run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast
+
+# Convenience name for target.
+test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+.PHONY : test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+
+# Convenience name for target.
+_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test: test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/rule
+
+.PHONY : _run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test
+
+# fast build rule for target.
+_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast:
+	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build.make test/CMakeFiles/_run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test.dir/build
+.PHONY : _run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test/fast
 
 benchmark_ik.o: benchmark_ik.cpp.o
 
@@ -562,30 +457,23 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... _run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test"
-	@echo "... run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test"
+	@echo "... test"
+	@echo "... benchmark_ik"
+	@echo "... run_tests_moveit_kinematics"
+	@echo "... _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test"
+	@echo "... test_kinematics_plugin"
+	@echo "... _run_tests_moveit_kinematics"
+	@echo "... install/strip"
+	@echo "... run_tests_moveit_kinematics_rostest"
+	@echo "... run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test"
 	@echo "... run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test"
 	@echo "... _run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test"
-	@echo "... moveit_ros_planning_gencfg"
-	@echo "... dynamic_reconfigure_generate_messages_cpp"
-	@echo "... benchmark_ik"
-	@echo "... dynamic_reconfigure_generate_messages_eus"
-	@echo "... run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test"
-	@echo "... dynamic_reconfigure_generate_messages_py"
-	@echo "... test"
-	@echo "... dynamic_reconfigure_generate_messages_lisp"
-	@echo "... dynamic_reconfigure_gencfg"
-	@echo "... dynamic_reconfigure_generate_messages_nodejs"
-	@echo "... _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test"
-	@echo "... _run_tests_moveit_kinematics"
-	@echo "... test_kinematics_plugin"
-	@echo "... install/strip"
-	@echo "... run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test"
-	@echo "... run_tests_moveit_kinematics_rostest"
-	@echo "... run_tests_moveit_kinematics"
 	@echo "... _run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_kdl_kinematics_plugin_KDLKinematicsPlugin.test"
-	@echo "... clean_test_results_moveit_kinematics"
 	@echo "... _run_tests_moveit_kinematics_rostest"
+	@echo "... clean_test_results_moveit_kinematics"
+	@echo "... run_tests_moveit_kinematics_rostest_panda-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test"
+	@echo "... run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test"
+	@echo "... _run_tests_moveit_kinematics_rostest_fanuc-kdl__ik_plugin_lma_kinematics_plugin_LMAKinematicsPlugin__tolerance_0.0005.test"
 	@echo "... benchmark_ik.o"
 	@echo "... benchmark_ik.i"
 	@echo "... benchmark_ik.s"
