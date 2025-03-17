@@ -1,28 +1,24 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.0.2)
 project(spot_description)
 
-# Encontrar pacotes necessários
-find_package(ament_cmake REQUIRED)
-find_package(gazebo_ros REQUIRED)
-find_package(xacro REQUIRED)
+find_package(catkin REQUIRED COMPONENTS
+  xacro
+  gazebo_ros
+)
 
-# Instalar arquivos URDF
+catkin_package()
+
 install(
   DIRECTORY urdf/
-  DESTINATION share/${PROJECT_NAME}/urdf
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
 )
 
-# Instalar arquivos de mesh
 install(
   DIRECTORY meshes/
-  DESTINATION share/${PROJECT_NAME}/meshes
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/meshes
 )
 
-# Instalar arquivos de lançamento
 install(
   DIRECTORY launch/
-  DESTINATION share/${PROJECT_NAME}/launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
 )
-
-# Finalizar
-ament_package()

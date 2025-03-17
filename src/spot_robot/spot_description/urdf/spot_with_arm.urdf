@@ -6,6 +6,7 @@ is subject to the terms and conditions of the Boston Dynamics Software
 Development Kit License (20191101-BDSDK-SL).
 -->
 <robot name="spot">
+
   <!-- Robot Base Link -->
   <link name="base">
     <visual>
@@ -20,11 +21,11 @@ Development Kit License (20191101-BDSDK-SL).
         <box size="0.85 0.24 0.18"/>
       </geometry>
     </collision>
-    <!-- <inertial>
+    <inertial>
       <origin xyz="0 0 -0.00496172"/>
       <mass value="16.70765207"/>
       <inertia ixx="0.081543792" ixy="0.0" ixz="0.0" iyy="0.549231154" iyz="0.0" izz="0.569454373"/>
-    </inertial> -->
+    </inertial>
   </link>
 
   <!-- Hip Links -->
