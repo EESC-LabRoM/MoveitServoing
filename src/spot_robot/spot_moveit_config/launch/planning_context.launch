@@ -8,7 +8,7 @@
 
   <!-- Load universal robot description format (URDF) -->
   <group if="$(arg load_robot_description)">
-    <param unless="$(arg limited)" name="$(arg robot_description)" command="$(find xacro)/xacro --inorder '$(find ur_description)/urdf/spot_robot.urdf.xacro'" />
+  <param name="robot_description" textfile="$(find spot_description)/urdf/spot.urdf" />
 
   </group>
 

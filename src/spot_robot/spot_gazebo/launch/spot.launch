@@ -3,15 +3,23 @@
   <arg name="paused" default="false" doc="Iniciar o Gazebo pausado"/>
   <arg name="gui" default="true" doc="Iniciar Gazebo com interface gráfica"/>
 
-  <!-- Iniciar Gazebo -->
+  <!-- Iniciar Gazebo
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" default="worlds/empty.world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include> -->
+
+  <!-- Iniciar Gazebo com o mundo customizado -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find spot_gazebo)/worlds/custom_world.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="gui" value="$(arg gui)"/>
   </include>
 
   <!-- Enviar URDF do Spot para o servidor de parâmetros -->
   <include file="$(find spot_description)/launch/spot_upload.launch"/>
+
 
   <!-- Spawn do modelo no Gazebo -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model"

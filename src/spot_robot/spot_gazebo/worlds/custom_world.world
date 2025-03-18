@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="custom_world">
+    
+    <!-- Configuração da Física (Desativada) -->
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000.0</real_time_update_rate>
+      <gravity>
+        <x>0.0</x>
+        <y>0.0</y>
+        <z>0.0</z>  <!-- Gravidade zerada para não afetar o robô -->
+      </gravity>
+    </physics>
+
+    <!-- Luz Ambiente -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Chão -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+
+    <!-- Configuração de Atmosfera e Nuvens -->
+    <atmosphere type="adiabatic"/>
+    <scene>
+      <sky>
+        <clouds>
+          <speed>0.5</speed>
+        </clouds>
+      </sky>
+    </scene>
+
+  </world>
+</sdf>
