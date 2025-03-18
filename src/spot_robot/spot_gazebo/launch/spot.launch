@@ -1,14 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="paused" default="false" doc="Iniciar o Gazebo pausado"/>
-  <arg name="gui" default="true" doc="Iniciar Gazebo com interface gráfica"/>
 
-  <!-- Iniciar Gazebo
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" default="worlds/empty.world"/>
-    <arg name="paused" value="$(arg paused)"/>
-    <arg name="gui" value="$(arg gui)"/>
-  </include> -->
+  <arg name="paused" default="true" doc="Iniciar o Gazebo pausado"/>
+  <arg name="gui" default="true" doc="Iniciar Gazebo com interface gráfica"/>
 
   <!-- Iniciar Gazebo com o mundo customizado -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -17,26 +11,29 @@
     <arg name="gui" value="$(arg gui)"/>
   </include>
 
-  <!-- Enviar URDF do Spot para o servidor de parâmetros -->
-  <include file="$(find spot_description)/launch/spot_upload.launch"/>
+  <!-- Publicar URDF do Spot no servidor de parâmetros -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find spot_moveit_config)/config/spot.urdf.xacro"/>
+  <param name="robot_description_semantic" command="$(find xacro)/xacro --inorder $(find spot_moveit_config)/config/spot.srdf"/>
+  <param name="use_sim_time" value="true"/>
 
+  <!-- Iniciar Gazebo ROS Control -->
+  <node name="gazebo_ros_control" pkg="gazebo_ros_control" type="gazebo_ros_control"
+        respawn="false" output="screen"/>
 
   <!-- Spawn do modelo no Gazebo -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model"
-      args="-urdf -param robot_description -model spot_robot -x 0 -y 0 -z 0.5 -R 0 -P 0 -Y 0"
-      respawn="false" output="screen" />
+        args="-urdf -param robot_description -model spot_robot -x 0 -y 0 -z 0.7"
+        respawn="false" output="screen"/>
 
+  <!-- Carregar utilitários do controlador -->
+  <include file="$(find spot_gazebo)/launch/controller_utils.launch"/>
 
-
-  <!-- Carregar controladores do Spot -->
+  <!-- Carregar os controladores -->
   <rosparam file="$(find spot_gazebo)/controller/spot_controller.yaml" command="load"/>
-  
+
   <!-- Iniciar os controladores -->
-  <node name="controller_spawner" pkg="controller_manager" type="controller_manager" 
-        args="spawn spot_controller" respawn="false" output="screen"/>
-
-  <!-- Carregar outros controladores, se necessário -->
-  <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" 
-        respawn="false" output="screen" args="load joint_group_position_controller" />
-
+  <node name="controller_spawner" pkg="controller_manager" type="controller_manager"
+        args="spawn spot_arm_controller spot_gripper_controller"
+        respawn="false" output="screen"/>
+        
 </launch>

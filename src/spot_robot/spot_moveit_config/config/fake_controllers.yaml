@@ -1,0 +1,25 @@
+controller_list:
+  - name: fake_spot_arm_controller
+    joints:
+      - arm0_sh0
+      - arm0_sh1
+      - arm0_el0
+      - arm0_el1
+      - arm0_wr0
+      - arm0_wr1
+
+
+  - name: fake_spot_leg_controller
+    joints:
+      - fl_hx
+      - fl_hy
+      - fl_kn
+      - fr_hx
+      - fr_hy
+      - fr_kn
+      - hl_hx
+      - hl_hy
+      - hl_kn
+      - hr_hx
+      - hr_hy
+      - hr_kn

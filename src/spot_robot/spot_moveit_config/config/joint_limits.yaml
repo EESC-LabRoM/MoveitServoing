@@ -8,37 +8,37 @@ default_acceleration_scaling_factor: 0.1
 # Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
 # Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
 joint_limits:
-  arm0.el0:
+  arm0_el0:
     has_velocity_limits: true
     max_velocity: 1.57   # Certifique-se de usar ponto flutuante
     has_acceleration_limits: true
     max_acceleration: 3.14 
-  arm0.el1:
+  arm0_el1:
     has_velocity_limits: true
     max_velocity: 1.57   # Certifique-se de usar ponto flutuante
     has_acceleration_limits: true
     max_acceleration: 3.14 
-  arm0.f1x:
+  arm0_f1x:
     has_velocity_limits: true
     max_velocity: 1.57   # Certifique-se de usar ponto flutuante
     has_acceleration_limits: true
     max_acceleration: 3.14 
-  arm0.sh0:
+  arm0_sh0:
     has_velocity_limits: true
     max_velocity: 1.57   # Certifique-se de usar ponto flutuante
     has_acceleration_limits: true
     max_acceleration: 3.14 
-  arm0.sh1:
+  arm0_sh1:
     has_velocity_limits: true
     max_velocity: 1.57   # Certifique-se de usar ponto flutuante
     has_acceleration_limits: true
     max_acceleration: 3.14 
-  arm0.wr0:
+  arm0_wr0:
     has_velocity_limits: true
     max_velocity: 1.57   # Certifique-se de usar ponto flutuante
     has_acceleration_limits: true
     max_acceleration: 3.14 
-  arm0.wr1:
+  arm0_wr1:
     has_velocity_limits: true
     max_velocity: 2.10   # Certifique-se de usar ponto flutuante
     has_acceleration_limits: true

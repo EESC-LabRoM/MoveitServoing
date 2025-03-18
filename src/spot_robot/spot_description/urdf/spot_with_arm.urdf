@@ -6,7 +6,6 @@ is subject to the terms and conditions of the Boston Dynamics Software
 Development Kit License (20191101-BDSDK-SL).
 -->
 <robot name="spot">
-  <static>true</static>  <!-- Define o Spot como um modelo fixo -->
 
   <!-- Robot Base Link -->
   <link name="base">
@@ -30,7 +29,7 @@ Development Kit License (20191101-BDSDK-SL).
   </link>
 
   <!-- Hip Links -->
-  <link name="fl.hip">
+  <link name="fl_hip">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/fl_hip_0_geom_visual_mesh.stl"/>
@@ -48,7 +47,7 @@ Development Kit License (20191101-BDSDK-SL).
   </collision>
   </link>
 
-  <link name="fr.hip">
+  <link name="fr_hip">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/fr_hip_0_geom_visual_mesh.stl"/>
@@ -66,7 +65,7 @@ Development Kit License (20191101-BDSDK-SL).
   </collision>
   </link>
 
-  <link name="hl.hip">
+  <link name="hl_hip">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/hl_hip_0_geom_visual_mesh.stl"/>
@@ -84,7 +83,7 @@ Development Kit License (20191101-BDSDK-SL).
   </collision>
   </link>
 
-  <link name="hr.hip">
+  <link name="hr_hip">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/hr_hip_0_geom_visual_mesh.stl"/>
@@ -103,7 +102,7 @@ Development Kit License (20191101-BDSDK-SL).
   </link>
 
   <!-- Upper Leg Links -->
-  <link name="fl.uleg">
+  <link name="fl_uleg">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/l_uleg_0_geom_visual_mesh.stl"/>
@@ -122,7 +121,7 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
   </link>
 
-  <link name="fr.uleg">
+  <link name="fr_uleg">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/r_uleg_0_geom_visual_mesh.stl"/>
@@ -141,7 +140,7 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
   </link>
 
-  <link name="hl.uleg">
+  <link name="hl_uleg">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/l_uleg_0_geom_visual_mesh.stl"/>
@@ -160,7 +159,7 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
   </link>
 
-  <link name="hr.uleg">
+  <link name="hr_uleg">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/r_uleg_0_geom_visual_mesh.stl"/>
@@ -180,7 +179,7 @@ Development Kit License (20191101-BDSDK-SL).
   </link>
 
   <!--Lower Leg Links -->
-  <link name="fl.lleg">
+  <link name="fl_lleg">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/lleg_0_geom_visual_mesh.stl"/>
@@ -205,7 +204,7 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
   </link>
 
-  <link name="fr.lleg">
+  <link name="fr_lleg">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/lleg_0_geom_visual_mesh.stl"/>
@@ -230,7 +229,7 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
   </link>
 
-  <link name="hl.lleg">
+  <link name="hl_lleg">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/lleg_0_geom_visual_mesh.stl"/>
@@ -255,7 +254,7 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
   </link>
 
-  <link name="hr.lleg">
+  <link name="hr_lleg">
     <visual>
       <geometry>
         <mesh filename="package://spot_description/meshes/lleg_0_geom_visual_mesh.stl"/>
@@ -281,36 +280,36 @@ Development Kit License (20191101-BDSDK-SL).
   </link>
 
   <!--Skeleton: HX Joints -->
-  <joint name="fl.hx" type="revolute">
+  <joint name="fl_hx" type="revolute">
     <parent link="base"/>
-    <child link="fl.hip"/>
+    <child link="fl_hip"/>
     <origin xyz="0.29785 0.05500 0.00000"/>
     <axis xyz="1 0 0"/>
     <limit effort="45" lower="-0.785398" upper="0.785398" velocity="100"/>
     <dynamics damping="0" friction="0"/>
   </joint>
 
-  <joint name="fr.hx" type="revolute">
+  <joint name="fr_hx" type="revolute">
     <parent link="base"/>
-    <child link="fr.hip"/>
+    <child link="fr_hip"/>
     <origin xyz="0.29785 -0.05500 0.00000"/>
     <axis xyz="1 0 0"/>
     <limit effort="45" lower="-0.785398" upper="0.785398" velocity="100"/>
     <dynamics damping="0" friction="0"/>
   </joint>
 
-  <joint name="hl.hx" type="revolute">
+  <joint name="hl_hx" type="revolute">
     <parent link="base"/>
-    <child link="hl.hip"/>
+    <child link="hl_hip"/>
     <origin xyz="-0.29785 0.05500 0.00000"/>
     <axis xyz="1 0 0"/>
     <limit effort="45" lower="-0.785398" upper="0.785398" velocity="100"/>
     <dynamics damping="0" friction="0"/>
   </joint>
 
-  <joint name="hr.hx" type="revolute">
+  <joint name="hr_hx" type="revolute">
     <parent link="base"/>
-    <child link="hr.hip"/>
+    <child link="hr_hip"/>
     <origin xyz="-0.29785 -0.05500 0.00000"/>
     <axis xyz="1 0 0"/>
     <limit effort="45" lower="-0.785398" upper="0.785398" velocity="100"/>
@@ -318,36 +317,36 @@ Development Kit License (20191101-BDSDK-SL).
   </joint>
 
   <!--Skeleton: HY Joints -->
-  <joint name="fl.hy" type="revolute">
-    <parent link="fl.hip"/>
-    <child link="fl.uleg"/>
+  <joint name="fl_hy" type="revolute">
+    <parent link="fl_hip"/>
+    <child link="fl_uleg"/>
     <origin xyz="0.0 0.110945 0.0"/>
     <axis xyz="0 1 0"/>
     <limit effort="45" lower="-0.898845" upper="2.295108" velocity="100"/>
     <dynamics damping="0" friction="0"/>
   </joint>
 
-  <joint name="fr.hy" type="revolute">
-    <parent link="fr.hip"/>
-    <child link="fr.uleg"/>
+  <joint name="fr_hy" type="revolute">
+    <parent link="fr_hip"/>
+    <child link="fr_uleg"/>
     <origin xyz="0.0 -0.110945 0.0"/>
     <axis xyz="0 1 0"/>
     <limit effort="45" lower="-0.898845" upper="2.295108" velocity="100"/>
     <dynamics damping="0" friction="0"/>
   </joint>
 
-  <joint name="hl.hy" type="revolute">
-    <parent link="hl.hip"/>
-    <child link="hl.uleg"/>
+  <joint name="hl_hy" type="revolute">
+    <parent link="hl_hip"/>
+    <child link="hl_uleg"/>
     <origin xyz="0.0 0.110945 0.0"/>
     <axis xyz="0 1 0"/>
     <limit effort="45" lower="-0.898845" upper="2.295108" velocity="100"/>
     <dynamics damping="0" friction="0"/>
   </joint>
 
-  <joint name="hr.hy" type="revolute">
-    <parent link="hr.hip"/>
-    <child link="hr.uleg"/>
+  <joint name="hr_hy" type="revolute">
+    <parent link="hr_hip"/>
+    <child link="hr_uleg"/>
     <origin xyz="0.0 -0.110945 0.0"/>
     <axis xyz="0 1 0"/>
     <limit effort="45" lower="-0.898845" upper="2.295108" velocity="100"/>
@@ -355,36 +354,36 @@ Development Kit License (20191101-BDSDK-SL).
   </joint>
 
   <!--Skeleton: KN Joints -->
-  <joint name="fl.kn" type="revolute">
-    <parent link="fl.uleg"/>
-    <child link="fl.lleg"/>
+  <joint name="fl_kn" type="revolute">
+    <parent link="fl_uleg"/>
+    <child link="fl_lleg"/>
     <origin xyz="0.025 0.000 -0.3205"/>
     <axis xyz="0 1 0"/>
     <limit effort="115" lower="-2.7929" upper="-0.2471" velocity="100"/>
     <dynamics damping="0" friction="0"/>
   </joint>
 
-  <joint name="fr.kn" type="revolute">
-    <parent link="fr.uleg"/>
-    <child link="fr.lleg"/>
+  <joint name="fr_kn" type="revolute">
+    <parent link="fr_uleg"/>
+    <child link="fr_lleg"/>
     <origin xyz="0.025 0.000 -0.3205"/>
     <axis xyz="0 1 0"/>
     <limit effort="115" lower="-2.7929" upper="-0.2471" velocity="100"/>
     <dynamics damping="0" friction="0"/>
   </joint>
 
-  <joint name="hl.kn" type="revolute">
-    <parent link="hl.uleg"/>
-    <child link="hl.lleg"/>
+  <joint name="hl_kn" type="revolute">
+    <parent link="hl_uleg"/>
+    <child link="hl_lleg"/>
     <origin xyz="0.025 0.000 -0.3205"/>
     <axis xyz="0 1 0"/>
     <limit effort="115" lower="-2.7929" upper="-0.2471" velocity="100"/>
     <dynamics damping="0" friction="0"/>
   </joint>
 
-  <joint name="hr.kn" type="revolute">
-    <parent link="hr.uleg"/>
-    <child link="hr.lleg"/>
+  <joint name="hr_kn" type="revolute">
+    <parent link="hr_uleg"/>
+    <child link="hr_lleg"/>
     <origin xyz="0.025 0.000 -0.3205"/>
     <axis xyz="0 1 0"/>
     <limit effort="115" lower="-2.7929" upper="-0.2471" velocity="100"/>
@@ -392,10 +391,10 @@ Development Kit License (20191101-BDSDK-SL).
   </joint>
 
   <!-- Arm Links -->
-  <link name="arm0.link_sh0">
+  <link name="arm0_link_sh0">
     <visual>
       <geometry>
-        <mesh filename="package://spot_description/meshes/arm0.link_sh0.stl"/>
+        <mesh filename="package://spot_description/meshes/arm0_link_sh0.stl"/>
       </geometry>
     </visual>
     <inertial>
@@ -405,20 +404,20 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
     <collision>
     <geometry>
-      <mesh filename="package://spot_description/meshes/arm0.link_sh0.stl" />
+      <mesh filename="package://spot_description/meshes/arm0_link_sh0.stl" />
     </geometry>
   </collision>
   </link>
 
-  <link name="arm0.link_sh1">
+  <link name="arm0_link_sh1">
     <visual>
       <geometry>
-        <mesh filename="package://spot_description/meshes/arm0.link_sh1.stl"/>
+        <mesh filename="package://spot_description/meshes/arm0_link_sh1.stl"/>
       </geometry>
     </visual>
     <visual>
       <geometry>
-        <mesh filename="package://spot_description/meshes/arm0.link_hr0.stl"/>
+        <mesh filename="package://spot_description/meshes/arm0_link_hr0.stl"/>
       </geometry>
     </visual>
     <inertial>
@@ -428,20 +427,20 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
     <collision>
     <geometry>
-      <mesh filename="package://spot_description/meshes/arm0.link_sh1.stl" />
+      <mesh filename="package://spot_description/meshes/arm0_link_sh1.stl" />
     </geometry>
   </collision>
   <collision>
       <geometry>
-        <mesh filename="package://spot_description/meshes/arm0.link_hr0.stl"/>
+        <mesh filename="package://spot_description/meshes/arm0_link_hr0.stl"/>
       </geometry>
     </collision>
   </link>
   
-  <link name="arm0.link_el0">
+  <link name="arm0_link_el0">
     <visual>
       <geometry>
-        <mesh filename="package://spot_description/meshes/arm0.link_el0.stl"/>
+        <mesh filename="package://spot_description/meshes/arm0_link_el0.stl"/>
       </geometry>
     </visual>
     <inertial>
@@ -451,15 +450,15 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
     <collision>
     <geometry>
-      <mesh filename="package://spot_description/meshes/arm0.link_el0.stl" />
+      <mesh filename="package://spot_description/meshes/arm0_link_el0.stl" />
     </geometry>
   </collision>
   </link>
 
-  <link name="arm0.link_el1">
+  <link name="arm0_link_el1">
     <visual>
       <geometry>
-        <mesh filename="package://spot_description/meshes/arm0.link_el1.stl"/>
+        <mesh filename="package://spot_description/meshes/arm0_link_el1.stl"/>
       </geometry>
     </visual>
     <inertial>
@@ -469,15 +468,15 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
     <collision>
     <geometry>
-      <mesh filename="package://spot_description/meshes/arm0.link_el1.stl" />
+      <mesh filename="package://spot_description/meshes/arm0_link_el1.stl" />
     </geometry>
   </collision>
   </link>
 
-  <link name="arm0.link_wr0">
+  <link name="arm0_link_wr0">
     <visual>
       <geometry>
-        <mesh filename="package://spot_description/meshes/arm0.link_wr0.stl"/>
+        <mesh filename="package://spot_description/meshes/arm0_link_wr0.stl"/>
       </geometry>
     </visual>
     <inertial>
@@ -487,15 +486,15 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
     <collision>
     <geometry>
-      <mesh filename="package://spot_description/meshes/arm0.link_wr0.stl" />
+      <mesh filename="package://spot_description/meshes/arm0_link_wr0.stl" />
     </geometry>
   </collision>
   </link>
 
-  <link name="arm0.link_wr1">
+  <link name="arm0_link_wr1">
     <visual>
       <geometry>
-        <mesh filename="package://spot_description/meshes/arm0.link_wr1.stl"/>
+        <mesh filename="package://spot_description/meshes/arm0_link_wr1.stl"/>
       </geometry>
     </visual>
     <inertial>
@@ -505,15 +504,15 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
     <collision>
     <geometry>
-      <mesh filename="package://spot_description/meshes/arm0.link_wr1.stl" />
+      <mesh filename="package://spot_description/meshes/arm0_link_wr1.stl" />
     </geometry>
   </collision>
   </link>
 
-  <link name="arm0.link_fngr">
+  <link name="arm0_link_fngr">
     <visual>
       <geometry>
-        <mesh filename="package://spot_description/meshes/arm0.link_fngr.stl"/>
+        <mesh filename="package://spot_description/meshes/arm0_link_fngr.stl"/>
       </geometry>
     </visual>
     <inertial>
@@ -523,70 +522,155 @@ Development Kit License (20191101-BDSDK-SL).
     </inertial>
     <collision>
     <geometry>
-      <mesh filename="package://spot_description/meshes/arm0.link_fngr.stl" />
+      <mesh filename="package://spot_description/meshes/arm0_link_fngr.stl" />
     </geometry>
   </collision>
   </link>
 
   <!-- Arm Joints -->
-  <joint name="arm0.sh0" type="revolute">
+  <joint name="arm0_sh0" type="revolute">
     <parent link="base"/>
-    <child link="arm0.link_sh0"/>
+    <child link="arm0_link_sh0"/>
     <origin xyz="0.292 0.0 0.188"/>
     <axis xyz="0 0 1"/>
     <limit effort="90.9" lower="-2.61799" upper="3.14159" velocity="999"/>
     <dynamics damping="0" friction="10"/>
   </joint>
 
-  <joint name="arm0.sh1" type="revolute">
-    <parent link="arm0.link_sh0"/>
-    <child link="arm0.link_sh1"/>
+  <joint name="arm0_sh1" type="revolute">
+    <parent link="arm0_link_sh0"/>
+    <child link="arm0_link_sh1"/>
     <origin xyz="0.0 0.0 0.0"/>
     <axis xyz="0 1 0"/>
     <limit effort="181.8" lower="-3.14159" upper="0.523599" velocity="999"/>
     <dynamics damping="0" friction="10"/>
   </joint>
 
-  <joint name="arm0.el0" type="revolute">
-    <parent link="arm0.link_sh1"/>
-    <child link="arm0.link_el0"/>
+  <joint name="arm0_el0" type="revolute">
+    <parent link="arm0_link_sh1"/>
+    <child link="arm0_link_el0"/>
     <origin xyz="0.3385 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="90.9" lower="0" upper="3.14159" velocity="999"/>
     <dynamics damping="0" friction="10"/>
   </joint>
 
-  <joint name="arm0.el1" type="revolute">
-    <parent link="arm0.link_el0"/>
-    <child link="arm0.link_el1"/>
+  <joint name="arm0_el1" type="revolute">
+    <parent link="arm0_link_el0"/>
+    <child link="arm0_link_el1"/>
     <origin xyz="0.40330 0.0 0.0750"/>
     <axis xyz="1 0 0"/>
     <limit effort="30.3" lower="-2.792530" upper="2.792530" velocity="999"/>
     <dynamics damping="0" friction="10"/>
   </joint>
 
-  <joint name="arm0.wr0" type="revolute">
-    <parent link="arm0.link_el1"/>
-    <child link="arm0.link_wr0"/>
+  <joint name="arm0_wr0" type="revolute">
+    <parent link="arm0_link_el1"/>
+    <child link="arm0_link_wr0"/>
     <axis xyz="0 1 0"/>
     <limit effort="30.3" lower="-1.8326" upper="1.8326" velocity="999"/>
     <dynamics damping="0" friction="10"/>
   </joint>
 
-  <joint name="arm0.wr1" type="revolute">
-    <parent link="arm0.link_wr0"/>
-    <child link="arm0.link_wr1"/>
+  <joint name="arm0_wr1" type="revolute">
+    <parent link="arm0_link_wr0"/>
+    <child link="arm0_link_wr1"/>
     <axis xyz="1 0 0"/>
     <limit effort="30.3" lower="-2.87989" upper="2.87979" velocity="999"/>
     <dynamics damping="0" friction="10"/>
   </joint>
 
-  <joint name="arm0.f1x" type="revolute">
-    <parent link="arm0.link_wr1"/>
-    <child link="arm0.link_fngr"/>
+  <joint name="arm0_f1x" type="revolute">
+    <parent link="arm0_link_wr1"/>
+    <child link="arm0_link_fngr"/>
     <origin xyz="0.11745 0 0.014820"/>
     <axis xyz="0 1 0"/>
     <limit effort="15.32" lower="-1.5708" upper="0.0" velocity="999"/>
     <dynamics damping="0" friction="10"/>
   </joint>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  
+  <transmission name="arm0_sh0_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm0_sh0">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm0_sh0_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="arm0_sh1_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm0_sh1">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm0_sh1_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="arm0_el0_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm0_el0">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm0_el0_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="arm0_el1_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm0_el1">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm0_el1_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="arm0_wr0_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm0_wr0">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm0_wr0_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="arm0_wr1_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm0_wr1">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm0_wr1_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="arm0_f1x_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm0_f1x">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm0_f1x_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
 </robot>
