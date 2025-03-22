@@ -155,7 +155,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_plugin.so.1.1.16")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_plugin.so.1.1.16"
-         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_simple_controller_manager/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/opt/ros/noetic/lib:"
+         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_simple_controller_manager/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/opt/ros/noetic/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_plugin.so.1.1.16")
@@ -175,7 +175,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_plugin.so")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_plugin.so"
-         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_simple_controller_manager/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/opt/ros/noetic/lib:"
+         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_simple_controller_manager/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/opt/ros/noetic/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_plugin.so")
@@ -195,7 +195,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_trajectory_plugin.so.1.1.16")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_trajectory_plugin.so.1.1.16"
-         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_simple_controller_manager/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/opt/ros/noetic/lib:"
+         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_simple_controller_manager/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/opt/ros/noetic/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_trajectory_plugin.so.1.1.16")
@@ -215,7 +215,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_trajectory_plugin.so")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_trajectory_plugin.so"
-         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_simple_controller_manager/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/opt/ros/noetic/lib:"
+         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_simple_controller_manager/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/opt/ros/noetic/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_ros_control_interface_trajectory_plugin.so")

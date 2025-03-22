@@ -1,25 +1,11 @@
 moveit_setup_assistant_config:
-  urdf:
+  URDF:
     package: spot_description
-    relative_path: urdf/spot_with_arm.urdf
-  srdf:
-    relative_path: config/spot.srdf
-  package_settings:
+    relative_path: urdf/standalone_arm.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/standalone_arm.srdf
+  CONFIG:
     author_name: MHC
-    author_email: carvalho.matheush@usp.br
-    generated_timestamp: 1737964424
-  control_xacro:
-    command:
-      - position
-    state:
-      - position
-      - velocity
-  modified_urdf:
-    xacros:
-      - control_xacro
-  control_xacro:
-    command:
-      - position
-    state:
-      - position
-      - velocity
+    author_email: carvalho.matheush@gmail.com
+    generated_timestamp: 1742613495

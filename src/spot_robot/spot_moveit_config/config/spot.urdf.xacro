@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="spot">
-    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
-
-    <!-- Importar a URDF do Spot -->
-    <xacro:include filename="$(find spot_description)/urdf/spot_with_arm.urdf" />
-
-    <!-- Removemos o controle do ROS 2 -->
-</robot>

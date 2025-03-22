@@ -155,7 +155,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_visual_tools.so.3.6.1")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_visual_tools.so.3.6.1"
-         OLD_RPATH "/root/ws_moveit/devel/.private/rviz_visual_tools/lib:/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/opt/ros/noetic/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:"
+         OLD_RPATH "/root/ws_moveit/devel/.private/rviz_visual_tools/lib:/opt/ros/noetic/lib:/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_visual_tools.so.3.6.1")
@@ -175,7 +175,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_visual_tools.so")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_visual_tools.so"
-         OLD_RPATH "/root/ws_moveit/devel/.private/rviz_visual_tools/lib:/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/opt/ros/noetic/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:"
+         OLD_RPATH "/root/ws_moveit/devel/.private/rviz_visual_tools/lib:/opt/ros/noetic/lib:/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_visual_tools.so")
@@ -207,7 +207,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/moveit_visual_tools/moveit_visual_tools_demo")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/moveit_visual_tools/moveit_visual_tools_demo"
-         OLD_RPATH "/root/ws_moveit/devel/.private/rviz_visual_tools/lib:/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/opt/ros/noetic/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/moveit_visual_tools/lib:"
+         OLD_RPATH "/root/ws_moveit/devel/.private/rviz_visual_tools/lib:/opt/ros/noetic/lib:/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/geometric_shapes/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/root/ws_moveit/devel/.private/moveit_visual_tools/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/moveit_visual_tools/moveit_visual_tools_demo")

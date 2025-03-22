@@ -8,8 +8,6 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/root/ws_moveit/devel/.private/chomp_motion_planner:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/root/ws_moveit/devel/.private/chomp_motion_planner/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="/root/ws_moveit/devel/.private/chomp_motion_planner/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/root/ws_moveit/build/chomp_motion_planner'
 export ROSLISP_PACKAGE_DIRECTORIES="/root/ws_moveit/devel/.private/chomp_motion_planner/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/root/ws_moveit/src/moveit/moveit_planners/chomp/chomp_motion_planner:$ROS_PACKAGE_PATH"

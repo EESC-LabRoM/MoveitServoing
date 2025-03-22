@@ -53,7 +53,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_semantic_world.so.1.1.16")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_semantic_world.so.1.1.16"
-         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:/opt/ros/noetic/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:"
+         OLD_RPATH "/opt/ros/noetic/lib:/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/srdfdom/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_semantic_world.so.1.1.16")
@@ -73,7 +73,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_semantic_world.so")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_semantic_world.so"
-         OLD_RPATH "/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/root/ws_moveit/devel/.private/srdfdom/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:/opt/ros/noetic/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:"
+         OLD_RPATH "/opt/ros/noetic/lib:/root/ws_moveit/devel/.private/moveit_ros_planning/lib:/root/ws_moveit/devel/.private/moveit_ros_occupancy_map_monitor/lib:/root/ws_moveit/devel/.private/moveit_core/lib:/opt/ros/noetic/lib/x86_64-linux-gnu:/root/ws_moveit/devel/.private/srdfdom/lib:/root/ws_moveit/devel/.private/geometric_shapes/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libmoveit_semantic_world.so")

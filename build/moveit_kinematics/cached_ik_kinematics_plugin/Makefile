@@ -56,6 +56,18 @@ CMAKE_BINARY_DIR = /root/ws_moveit/build/moveit_kinematics
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -112,18 +124,6 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
-
 # Special rule for the target test
 test:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
@@ -168,21 +168,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/rule
-
-# Convenience name for target.
-moveit_cached_ur5_kinematics_plugin: cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/rule
-
-.PHONY : moveit_cached_ur5_kinematics_plugin
-
-# fast build rule for target.
-moveit_cached_ur5_kinematics_plugin/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/build
-.PHONY : moveit_cached_ur5_kinematics_plugin/fast
-
-# Convenience name for target.
 cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ik_kinematics_plugin.dir/rule:
 	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ik_kinematics_plugin.dir/rule
 .PHONY : cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ik_kinematics_plugin.dir/rule
@@ -196,216 +181,6 @@ moveit_cached_ik_kinematics_plugin: cached_ik_kinematics_plugin/CMakeFiles/movei
 moveit_cached_ik_kinematics_plugin/fast:
 	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ik_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ik_kinematics_plugin.dir/build
 .PHONY : moveit_cached_ik_kinematics_plugin/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/moveit_ros_planning_gencfg.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/moveit_ros_planning_gencfg.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/moveit_ros_planning_gencfg.dir/rule
-
-# Convenience name for target.
-moveit_ros_planning_gencfg: cached_ik_kinematics_plugin/CMakeFiles/moveit_ros_planning_gencfg.dir/rule
-
-.PHONY : moveit_ros_planning_gencfg
-
-# fast build rule for target.
-moveit_ros_planning_gencfg/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_ros_planning_gencfg.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_ros_planning_gencfg.dir/build
-.PHONY : moveit_ros_planning_gencfg/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_eus: cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_eus
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_eus/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_eus/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/rule
-
-# Convenience name for target.
-moveit_cached_ur10_kinematics_plugin: cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/rule
-
-.PHONY : moveit_cached_ur10_kinematics_plugin
-
-# fast build rule for target.
-moveit_cached_ur10_kinematics_plugin/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/build
-.PHONY : moveit_cached_ur10_kinematics_plugin/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_py: cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_py
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_py/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_py/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_lisp: cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_lisp
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_lisp/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_lisp/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_gencfg: cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule
-
-.PHONY : dynamic_reconfigure_gencfg
-
-# fast build rule for target.
-dynamic_reconfigure_gencfg/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_gencfg.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_gencfg.dir/build
-.PHONY : dynamic_reconfigure_gencfg/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_nodejs: cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_nodejs
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_nodejs/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_nodejs/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-dynamic_reconfigure_generate_messages_cpp: cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/rule
-
-.PHONY : dynamic_reconfigure_generate_messages_cpp
-
-# fast build rule for target.
-dynamic_reconfigure_generate_messages_cpp/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/build
-.PHONY : dynamic_reconfigure_generate_messages_cpp/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_lisp.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_lisp.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_lisp: cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_lisp.dir/rule
-
-.PHONY : tf_generate_messages_lisp
-
-# fast build rule for target.
-tf_generate_messages_lisp/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_lisp.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_lisp.dir/build
-.PHONY : tf_generate_messages_lisp/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_cpp.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_cpp.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_cpp: cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_cpp.dir/rule
-
-.PHONY : tf_generate_messages_cpp
-
-# fast build rule for target.
-tf_generate_messages_cpp/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_cpp.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_cpp.dir/build
-.PHONY : tf_generate_messages_cpp/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/rule
-
-# Convenience name for target.
-moveit_cached_ur3_kinematics_plugin: cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/rule
-
-.PHONY : moveit_cached_ur3_kinematics_plugin
-
-# fast build rule for target.
-moveit_cached_ur3_kinematics_plugin/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/build
-.PHONY : moveit_cached_ur3_kinematics_plugin/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_nodejs.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_nodejs.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_nodejs: cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_nodejs.dir/rule
-
-.PHONY : tf_generate_messages_nodejs
-
-# fast build rule for target.
-tf_generate_messages_nodejs/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_nodejs.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_nodejs.dir/build
-.PHONY : tf_generate_messages_nodejs/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_eus.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_eus.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_eus: cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_eus.dir/rule
-
-.PHONY : tf_generate_messages_eus
-
-# fast build rule for target.
-tf_generate_messages_eus/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_eus.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_eus.dir/build
-.PHONY : tf_generate_messages_eus/fast
-
-# Convenience name for target.
-cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_py.dir/rule:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f CMakeFiles/Makefile2 cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_py.dir/rule
-.PHONY : cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_py.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_py: cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_py.dir/rule
-
-.PHONY : tf_generate_messages_py
-
-# fast build rule for target.
-tf_generate_messages_py/fast:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_py.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/tf_generate_messages_py.dir/build
-.PHONY : tf_generate_messages_py/fast
 
 # Convenience name for target.
 cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ik_kinematics_base.dir/rule:
@@ -449,39 +224,6 @@ src/cached_ik_kinematics_plugin.cpp.s:
 	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ik_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ik_kinematics_plugin.dir/src/cached_ik_kinematics_plugin.cpp.s
 .PHONY : src/cached_ik_kinematics_plugin.cpp.s
 
-src/cached_ur_kinematics_plugin.o: src/cached_ur_kinematics_plugin.cpp.o
-
-.PHONY : src/cached_ur_kinematics_plugin.o
-
-# target to build an object file
-src/cached_ur_kinematics_plugin.cpp.o:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/src/cached_ur_kinematics_plugin.cpp.o
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/src/cached_ur_kinematics_plugin.cpp.o
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/src/cached_ur_kinematics_plugin.cpp.o
-.PHONY : src/cached_ur_kinematics_plugin.cpp.o
-
-src/cached_ur_kinematics_plugin.i: src/cached_ur_kinematics_plugin.cpp.i
-
-.PHONY : src/cached_ur_kinematics_plugin.i
-
-# target to preprocess a source file
-src/cached_ur_kinematics_plugin.cpp.i:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/src/cached_ur_kinematics_plugin.cpp.i
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/src/cached_ur_kinematics_plugin.cpp.i
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/src/cached_ur_kinematics_plugin.cpp.i
-.PHONY : src/cached_ur_kinematics_plugin.cpp.i
-
-src/cached_ur_kinematics_plugin.s: src/cached_ur_kinematics_plugin.cpp.s
-
-.PHONY : src/cached_ur_kinematics_plugin.s
-
-# target to generate assembly for a file
-src/cached_ur_kinematics_plugin.cpp.s:
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur5_kinematics_plugin.dir/src/cached_ur_kinematics_plugin.cpp.s
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur10_kinematics_plugin.dir/src/cached_ur_kinematics_plugin.cpp.s
-	cd /root/ws_moveit/build/moveit_kinematics && $(MAKE) -f cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/build.make cached_ik_kinematics_plugin/CMakeFiles/moveit_cached_ur3_kinematics_plugin.dir/src/cached_ur_kinematics_plugin.cpp.s
-.PHONY : src/cached_ur_kinematics_plugin.cpp.s
-
 src/ik_cache.o: src/ik_cache.cpp.o
 
 .PHONY : src/ik_cache.o
@@ -515,36 +257,18 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... install/strip"
-	@echo "... moveit_cached_ur5_kinematics_plugin"
-	@echo "... moveit_cached_ik_kinematics_plugin"
-	@echo "... moveit_ros_planning_gencfg"
-	@echo "... dynamic_reconfigure_generate_messages_eus"
-	@echo "... moveit_cached_ur10_kinematics_plugin"
-	@echo "... dynamic_reconfigure_generate_messages_py"
 	@echo "... test"
-	@echo "... dynamic_reconfigure_generate_messages_lisp"
-	@echo "... dynamic_reconfigure_gencfg"
-	@echo "... dynamic_reconfigure_generate_messages_nodejs"
-	@echo "... dynamic_reconfigure_generate_messages_cpp"
-	@echo "... tf_generate_messages_lisp"
-	@echo "... tf_generate_messages_cpp"
-	@echo "... moveit_cached_ur3_kinematics_plugin"
-	@echo "... tf_generate_messages_nodejs"
-	@echo "... tf_generate_messages_eus"
-	@echo "... tf_generate_messages_py"
+	@echo "... moveit_cached_ik_kinematics_plugin"
 	@echo "... moveit_cached_ik_kinematics_base"
 	@echo "... src/cached_ik_kinematics_plugin.o"
 	@echo "... src/cached_ik_kinematics_plugin.i"
 	@echo "... src/cached_ik_kinematics_plugin.s"
-	@echo "... src/cached_ur_kinematics_plugin.o"
-	@echo "... src/cached_ur_kinematics_plugin.i"
-	@echo "... src/cached_ur_kinematics_plugin.s"
 	@echo "... src/ik_cache.o"
 	@echo "... src/ik_cache.i"
 	@echo "... src/ik_cache.s"

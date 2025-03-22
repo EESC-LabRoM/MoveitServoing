@@ -8,8 +8,6 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/root/ws_moveit/devel/.private/ur_bringup:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/root/ws_moveit/devel/.private/ur_bringup/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="/root/ws_moveit/devel/.private/ur_bringup/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/root/ws_moveit/build/ur_bringup'
 export ROSLISP_PACKAGE_DIRECTORIES="/root/ws_moveit/devel/.private/ur_bringup/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/root/ws_moveit/src/universal_robot/ur_bringup:$ROS_PACKAGE_PATH"

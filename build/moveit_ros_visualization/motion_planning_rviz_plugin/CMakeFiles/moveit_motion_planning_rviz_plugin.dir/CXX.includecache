@@ -2856,6 +2856,8 @@ vector
 time.h
 -
 
+/root/ws_moveit/build/moveit_ros_visualization/motion_planning_rviz_plugin/moveit_motion_planning_rviz_plugin_autogen/mocs_compilation.cpp
+
 /root/ws_moveit/devel/.private/moveit_core/include/moveit/moveit_kinematics_base_export.h
 
 /root/ws_moveit/devel/.private/moveit_core/include/moveit/moveit_planning_scene_export.h

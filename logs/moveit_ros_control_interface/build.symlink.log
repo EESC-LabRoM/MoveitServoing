@@ -2,6 +2,6 @@ Linked: (/root/ws_moveit/devel/.private/moveit_ros_control_interface/share/movei
 Linked: (/root/ws_moveit/devel/.private/moveit_ros_control_interface/share/moveit_ros_control_interface/cmake/moveit_ros_control_interfaceConfig.cmake, /root/ws_moveit/devel/share/moveit_ros_control_interface/cmake/moveit_ros_control_interfaceConfig.cmake)
 Linked: (/root/ws_moveit/devel/.private/moveit_ros_control_interface/lib/libmoveit_ros_control_interface_plugin.so.1.1.16, /root/ws_moveit/devel/lib/libmoveit_ros_control_interface_plugin.so.1.1.16)
 Linked: (/root/ws_moveit/devel/.private/moveit_ros_control_interface/lib/libmoveit_ros_control_interface_plugin.so, /root/ws_moveit/devel/lib/libmoveit_ros_control_interface_plugin.so)
-Linked: (/root/ws_moveit/devel/.private/moveit_ros_control_interface/lib/libmoveit_ros_control_interface_trajectory_plugin.so, /root/ws_moveit/devel/lib/libmoveit_ros_control_interface_trajectory_plugin.so)
 Linked: (/root/ws_moveit/devel/.private/moveit_ros_control_interface/lib/libmoveit_ros_control_interface_trajectory_plugin.so.1.1.16, /root/ws_moveit/devel/lib/libmoveit_ros_control_interface_trajectory_plugin.so.1.1.16)
+Linked: (/root/ws_moveit/devel/.private/moveit_ros_control_interface/lib/libmoveit_ros_control_interface_trajectory_plugin.so, /root/ws_moveit/devel/lib/libmoveit_ros_control_interface_trajectory_plugin.so)
 Linked: (/root/ws_moveit/devel/.private/moveit_ros_control_interface/lib/pkgconfig/moveit_ros_control_interface.pc, /root/ws_moveit/devel/lib/pkgconfig/moveit_ros_control_interface.pc)

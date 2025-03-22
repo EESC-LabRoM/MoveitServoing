@@ -1228,6 +1228,8 @@ vector
 time.h
 -
 
+/root/ws_moveit/build/moveit_setup_assistant/moveit_setup_assistant_updater_autogen/mocs_compilation.cpp
+
 /root/ws_moveit/devel/.private/moveit_core/include/moveit/moveit_kinematics_base_export.h
 
 /root/ws_moveit/devel/.private/moveit_core/include/moveit/moveit_planning_scene_export.h
