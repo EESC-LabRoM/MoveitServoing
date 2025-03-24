@@ -92,6 +92,7 @@ roslaunch ur5_moveit_config moveit_rviz.launch config:=true
 
 9. Switch to a compatible type of ros-control controller. It should be a JointGroupVelocityController or a JointGroupPositionController, not a trajectory controller like MoveIt usually requires.
 ```
+rosservice call /controller_manager/switch_controller "start_controllers: ['joint_group_position_controller']
 stop_controllers: ['arm_controller']
 strictness: 0
 start_asap: false
