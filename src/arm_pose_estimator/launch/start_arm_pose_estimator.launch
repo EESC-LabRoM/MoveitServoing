@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Launch the RealSense camera with better configuration -->
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="align_depth" value="true"/>
+    <arg name="depth_width" value="640"/>
+    <arg name="depth_height" value="480"/>
+    <arg name="depth_fps" value="30"/>
+    <arg name="color_width" value="640"/>
+    <arg name="color_height" value="480"/>
+    <arg name="color_fps" value="30"/>
+    <arg name="enable_color" value="true"/>
+    <arg name="enable_depth" value="true"/>
+  </include>
+
+  <!-- Launch the arm pose estimator node -->
+  <node name="arm_pose_estimator" pkg="arm_pose_estimator" type="arm_pose_estimator.py" output="screen">
+    <!-- Add any specific parameters here if needed, for example: -->
+    <!-- <param name="input_color_topic" value="/camera/color/image_raw" /> -->
+    <!-- <param name="input_depth_topic" value="/camera/aligned_depth_to_color/image_raw" /> -->
+  </node>
+
+  <!-- Optional: Launch RViz with a configuration for visualization -->
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find arm_pose_estimator)/rviz/arm_pose.rviz" /> -->
+</launch>
