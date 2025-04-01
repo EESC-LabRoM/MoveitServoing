@@ -306,21 +306,29 @@ class ArmPoseEstimator:
             landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
 
     def publish_tf(self, point_marker, header):
+        scale_factor = 984.0 / 650.0  # Scale factor to match dimensions
+
+        # Publish wrist transform relative to the world frame
         t = geometry_msgs.msg.TransformStamped()
         t.header.stamp = header.stamp
         t.header.frame_id = "world"
         t.child_frame_id = "wrist"
-        t.transform.translation.x = float(point_marker[0, 0])
-        t.transform.translation.y = float(point_marker[1, 0])
-        t.transform.translation.z = float(point_marker[2, 0])
-        # Publish an identity quaternion since orientation is not estimated here.
+
+        # Remap axes, apply scaling, and add offsets
+        t.transform.translation.x = float(point_marker[2, 0] * scale_factor) + 0.292  # Depth → X (forward) + offset
+        t.transform.translation.y = float(-point_marker[0, 0] * scale_factor)         # Horizontal → Y (left)
+        t.transform.translation.z = float(point_marker[1, 0] * scale_factor) + 0.188  # Vertical → Z (up) + offset
+
+        # Identity quaternion for orientation
         t.transform.rotation.x = 0.0
         t.transform.rotation.y = 0.0
         t.transform.rotation.z = 0.0
         t.transform.rotation.w = 1.0
         self.tf_broadcaster.sendTransform(t)
-        rospy.loginfo_throttle(0.5, "Published wrist transform: [%.3f, %.3f, %.3f]" %
-                      (point_marker[0, 0], point_marker[1, 0], point_marker[2, 0]))
+        rospy.loginfo_throttle(0.5, "Published wrist transform: [%.3f, %.3f, %.3f] (remapped with offsets)" %
+                       (point_marker[2, 0] * scale_factor + 0.292, 
+                        -point_marker[0, 0] * scale_factor, 
+                        point_marker[1, 0] * scale_factor + 0.188))
 
 def main():
     try:
