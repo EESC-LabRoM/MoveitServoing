@@ -21,22 +21,28 @@ RUN apt-get update && apt-get install -y \
     libglfw3-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
+    cmake \
+    python3-catkin-tools \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Add Intel RealSense repository
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE && \
-    add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo focal main" -y
-
-# Install RealSense libraries
-RUN apt-get update && apt-get install -y \
-    librealsense2-dkms \
-    librealsense2-utils \
-    librealsense2-dev \
-    librealsense2-dbg \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Build and install librealsense from source
+RUN cd /tmp && \
+    git clone https://github.com/IntelRealSense/librealsense.git && \
+    cd librealsense && \
+    mkdir build && cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release \
+             -DBUILD_EXAMPLES=false \
+             -DBUILD_GRAPHICAL_EXAMPLES=false \
+             -DBUILD_WITH_CUDA=false \
+             -DBUILD_PYTHON_BINDINGS=false \
+             -DBUILD_WITH_TM2=false \
+             -DBUILD_UNIT_TESTS=false \
+             -DBUILD_WITH_OPENMP=false && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig && \
+    cd / && rm -rf /tmp/librealsense
 
 # Install ROS packages in smaller groups with cleanup after each step
 # Group 1: Core TF2 packages
@@ -93,7 +99,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Group 6: Remaining packages and build tools
+# Group 6: Remaining packages
 RUN apt-get update && apt-get install -y \
     ros-noetic-urdf-tutorial \
     ros-noetic-xacro \
@@ -102,32 +108,35 @@ RUN apt-get update && apt-get install -y \
     ros-noetic-robot-state-publisher \
     ros-noetic-joint-state-publisher \
     ros-noetic-cv-bridge \
-    python3-catkin-tools \
-    libxcb-xinerama0 \
-    qt5-default \
-    libqt5x11extras5 \
-    libgl1-mesa-glx \
+    python3-tk \
+    python3-matplotlib \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-RUN apt-get update && apt-get install -y \
-    python3-tk \
-    python3-matplotlib \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip3 install --no-cache-dir \
+RUN pip3 install --no-cache-dir \
     mediapipe \
     transforms3d \
     numpy \
     opencv-contrib-python \
     future
 
-# Set up workspace directory
-RUN mkdir -p /root/ws_moveit/src
+# Install Boston Dynamics Spot SDK
+RUN python3 -m pip install --no-cache-dir --upgrade \
+    bosdyn-client \
+    bosdyn-mission \
+    bosdyn-choreography-client \
+    bosdyn-orbit
+
+# Make sure we have the right permissions for the Spot SDK
+RUN echo "# Spot SDK environment setup" >> ~/.bashrc && \
+    echo "export PYTHONPATH=\$PYTHONPATH:/usr/local/lib/python3.8/dist-packages" >> ~/.bashrc
 
 # Run rosdep update once during image build
 RUN rosdep update
+
+# Set up workspace directory
+RUN mkdir -p /root/ws_moveit/src
 
 # Clone RealSense-ROS package
 RUN cd /root/ws_moveit/src && \
@@ -144,28 +153,37 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Build the workspace with RealSense packages using catkin build
+# Initialize and build the workspace with catkin build
 RUN /bin/bash -c "source /opt/ros/noetic/setup.bash && \
     catkin init && \
-    catkin config --extend /opt/ros/noetic --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_ENABLE_TESTING=False && \
-    catkin build && \
-    catkin build --catkin-make-args install"
+    catkin config --extend /opt/ros/noetic && \
+    catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release && \
+    catkin config --install && \
+    catkin build"
 
 # Configure ROS environment
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc && \
-    echo "source /root/ws_moveit/devel/setup.bash" >> ~/.bashrc
+    echo 'if [ -f "/root/ws_moveit/install/setup.bash" ]; then' >> ~/.bashrc && \
+    echo '  source /root/ws_moveit/install/setup.bash' >> ~/.bashrc && \
+    echo 'else' >> ~/.bashrc && \
+    echo '  source /root/ws_moveit/devel/setup.bash' >> ~/.bashrc && \
+    echo 'fi' >> ~/.bashrc
 
 # Create a file to track what has already been processed
 RUN touch /root/.workspace_setup_complete
 
-# Improved entrypoint that doesn't install unless needed and handles DISPLAY portability
+# Improved entrypoint that doesn't install unless needed
 RUN echo '#!/bin/bash \n\
 # Get display from environment or default to :0 \n\
 export DISPLAY=${DISPLAY:-:0} \n\
 \n\
 # Source environment \n\
 source /opt/ros/noetic/setup.bash \n\
-source /root/ws_moveit/devel/setup.bash \n\
+if [ -f "/root/ws_moveit/install/setup.bash" ]; then \n\
+  source /root/ws_moveit/install/setup.bash \n\
+else \n\
+  source /root/ws_moveit/devel/setup.bash \n\
+fi \n\
 \n\
 # Only rebuild if new src files are added and not yet processed \n\
 NEED_REBUILD=0 \n\
@@ -184,8 +202,7 @@ if [ "$NEED_REBUILD" -eq 1 ]; then \n\
   apt-get update \n\
   rosdep install --from-paths src --ignore-src -r -y \n\
   # Build the workspace with catkin build \n\
-  catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_ENABLE_TESTING=False \n\
-  catkin build --catkin-make-args install \n\
+  catkin build \n\
   # Update the timestamp of the completion file \n\
   touch /root/.workspace_setup_complete \n\
 else \n\

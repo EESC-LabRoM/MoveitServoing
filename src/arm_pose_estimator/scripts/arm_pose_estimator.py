@@ -39,7 +39,14 @@ class ArmPoseEstimator:
         # Variables for temporal smoothing and jump filtering of wrist position
         self.filtered_point = None    # last valid wrist position (in marker frame)
         self.alpha = 0.5              # smoothing factor for exponential moving average
-        self.change_threshold = 0.15  # maximum allowed jump (in meters) between frames
+        self.change_threshold = 0.25  # maximum allowed jump (in meters) between frames - INCREASED
+        
+        # Variables for prediction when depth is missing
+        self.prediction_count = 0
+        self.max_predictions = 5      # Maximum number of frames to predict
+        
+        # Variables for improved depth sampling
+        self.depth_window_size = 5    # Size of window to sample depth values (5x5 pixels)
 
         # Check for available topics
         rospy.loginfo("Waiting for topics to be available...")
@@ -53,7 +60,17 @@ class ArmPoseEstimator:
         depth_topic = None
         camera_info_topic = None
         
-        if '/camera/camera/aligned_depth_to_color/image_raw' in topic_names:
+        # Get parameters if specified in launch file
+        color_topic = rospy.get_param('~color_topic', '/camera/color/image_raw')
+        depth_topic_param = rospy.get_param('~depth_topic', '')
+        camera_info_topic_param = rospy.get_param('~camera_info_topic', '')
+        
+        # Use parameters if provided, otherwise auto-detect
+        if depth_topic_param and camera_info_topic_param:
+            depth_topic = depth_topic_param
+            camera_info_topic = camera_info_topic_param
+            rospy.loginfo("Using depth and camera info topics from parameters")
+        elif '/camera/camera/aligned_depth_to_color/image_raw' in topic_names:
             depth_topic = '/camera/camera/aligned_depth_to_color/image_raw'
             camera_info_topic = '/camera/camera/aligned_depth_to_color/camera_info'
             rospy.loginfo("Using double camera path for topics")
@@ -67,8 +84,6 @@ class ArmPoseEstimator:
                 if 'depth' in topic or 'color' in topic:
                     rospy.logerr(" - " + topic)
             return
-
-        color_topic = '/camera/color/image_raw'
         
         # Log the selected topics
         rospy.loginfo(f"Using depth topic: {depth_topic}")
@@ -91,8 +106,18 @@ class ArmPoseEstimator:
 
         # Initialize MediaPipe Pose for wrist detection
         self.mp_pose = mp.solutions.pose
-        self.pose = self.mp_pose.Pose(min_detection_confidence=0.5,
-                                      min_tracking_confidence=0.5)
+        self.pose = self.mp_pose.Pose(
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5,
+            model_complexity=1  # Use a more accurate model
+        )
+        
+        # Get marker size from parameter or use default
+        self.marker_length = rospy.get_param('~marker_size', 0.2)  # in meters
+        
+        # Debug visualization flag
+        self.debug_visualization = rospy.get_param('~debug_visualization', False)
+        
         rospy.loginfo("Arm Pose Estimator Initialized.")
 
     def camera_info_callback(self, msg):
@@ -128,23 +153,19 @@ class ArmPoseEstimator:
         else:
             self.process_pose(color_image, depth_image, color_msg.header)
 
-        # Ensure windows are created and updated
-        try:
-            # Update window and explicitly handle window events
-            if not self.calibrated:
-                pass  # Removed cv2.imshow("Calibration", color_image)
-            else:
-                pass  # Removed cv2.imshow("Arm Pose", color_image)
-            
-            # Wait for a small amount of time to process GUI events
-            key = cv2.waitKey(1)
-            
-            # Optional: Add key handling
-            if key == ord('q'):  # Quit on 'q' key
-                rospy.signal_shutdown("User requested shutdown")
+        # Ensure windows are created and updated if debug visualization is enabled
+        if self.debug_visualization:
+            try:
                 
-        except Exception as e:
-            rospy.logerr(f"Error displaying windows: {e}")
+                # Wait for a small amount of time to process GUI events
+                key = cv2.waitKey(1)
+                
+                # Optional: Add key handling
+                if key == ord('q'):  # Quit on 'q' key
+                    rospy.signal_shutdown("User requested shutdown")
+                    
+            except Exception as e:
+                rospy.logerr(f"Error displaying windows: {e}")
 
     def calibrate(self, color_image):
         # Detect an ArUco marker to define the reference (calibration) frame.
@@ -159,11 +180,8 @@ class ArmPoseEstimator:
             # Draw detected markers for visualization
             aruco.drawDetectedMarkers(display_image, corners, ids)
 
-            # Define the marker size (in meters) – adjust as needed.
-            marker_length = 0.2
-
             # Use the camera intrinsics obtained from CameraInfo
-            rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, marker_length,
+            rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, self.marker_length,
                                                                self.camera_matrix,
                                                                self.dist_coeffs)
             rvec = rvecs[0][0]
@@ -171,7 +189,7 @@ class ArmPoseEstimator:
             
             # Draw coordinate axes on the marker
             cv2.drawFrameAxes(display_image, self.camera_matrix, self.dist_coeffs, 
-                              rvec, tvec, marker_length/2)
+                              rvec, tvec, self.marker_length/2)
             
             # Calculate the transform matrix
             R, _ = cv2.Rodrigues(rvec)
@@ -188,8 +206,7 @@ class ArmPoseEstimator:
                         (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
             rospy.loginfo_throttle(1.0, "Calibration: No ArUco marker detected. Please hold the marker in view.")
 
-        # Removed cv2.imshow("Calibration", display_image)
-        cv2.waitKey(1)
+        # Show calibration image if debug visualization 
 
     def process_pose(self, color_image, depth_image, header):
         # Convert the BGR image to RGB for MediaPipe processing.
@@ -204,28 +221,66 @@ class ArmPoseEstimator:
             landmark = results.pose_landmarks.landmark[self.mp_pose.PoseLandmark.RIGHT_WRIST]
 
             # Check landmark visibility to filter out uncertain detections.
-            if landmark.visibility < 0.6:
+            if landmark.visibility < 0.5:  # Reduced from 0.6 to 0.5
                 cv2.putText(display_image, f"Wrist visibility low: {landmark.visibility:.2f}", 
                             (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                 rospy.logwarn_throttle(1.0, "Wrist landmark visibility low (%.2f). Skipping frame." % landmark.visibility)
+                
+                # Use prediction if we have a previous position
+                if self.filtered_point is not None and self.prediction_count < self.max_predictions:
+                    self.prediction_count += 1
+                    filtered_point_hom = np.array([self.filtered_point[0],
+                                                self.filtered_point[1],
+                                                self.filtered_point[2], 1]).reshape(4, 1)
+                    self.publish_tf(filtered_point_hom, header)
+                    
+                    # Add prediction indicator to display
+                    if self.debug_visualization:
+                        cv2.putText(display_image, f"PREDICTING ({self.prediction_count}/{self.max_predictions})", 
+                                    (20, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
                 return
 
             h, w, _ = color_image.shape
             pixel_x = int(landmark.x * w)
             pixel_y = int(landmark.y * h)
 
-            # Get the depth value at the wrist pixel.
+            # Get the depth value at the wrist pixel using a window of pixels
             if pixel_y >= depth_image.shape[0] or pixel_x >= depth_image.shape[1]:
                 rospy.logwarn("Pixel coordinates out of depth image bounds!")
                 return
                 
-            depth_mm = depth_image[pixel_y, pixel_x]
-            if depth_mm == 0:
-                cv2.putText(display_image, "No depth data at wrist", 
-                            (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-                rospy.logwarn_throttle(1.0, "Depth value at wrist is zero. Skipping this frame.")
+            # Sample depth from a small window around the wrist point
+            half_size = self.depth_window_size // 2
+            depth_window = depth_image[
+                max(0, pixel_y-half_size):min(depth_image.shape[0], pixel_y+half_size+1), 
+                max(0, pixel_x-half_size):min(depth_image.shape[1], pixel_x+half_size+1)
+            ]
+            valid_depths = depth_window[depth_window > 0]
+            
+            if valid_depths.size > 0:
+                depth_mm = np.median(valid_depths)  # Use median to filter outliers
+            else:
+                # If no valid depth, try to predict
+                if self.filtered_point is not None and self.prediction_count < self.max_predictions:
+                    self.prediction_count += 1
+                    filtered_point_hom = np.array([self.filtered_point[0],
+                                                self.filtered_point[1],
+                                                self.filtered_point[2], 1]).reshape(4, 1)
+                    self.publish_tf(filtered_point_hom, header)
+                    
+                    # Add prediction indicator to display
+                    if self.debug_visualization:
+                        cv2.putText(display_image, f"No depth - PREDICTING ({self.prediction_count}/{self.max_predictions})", 
+                                    (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+                else:
+                    cv2.putText(display_image, "No depth data at wrist", 
+                                (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                    rospy.logwarn_throttle(1.0, "Depth value at wrist is zero. Skipping this frame.")
                 return
                 
+            # Reset prediction counter since we have valid data
+            self.prediction_count = 0
+            
             depth = depth_mm / 1000.0  # Convert depth from mm to meters
 
             # Back-project the 2D pixel to a 3D point using the intrinsics.
@@ -245,6 +300,19 @@ class ArmPoseEstimator:
                 cv2.putText(display_image, f"Wrist too far: {np.linalg.norm(new_point):.2f}m", 
                             (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                 rospy.logwarn_throttle(1.0, "New wrist position is too far (%.2f m). Skipping update." % np.linalg.norm(new_point))
+                
+                # Use prediction
+                if self.filtered_point is not None and self.prediction_count < self.max_predictions:
+                    self.prediction_count += 1
+                    filtered_point_hom = np.array([self.filtered_point[0],
+                                                self.filtered_point[1],
+                                                self.filtered_point[2], 1]).reshape(4, 1)
+                    self.publish_tf(filtered_point_hom, header)
+                    
+                    # Add prediction indicator to display
+                    if self.debug_visualization:
+                        cv2.putText(display_image, f"Too far - PREDICTING ({self.prediction_count}/{self.max_predictions})", 
+                                    (20, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
                 return
 
             # Filter out sudden jumps (likely misclassifications).
@@ -254,6 +322,19 @@ class ArmPoseEstimator:
                     cv2.putText(display_image, f"Large jump: {diff:.3f}m", 
                                 (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                     rospy.logwarn_throttle(1.0, "Large jump in wrist position detected (%.3f m). Ignoring update." % diff)
+                    
+                    # Use prediction
+                    if self.filtered_point is not None and self.prediction_count < self.max_predictions:
+                        self.prediction_count += 1
+                        filtered_point_hom = np.array([self.filtered_point[0],
+                                                    self.filtered_point[1],
+                                                    self.filtered_point[2], 1]).reshape(4, 1)
+                        self.publish_tf(filtered_point_hom, header)
+                        
+                        # Add prediction indicator to display
+                        if self.debug_visualization:
+                            cv2.putText(display_image, f"Jump - PREDICTING ({self.prediction_count}/{self.max_predictions})", 
+                                        (20, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
                     return
 
             # Apply exponential moving average filtering for smoothing.
@@ -268,6 +349,9 @@ class ArmPoseEstimator:
                                            self.filtered_point[2], 1]).reshape(4, 1)
                                            
             self.publish_tf(filtered_point_hom, header)
+            
+            # Reset prediction counter since we have valid data
+            self.prediction_count = 0
 
             # Draw a circle on the wrist in the visualization.
             cv2.circle(display_image, (pixel_x, pixel_y), 5, (0, 255, 0), -1)
@@ -287,8 +371,19 @@ class ArmPoseEstimator:
             cv2.putText(display_image, "No pose landmarks detected", 
                         (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
             rospy.loginfo_throttle(1.0, "No pose landmarks detected.")
-
-        # Removed cv2.imshow("Arm Pose", display_image)
+            
+            # Use prediction if we have a previous position
+            if self.filtered_point is not None and self.prediction_count < self.max_predictions:
+                self.prediction_count += 1
+                filtered_point_hom = np.array([self.filtered_point[0],
+                                            self.filtered_point[1],
+                                            self.filtered_point[2], 1]).reshape(4, 1)
+                self.publish_tf(filtered_point_hom, header)
+                
+                # Add prediction indicator to display
+                if self.debug_visualization:
+                    cv2.putText(display_image, f"No landmarks - PREDICTING ({self.prediction_count}/{self.max_predictions})", 
+                                (20, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
 
     def draw_pose_landmarks(self, image, results):
         """Draw the pose landmarks on the image."""
