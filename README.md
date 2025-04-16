@@ -103,6 +103,18 @@ roslaunch spot_moveit_config demo_gazebo.launch
 roslaunch spot_moveit_config demo.launch
 ```
 
+#### 4.3 Option with Real Robot (Physical Spot)
+
+```bash
+rosrun spot_operation read_joints_real.py
+```
+
+```bash
+roslaunch spot_moveit_config demo.launch use_real_robot:=true
+```
+
+This configuration allows MoveIt to use the real joint states published by the Spot robot, instead of using simulated states. The `use_real_robot:=true` parameter ensures the system doesn't start the simulated joint publisher, avoiding conflicts with the real data.
+
 ### 5. Configuring RViz and Controlling the Manipulator
 
 After launching the simulation, you need to configure RViz for proper robot control:
