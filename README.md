@@ -1,6 +1,6 @@
 # MoveIt ROS1 Workspace Setup
 
-This document provides instructions for setting up the MoveIt ROS1 workspace using Docker, which includes RealSense camera support, Intel MediaPipe, and Boston Dynamics Spot SDK.
+This document provides instructions for setting up the MoveIt ROS1 workspace using Docker, which includes RealSense camera support, MediaPipe, and Boston Dynamics Spot SDK.
 
 ## Prerequisites
 
