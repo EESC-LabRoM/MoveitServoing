@@ -91,20 +91,17 @@ The arm pose estimator will:
 
 Position yourself in front of the camera with the ArUco marker visible (typically placed on your chest) to complete the calibration process.
 
-### 4. Launching the Spot Robot Simulation
+### 4. Choosing Execution Mode
 
-Once the arm pose estimator is running and publishing the wrist TF transform, open a new terminal in the container and launch the Spot robot simulation:
-
+#### 4.1 Option with Gazebo Simulation (Full Physics)
 ```bash
 roslaunch spot_moveit_config demo_gazebo.launch
 ```
 
-This launch file will:
-- Start the Gazebo simulation environment
-- Load the Spot robot model with its manipulator
-- Launch RViz with the MoveIt configuration
-- Provide an interactive marker that allows controlling the manipulator's position
-- Connect the wrist tracking from the previous step to allow control through body movements
+#### 4.2 Option without Gazebo Simulation (Visualization Only)
+```bash
+roslaunch spot_moveit_config demo.launch
+```
 
 ### 5. Configuring RViz and Controlling the Manipulator
 
