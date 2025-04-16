@@ -46,28 +46,6 @@ The `run.sh` script performs the following actions:
 - Starts the container with proper privileges and network settings
 - Revokes X11 access after the session ends
 
-## Workspace Structure
-
-The ROS workspace is mounted at `/root/ws_moveit` within the container and is synchronized with the `~/ws_moveit` directory on your host system. Any changes made inside the container will persist in your host directory.
-
-### Directory Structure
-
-```
-ws_moveit/
-├── src/
-│   ├── arm_pose_estimator/       # Wrist tracking with ArUco and MediaPipe
-│   │   ├── launch/               # Launch files for the system
-│   │   │   └── start_arm_pose_estimator.launch
-│   │   ├── scripts/              
-│   │   │   └── arm_pose_estimator.py  # Main tracking script
-│   │   └── ...
-│   ├── realsense-ros/            # RealSense camera ROS drivers
-│   └── ...
-├── build/                        # Build artifacts
-├── devel/                        # Development space
-└── install/                      # Install space
-```
-
 ## Hardware Support
 
 The container is set up with support for:
