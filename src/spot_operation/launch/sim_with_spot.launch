@@ -1,3 +1,0 @@
-<node pkg="spot_operation" type="sync_real_arm_to_sim.py" name="sync_arm" output="screen">
-  <param name="spot_hostname" value="192.168.80.3"/>
-</node>

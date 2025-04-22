@@ -15,7 +15,8 @@ This document provides instructions for setting up the MoveIt ROS1 workspace usi
 The first step is to build the Docker image from the provided Dockerfile:
 
 ```bash
-docker build -t moveit_ros1:latest .
+docker compose run --rm --name moveit2_container gpu
+ros2 launch movit_spot_config demo.launch.py
 ```
 
 This command builds a Docker image tagged as `moveit_ros1:latest` using the Dockerfile in the current directory. The process may take several minutes as it:

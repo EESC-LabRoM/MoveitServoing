@@ -9,7 +9,7 @@ CONTAINER_NAME="moveit_container"
 IMAGE_NAME="moveit_ros1:latest"
 
 # Define the workspace directory
-WORKSPACE_DIR="$HOME/ws_moveit"
+WORKSPACE_DIR="$PWD/src"
 
 # Create workspace directory if it doesn't exist
 mkdir -p "$WORKSPACE_DIR"
@@ -74,7 +74,7 @@ docker run -it --rm \
     -e QT_X11_NO_MITSHM=1 \
     -e XDG_RUNTIME_DIR=/tmp/runtime-root \
     -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-    -v "$WORKSPACE_DIR":/root/ws_moveit \
+    -v "$WORKSPACE_DIR":/root/ws_moveit/src \
     -v "$TEMP_ENTRYPOINT":/entrypoint.sh \
     -v /dev:/dev \
     -v ~/.Xauthority:/root/.Xauthority:rw \
