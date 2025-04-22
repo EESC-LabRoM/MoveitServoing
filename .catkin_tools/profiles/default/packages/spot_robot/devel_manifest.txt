@@ -1,2 +1,0 @@
-spot_robot
-/root/ws_moveit/devel/.private/spot_robot/cmake.lock /root/ws_moveit/devel/./cmake.lock
