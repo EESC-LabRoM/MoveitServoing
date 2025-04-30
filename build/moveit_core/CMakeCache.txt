@@ -405,7 +405,7 @@ RT_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/librt.so
 SETUPTOOLS_DEB_LAYOUT:BOOL=ON
 
 //Name of the computer/site where compile is being run
-SITE:STRING=hipolito-Precision-5860-Tower
+SITE:STRING=murilo-Precision-5860-Tower
 
 //LSB Distrib tag
 UBUNTU:BOOL=TRUE
@@ -450,7 +450,7 @@ angles_DIR:PATH=/opt/ros/noetic/share/angles/cmake
 backward_ros_DIR:PATH=backward_ros_DIR-NOTFOUND
 
 //The directory containing a CMake configuration file for benchmark.
-benchmark_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/benchmark
+benchmark_DIR:PATH=benchmark_DIR-NOTFOUND
 
 //The directory containing a CMake configuration file for boost_atomic.
 boost_atomic_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/boost_atomic-1.71.0

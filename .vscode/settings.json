@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "/root/ws_moveit/build/catkin_tools_prebuild",
+    "files.associations": {
+        "iosfwd": "cpp"
+    }
+}

@@ -132,6 +132,17 @@ RUN python3 -m pip install --no-cache-dir --upgrade \
 RUN echo "# Spot SDK environment setup" >> ~/.bashrc && \
     echo "export PYTHONPATH=\$PYTHONPATH:/usr/local/lib/python3.8/dist-packages" >> ~/.bashrc
 
+# Install Spot ROS driver in editable mode
+RUN pip3 install -e ~/ws_moveit/src/spot_ros/spot_driver
+
+# Install additional ROS packages for joystick and twist multiplexer
+RUN apt-get update && apt-get install -y \
+    ros-noetic-joy \
+    ros-noetic-teleop-twist-joy \
+    ros-noetic-twist-mux \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # Run rosdep update once during image build
 RUN rosdep update
 

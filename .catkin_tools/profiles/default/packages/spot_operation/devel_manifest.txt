@@ -1,0 +1,12 @@
+spot_operation
+/root/ws_moveit/devel/.private/spot_operation/cmake.lock /root/ws_moveit/devel/./cmake.lock
+/root/ws_moveit/devel/.private/spot_operation/share/spot_operation/cmake/spot_operationConfig.cmake /root/ws_moveit/devel/share/spot_operation/cmake/spot_operationConfig.cmake
+/root/ws_moveit/devel/.private/spot_operation/share/spot_operation/cmake/spot_operationConfig-version.cmake /root/ws_moveit/devel/share/spot_operation/cmake/spot_operationConfig-version.cmake
+/root/ws_moveit/devel/.private/spot_operation/lib/pkgconfig/spot_operation.pc /root/ws_moveit/devel/lib/pkgconfig/spot_operation.pc
+/root/ws_moveit/devel/.private/spot_operation/lib/spot_operation/continuous_pose_to_spot.py /root/ws_moveit/devel/lib/spot_operation/continuous_pose_to_spot.py
+/root/ws_moveit/devel/.private/spot_operation/lib/spot_operation/send_pose_to_real_spot.py /root/ws_moveit/devel/lib/spot_operation/send_pose_to_real_spot.py
+/root/ws_moveit/devel/.private/spot_operation/lib/spot_operation/read_pose_sim.py /root/ws_moveit/devel/lib/spot_operation/read_pose_sim.py
+/root/ws_moveit/devel/.private/spot_operation/lib/spot_operation/cmake.lock /root/ws_moveit/devel/lib/spot_operation/cmake.lock
+/root/ws_moveit/devel/.private/spot_operation/lib/spot_operation/send_pose_to_goal.py /root/ws_moveit/devel/lib/spot_operation/send_pose_to_goal.py
+/root/ws_moveit/devel/.private/spot_operation/lib/spot_operation/sync_real_arm_to_sim.py /root/ws_moveit/devel/lib/spot_operation/sync_real_arm_to_sim.py
+/root/ws_moveit/devel/.private/spot_operation/lib/spot_operation/read_joints_real.py /root/ws_moveit/devel/lib/spot_operation/read_joints_real.py

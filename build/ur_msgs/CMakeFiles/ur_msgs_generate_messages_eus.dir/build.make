@@ -78,8 +78,8 @@ CMakeFiles/ur_msgs_generate_messages_eus: /root/ws_moveit/devel/.private/ur_msgs
 
 /root/ws_moveit/devel/.private/ur_msgs/share/roseus/ros/ur_msgs/msg/IOStates.l: /opt/ros/noetic/lib/geneus/gen_eus.py
 /root/ws_moveit/devel/.private/ur_msgs/share/roseus/ros/ur_msgs/msg/IOStates.l: /root/ws_moveit/src/universal_robot/ur_msgs/msg/IOStates.msg
-/root/ws_moveit/devel/.private/ur_msgs/share/roseus/ros/ur_msgs/msg/IOStates.l: /root/ws_moveit/src/universal_robot/ur_msgs/msg/Analog.msg
 /root/ws_moveit/devel/.private/ur_msgs/share/roseus/ros/ur_msgs/msg/IOStates.l: /root/ws_moveit/src/universal_robot/ur_msgs/msg/Digital.msg
+/root/ws_moveit/devel/.private/ur_msgs/share/roseus/ros/ur_msgs/msg/IOStates.l: /root/ws_moveit/src/universal_robot/ur_msgs/msg/Analog.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/root/ws_moveit/build/ur_msgs/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating EusLisp code from ur_msgs/IOStates.msg"
 	catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /root/ws_moveit/src/universal_robot/ur_msgs/msg/IOStates.msg -Iur_msgs:/root/ws_moveit/src/universal_robot/ur_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ur_msgs -o /root/ws_moveit/devel/.private/ur_msgs/share/roseus/ros/ur_msgs/msg
 

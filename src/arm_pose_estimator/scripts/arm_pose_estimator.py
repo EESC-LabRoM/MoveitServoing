@@ -411,7 +411,7 @@ class ArmPoseEstimator:
 
         # Remap axes, apply scaling, and add offsets
         t.transform.translation.x = float(point_marker[2, 0] * scale_factor) + 0.292  # Depth → X (forward) + offset
-        t.transform.translation.y = float(-point_marker[0, 0] * scale_factor)         # Horizontal → Y (left)
+        t.transform.translation.y = float(point_marker[0, 0] * scale_factor)         # Horizontal → Y (left)
         t.transform.translation.z = float(point_marker[1, 0] * scale_factor) + 0.188  # Vertical → Z (up) + offset
 
         # Identity quaternion for orientation

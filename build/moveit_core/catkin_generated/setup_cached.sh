@@ -9,6 +9,7 @@
 # modified environment variables
 export CMAKE_PREFIX_PATH="/root/ws_moveit/devel/.private/moveit_core:$CMAKE_PREFIX_PATH"
 export LD_LIBRARY_PATH="/root/ws_moveit/devel/.private/moveit_core/lib:$LD_LIBRARY_PATH"
+export PATH="/root/ws_moveit/devel/bin:$PATH"
 export PWD='/root/ws_moveit/build/moveit_core'
 export PYTHONPATH="/root/ws_moveit/devel/.private/moveit_core/lib/python3/dist-packages:$PYTHONPATH"
 export ROSLISP_PACKAGE_DIRECTORIES="/root/ws_moveit/devel/.private/moveit_core/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"

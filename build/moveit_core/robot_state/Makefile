@@ -228,21 +228,6 @@ test_robot_state_complex/fast:
 .PHONY : test_robot_state_complex/fast
 
 # Convenience name for target.
-robot_state/CMakeFiles/test_jacobian_derivative.dir/rule:
-	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f CMakeFiles/Makefile2 robot_state/CMakeFiles/test_jacobian_derivative.dir/rule
-.PHONY : robot_state/CMakeFiles/test_jacobian_derivative.dir/rule
-
-# Convenience name for target.
-test_jacobian_derivative: robot_state/CMakeFiles/test_jacobian_derivative.dir/rule
-
-.PHONY : test_jacobian_derivative
-
-# fast build rule for target.
-test_jacobian_derivative/fast:
-	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/test_jacobian_derivative.dir/build.make robot_state/CMakeFiles/test_jacobian_derivative.dir/build
-.PHONY : test_jacobian_derivative/fast
-
-# Convenience name for target.
 robot_state/CMakeFiles/run_tests_moveit_core_rostest.dir/rule:
 	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f CMakeFiles/Makefile2 robot_state/CMakeFiles/run_tests_moveit_core_rostest.dir/rule
 .PHONY : robot_state/CMakeFiles/run_tests_moveit_core_rostest.dir/rule
@@ -301,6 +286,21 @@ _run_tests_moveit_core_rostest: robot_state/CMakeFiles/_run_tests_moveit_core_ro
 _run_tests_moveit_core_rostest/fast:
 	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/_run_tests_moveit_core_rostest.dir/build.make robot_state/CMakeFiles/_run_tests_moveit_core_rostest.dir/build
 .PHONY : _run_tests_moveit_core_rostest/fast
+
+# Convenience name for target.
+robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/rule:
+	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f CMakeFiles/Makefile2 robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/rule
+.PHONY : robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/rule
+
+# Convenience name for target.
+run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test: robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/rule
+
+.PHONY : run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test
+
+# fast build rule for target.
+run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test/fast:
+	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/build.make robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/build
+.PHONY : run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test/fast
 
 # Convenience name for target.
 robot_state/CMakeFiles/run_tests_moveit_core_gtest_test_aabb.dir/rule:
@@ -393,36 +393,6 @@ _run_tests_moveit_core_gtest_test_planar_joint_jacobian/fast:
 .PHONY : _run_tests_moveit_core_gtest_test_planar_joint_jacobian/fast
 
 # Convenience name for target.
-robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/rule:
-	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f CMakeFiles/Makefile2 robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/rule
-.PHONY : robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/rule
-
-# Convenience name for target.
-run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test: robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/rule
-
-.PHONY : run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test
-
-# fast build rule for target.
-run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test/fast:
-	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/build.make robot_state/CMakeFiles/run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/build
-.PHONY : run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test/fast
-
-# Convenience name for target.
-robot_state/CMakeFiles/robot_state_benchmark.dir/rule:
-	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f CMakeFiles/Makefile2 robot_state/CMakeFiles/robot_state_benchmark.dir/rule
-.PHONY : robot_state/CMakeFiles/robot_state_benchmark.dir/rule
-
-# Convenience name for target.
-robot_state_benchmark: robot_state/CMakeFiles/robot_state_benchmark.dir/rule
-
-.PHONY : robot_state_benchmark
-
-# fast build rule for target.
-robot_state_benchmark/fast:
-	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/robot_state_benchmark.dir/build.make robot_state/CMakeFiles/robot_state_benchmark.dir/build
-.PHONY : robot_state_benchmark/fast
-
-# Convenience name for target.
 robot_state/CMakeFiles/test_aabb.dir/rule:
 	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f CMakeFiles/Makefile2 robot_state/CMakeFiles/test_aabb.dir/rule
 .PHONY : robot_state/CMakeFiles/test_aabb.dir/rule
@@ -496,6 +466,21 @@ _run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test
 _run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test/fast:
 	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/_run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/build.make robot_state/CMakeFiles/_run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test.dir/build
 .PHONY : _run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test/fast
+
+# Convenience name for target.
+robot_state/CMakeFiles/test_jacobian_derivative.dir/rule:
+	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f CMakeFiles/Makefile2 robot_state/CMakeFiles/test_jacobian_derivative.dir/rule
+.PHONY : robot_state/CMakeFiles/test_jacobian_derivative.dir/rule
+
+# Convenience name for target.
+test_jacobian_derivative: robot_state/CMakeFiles/test_jacobian_derivative.dir/rule
+
+.PHONY : test_jacobian_derivative
+
+# fast build rule for target.
+test_jacobian_derivative/fast:
+	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/test_jacobian_derivative.dir/build.make robot_state/CMakeFiles/test_jacobian_derivative.dir/build
+.PHONY : test_jacobian_derivative/fast
 
 src/attached_body.o: src/attached_body.cpp.o
 
@@ -604,33 +589,6 @@ src/robot_state.s: src/robot_state.cpp.s
 src/robot_state.cpp.s:
 	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/moveit_robot_state.dir/build.make robot_state/CMakeFiles/moveit_robot_state.dir/src/robot_state.cpp.s
 .PHONY : src/robot_state.cpp.s
-
-test/robot_state_benchmark.o: test/robot_state_benchmark.cpp.o
-
-.PHONY : test/robot_state_benchmark.o
-
-# target to build an object file
-test/robot_state_benchmark.cpp.o:
-	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/robot_state_benchmark.dir/build.make robot_state/CMakeFiles/robot_state_benchmark.dir/test/robot_state_benchmark.cpp.o
-.PHONY : test/robot_state_benchmark.cpp.o
-
-test/robot_state_benchmark.i: test/robot_state_benchmark.cpp.i
-
-.PHONY : test/robot_state_benchmark.i
-
-# target to preprocess a source file
-test/robot_state_benchmark.cpp.i:
-	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/robot_state_benchmark.dir/build.make robot_state/CMakeFiles/robot_state_benchmark.dir/test/robot_state_benchmark.cpp.i
-.PHONY : test/robot_state_benchmark.cpp.i
-
-test/robot_state_benchmark.s: test/robot_state_benchmark.cpp.s
-
-.PHONY : test/robot_state_benchmark.s
-
-# target to generate assembly for a file
-test/robot_state_benchmark.cpp.s:
-	cd /root/ws_moveit/build/moveit_core && $(MAKE) -f robot_state/CMakeFiles/robot_state_benchmark.dir/build.make robot_state/CMakeFiles/robot_state_benchmark.dir/test/robot_state_benchmark.cpp.s
-.PHONY : test/robot_state_benchmark.cpp.s
 
 test/robot_state_test.o: test/robot_state_test.cpp.o
 
@@ -809,26 +767,25 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test_robot_state_complex"
-	@echo "... test_jacobian_derivative"
 	@echo "... run_tests_moveit_core_rostest"
 	@echo "... install/local"
 	@echo "... _run_tests_moveit_core_gtest_test_robot_state"
 	@echo "... _run_tests_moveit_core_rostest_robot_state_test_test_jacobian_derivative.test"
 	@echo "... _run_tests_moveit_core_rostest"
+	@echo "... run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test"
 	@echo "... run_tests_moveit_core_gtest_test_aabb"
 	@echo "... test_planar_joint_jacobian"
 	@echo "... run_tests_moveit_core_gtest_test_robot_state"
 	@echo "... run_tests_moveit_core_gtest_test_planar_joint_jacobian"
 	@echo "... moveit_robot_state"
 	@echo "... _run_tests_moveit_core_gtest_test_planar_joint_jacobian"
-	@echo "... run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test"
-	@echo "... robot_state_benchmark"
 	@echo "... install/strip"
 	@echo "... test_aabb"
 	@echo "... test_robot_state"
 	@echo "... test_cartesian_interpolator"
 	@echo "... run_tests_moveit_core_rostest_robot_state_test_test_jacobian_derivative.test"
 	@echo "... _run_tests_moveit_core_rostest_robot_state_test_test_cartesian_interpolator.test"
+	@echo "... test_jacobian_derivative"
 	@echo "... src/attached_body.o"
 	@echo "... src/attached_body.i"
 	@echo "... src/attached_body.s"
@@ -841,9 +798,6 @@ help:
 	@echo "... src/robot_state.o"
 	@echo "... src/robot_state.i"
 	@echo "... src/robot_state.s"
-	@echo "... test/robot_state_benchmark.o"
-	@echo "... test/robot_state_benchmark.i"
-	@echo "... test/robot_state_benchmark.s"
 	@echo "... test/robot_state_test.o"
 	@echo "... test/robot_state_test.i"
 	@echo "... test/robot_state_test.s"

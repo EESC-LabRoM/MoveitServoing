@@ -1938,33 +1938,6 @@ src/cpp_interface_example/pose_tracking_example.cpp.s:
 	$(MAKE) -f CMakeFiles/pose_tracking_example.dir/build.make CMakeFiles/pose_tracking_example.dir/src/cpp_interface_example/pose_tracking_example.cpp.s
 .PHONY : src/cpp_interface_example/pose_tracking_example.cpp.s
 
-src/cpp_interface_example/pose_tracking_servo.o: src/cpp_interface_example/pose_tracking_servo.cpp.o
-
-.PHONY : src/cpp_interface_example/pose_tracking_servo.o
-
-# target to build an object file
-src/cpp_interface_example/pose_tracking_servo.cpp.o:
-	$(MAKE) -f CMakeFiles/pose_tracking_servo.dir/build.make CMakeFiles/pose_tracking_servo.dir/src/cpp_interface_example/pose_tracking_servo.cpp.o
-.PHONY : src/cpp_interface_example/pose_tracking_servo.cpp.o
-
-src/cpp_interface_example/pose_tracking_servo.i: src/cpp_interface_example/pose_tracking_servo.cpp.i
-
-.PHONY : src/cpp_interface_example/pose_tracking_servo.i
-
-# target to preprocess a source file
-src/cpp_interface_example/pose_tracking_servo.cpp.i:
-	$(MAKE) -f CMakeFiles/pose_tracking_servo.dir/build.make CMakeFiles/pose_tracking_servo.dir/src/cpp_interface_example/pose_tracking_servo.cpp.i
-.PHONY : src/cpp_interface_example/pose_tracking_servo.cpp.i
-
-src/cpp_interface_example/pose_tracking_servo.s: src/cpp_interface_example/pose_tracking_servo.cpp.s
-
-.PHONY : src/cpp_interface_example/pose_tracking_servo.s
-
-# target to generate assembly for a file
-src/cpp_interface_example/pose_tracking_servo.cpp.s:
-	$(MAKE) -f CMakeFiles/pose_tracking_servo.dir/build.make CMakeFiles/pose_tracking_servo.dir/src/cpp_interface_example/pose_tracking_servo.cpp.s
-.PHONY : src/cpp_interface_example/pose_tracking_servo.cpp.s
-
 src/low_pass_filter.o: src/low_pass_filter.cpp.o
 
 .PHONY : src/low_pass_filter.o
@@ -2018,6 +1991,33 @@ src/pose_tracking.s: src/pose_tracking.cpp.s
 src/pose_tracking.cpp.s:
 	$(MAKE) -f CMakeFiles/pose_tracking.dir/build.make CMakeFiles/pose_tracking.dir/src/pose_tracking.cpp.s
 .PHONY : src/pose_tracking.cpp.s
+
+src/pose_tracking_servo.o: src/pose_tracking_servo.cpp.o
+
+.PHONY : src/pose_tracking_servo.o
+
+# target to build an object file
+src/pose_tracking_servo.cpp.o:
+	$(MAKE) -f CMakeFiles/pose_tracking_servo.dir/build.make CMakeFiles/pose_tracking_servo.dir/src/pose_tracking_servo.cpp.o
+.PHONY : src/pose_tracking_servo.cpp.o
+
+src/pose_tracking_servo.i: src/pose_tracking_servo.cpp.i
+
+.PHONY : src/pose_tracking_servo.i
+
+# target to preprocess a source file
+src/pose_tracking_servo.cpp.i:
+	$(MAKE) -f CMakeFiles/pose_tracking_servo.dir/build.make CMakeFiles/pose_tracking_servo.dir/src/pose_tracking_servo.cpp.i
+.PHONY : src/pose_tracking_servo.cpp.i
+
+src/pose_tracking_servo.s: src/pose_tracking_servo.cpp.s
+
+.PHONY : src/pose_tracking_servo.s
+
+# target to generate assembly for a file
+src/pose_tracking_servo.cpp.s:
+	$(MAKE) -f CMakeFiles/pose_tracking_servo.dir/build.make CMakeFiles/pose_tracking_servo.dir/src/pose_tracking_servo.cpp.s
+.PHONY : src/pose_tracking_servo.cpp.s
 
 src/servo.o: src/servo.cpp.o
 
@@ -2360,15 +2360,15 @@ help:
 	@echo "... src/cpp_interface_example/pose_tracking_example.o"
 	@echo "... src/cpp_interface_example/pose_tracking_example.i"
 	@echo "... src/cpp_interface_example/pose_tracking_example.s"
-	@echo "... src/cpp_interface_example/pose_tracking_servo.o"
-	@echo "... src/cpp_interface_example/pose_tracking_servo.i"
-	@echo "... src/cpp_interface_example/pose_tracking_servo.s"
 	@echo "... src/low_pass_filter.o"
 	@echo "... src/low_pass_filter.i"
 	@echo "... src/low_pass_filter.s"
 	@echo "... src/pose_tracking.o"
 	@echo "... src/pose_tracking.i"
 	@echo "... src/pose_tracking.s"
+	@echo "... src/pose_tracking_servo.o"
+	@echo "... src/pose_tracking_servo.i"
+	@echo "... src/pose_tracking_servo.s"
 	@echo "... src/servo.o"
 	@echo "... src/servo.i"
 	@echo "... src/servo.s"

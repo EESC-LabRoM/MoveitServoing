@@ -1,20 +1,20 @@
 
 "use strict";
 
-let ToolDataMsg = require('./ToolDataMsg.js');
+let MasterboardDataMsg = require('./MasterboardDataMsg.js');
 let IOStates = require('./IOStates.js');
 let RobotStateRTMsg = require('./RobotStateRTMsg.js');
-let MasterboardDataMsg = require('./MasterboardDataMsg.js');
-let RobotModeDataMsg = require('./RobotModeDataMsg.js');
-let Digital = require('./Digital.js');
 let Analog = require('./Analog.js');
+let RobotModeDataMsg = require('./RobotModeDataMsg.js');
+let ToolDataMsg = require('./ToolDataMsg.js');
+let Digital = require('./Digital.js');
 
 module.exports = {
-  ToolDataMsg: ToolDataMsg,
+  MasterboardDataMsg: MasterboardDataMsg,
   IOStates: IOStates,
   RobotStateRTMsg: RobotStateRTMsg,
-  MasterboardDataMsg: MasterboardDataMsg,
-  RobotModeDataMsg: RobotModeDataMsg,
-  Digital: Digital,
   Analog: Analog,
+  RobotModeDataMsg: RobotModeDataMsg,
+  ToolDataMsg: ToolDataMsg,
+  Digital: Digital,
 };

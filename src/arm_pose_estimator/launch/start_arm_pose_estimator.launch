@@ -19,19 +19,28 @@
   </include>
 
   <!-- Add short delay to ensure camera is fully started -->
-  <node pkg="rostopic" type="rostopic" name="wait_for_camera" 
+  <node pkg="rostopic" type="rostopic" name="wait_for_camera"
         args="hz /camera/color/image_raw -w 10" output="screen"/>
 
-  <!-- Launch the arm pose estimator node with explicit topic mapping -->
-  <node name="arm_pose_estimator" pkg="arm_pose_estimator" type="arm_pose_estimator.py" 
+  <node name="arm_pose_estimator" pkg="arm_pose_estimator" type="arm_pose_estimator.py"
         output="screen" launch-prefix="bash -c 'sleep 5; $0 $@'">
     <!-- Explicitly specify topics to use -->
     <param name="color_topic" value="/camera/color/image_raw"/>
     <param name="depth_topic" value="/camera/aligned_depth_to_color/image_raw"/>
     <param name="camera_info_topic" value="/camera/aligned_depth_to_color/camera_info"/>
-    <!-- Enable debug visualization -->
+    <!-- Enable debug visualization -->w
     <param name="debug_visualization" value="true"/>
     <!-- Set ArUco marker size in meters -->
     <param name="marker_size" value="0.2"/>
+  </node>
+
+  <!-- Launch the hand pose estimator node -->
+  <node name="hand_pose_estimator" pkg="arm_pose_estimator" type="hand_pose_estimator.py"
+        output="screen" launch-prefix="bash -c 'sleep 5; $0 $@'">
+    <!-- Specify parameters for the hand pose estimator -->
+    <param name="model_path" value="$(find arm_pose_estimator)/models/gesture_recognizer.task"/>
+    <param name="queue_size" value="10"/>
+    <param name="input_topic" value="/camera/color/image_raw"/>
+    <param name="output_topic" value="/hand_gesture"/>
   </node>
 </launch>

@@ -1,0 +1,6 @@
+spot_ros/spot_viz
+/root/ws_moveit/devel/.private/spot_viz/cmake.lock /root/ws_moveit/devel/./cmake.lock
+/root/ws_moveit/devel/.private/spot_viz/share/spot_viz/cmake/spot_vizConfig-version.cmake /root/ws_moveit/devel/share/spot_viz/cmake/spot_vizConfig-version.cmake
+/root/ws_moveit/devel/.private/spot_viz/share/spot_viz/cmake/spot_vizConfig.cmake /root/ws_moveit/devel/share/spot_viz/cmake/spot_vizConfig.cmake
+/root/ws_moveit/devel/.private/spot_viz/lib/libspot_viz.so /root/ws_moveit/devel/lib/libspot_viz.so
+/root/ws_moveit/devel/.private/spot_viz/lib/pkgconfig/spot_viz.pc /root/ws_moveit/devel/lib/pkgconfig/spot_viz.pc

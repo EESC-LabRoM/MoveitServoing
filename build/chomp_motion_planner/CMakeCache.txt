@@ -368,7 +368,7 @@ RT_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/librt.so
 SETUPTOOLS_DEB_LAYOUT:BOOL=ON
 
 //Name of the computer/site where compile is being run
-SITE:STRING=hipolito-Precision-5860-Tower
+SITE:STRING=murilo-Precision-5860-Tower
 
 //LSB Distrib tag
 UBUNTU:BOOL=TRUE
