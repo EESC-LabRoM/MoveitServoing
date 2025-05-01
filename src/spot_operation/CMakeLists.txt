@@ -206,7 +206,7 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 catkin_install_python(PROGRAMS
-  scripts/send_pose_to_goal.py
+scripts/send_pose_to_goal.py
   scripts/sync_real_arm_to_sim.py
   scripts/read_joints_real.py
   scripts/read_pose_sim.py

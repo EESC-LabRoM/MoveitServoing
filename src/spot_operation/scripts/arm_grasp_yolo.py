@@ -23,6 +23,8 @@ from bosdyn.client.robot_state import RobotStateClient
 from bosdyn.api import robot_command_pb2
 from bosdyn.client import math_helpers
 from bosdyn.client.robot_command import RobotCommandBuilder
+from bosdyn.client.lease import LeaseClient, LeaseWallet, LeaseKeepAlive, add_lease_wallet_processors
+from bosdyn.client.lease import ResourceAlreadyClaimedError  # Add this import
 
 def verify_estop(robot):
     client = robot.ensure_client(EstopClient.default_service_name)
@@ -42,18 +44,28 @@ def arm_object_grasp(config):
     robot_state_client = robot.ensure_client(RobotStateClient.default_service_name)
     image_client = robot.ensure_client(ImageClient.default_service_name)
     manipulation_api_client = robot.ensure_client(ManipulationApiClient.default_service_name)
-    #lease_client = robot.ensure_client(bosdyn.client.lease.LeaseClient.default_service_name)
+    lease_client = robot.ensure_client(bosdyn.client.lease.LeaseClient.default_service_name)
 
-    # # Configure LeaseWallet or acquire Lease directly
-    # if config.use_wallet:
-    #     lease_wallet = LeaseWallet()
-    #     add_lease_wallet_processors(cmd_client, lease_wallet)
-    #     # Pega o lease atual do robot
-    #     lease = None
-    # else:
-    #     lease = lease_client.take()
-    #lease = lease_client.take()
+    # Use wallet if specified
+    if config.use_wallet:
+        lease_wallet = LeaseWallet()
+        add_lease_wallet_processors(cmd_client, lease_wallet)
+        add_lease_wallet_processors(manipulation_api_client, lease_wallet)
+        try:
+            lease = lease_client.acquire()
+        except ResourceAlreadyClaimedError:
+            robot.logger.warn("Lease already claimed; forcing acquisition via take().")
+            lease = lease_client.take()
+        lease_wallet.add(lease)
+        lease_ctx = LeaseKeepAlive(lease_client, lease_wallet,
+                                  must_acquire=True, return_at_exit=False)
+    else:
+        lease = lease_client.take()
+        lease_ctx = None
 
+    # Execute with LeaseKeepAlive if defined
+    if lease_ctx:
+        lease_ctx.__enter__()
 
     # Load allowed objects CSV
     csv_path = "/root/ws_moveit/src/spot_operation/config/allowed_objects.csv"
@@ -137,25 +149,49 @@ def arm_object_grasp(config):
     # Aplica constraint se tiver
     add_grasp_constraint(config, grasp, robot_state_client)
     req = manipulation_api_pb2.ManipulationApiRequest(pick_object_in_image=grasp)
-    cmd_resp = manipulation_api_client.manipulation_api_command(
-        manipulation_api_request=req)
 
-    # Monitor grasp feedback
+    # Configura timeout no planner via gRPC
+    cmd_resp = manipulation_api_client.manipulation_api_command(
+        manipulation_api_request=req,
+        timeout=5.0)  # Timeout de 5 segundos
+
+    # Monitor grasp feedback com timeout e retry
+    start_time = time.time()
+    timeout_sec = 8  # Ajusta para o tempo desejado
+
     while True:
         fb_req = manipulation_api_pb2.ManipulationApiFeedbackRequest(
             manipulation_cmd_id=cmd_resp.manipulation_cmd_id)
         resp = manipulation_api_client.manipulation_api_feedback_command(fb_req)
         state = manipulation_api_pb2.ManipulationFeedbackState.Name(resp.current_state)
         print(f'Current state: {state}')
+
+        # # Se travar no WAITING_DATA_AT_EDGE além do timeout, cancela e tenta fallback
+        # if (state == 'MANIP_STATE_GRASP_PLANNING_WAITING_DATA_AT_EDGE' and
+        #     time.time() - start_time > timeout_sec):
+        #     print('⚠️ Timeout no planejamento aguardando edge data, cancelando e tentando fallback...')
+        #     manipulation_api_client.cancel_manipulation(
+        #         manipulation_api_pb2.CancelManipulationRequest(
+        #             manipulation_cmd_id=cmd_resp.manipulation_cmd_id))
+        #     # Aqui você pode relançar outra chamada de grasp com force_top_down_grasp=True
+        #     if not config.force_top_down_grasp:
+        #         print("🔄 Tentando fallback com force_top_down_grasp=True...")
+        #         config.force_top_down_grasp = True
+        #         arm_object_grasp(config)  # Relança o grasp com o novo estilo
+        #     else:
+        #         print("❌ Fallback já foi tentado. Abortando.")
+        #     return
+
+        # Sai do loop se o grasp for bem-sucedido ou falhar
         if resp.current_state in (
             manipulation_api_pb2.MANIP_STATE_GRASP_SUCCEEDED,
             manipulation_api_pb2.MANIP_STATE_GRASP_FAILED):
             break
+        
         time.sleep(0.25)
 
-    # # Return the Lease only if not using Wallet
-    # if not config.use_wallet and lease is not None:
-    #     lease_client.return_lease(lease)
+    if lease_ctx:
+        lease_ctx.__exit__(None, None, None)
 
     robot.logger.info('Grasp operation completed. Robot remains powered on.')
 
@@ -203,6 +239,7 @@ def main():
                         help='Force a 45 degree angle grasp.')
     parser.add_argument('--force-squeeze-grasp', action='store_true',
                         help='Force a squeeze grasp.')
+    parser.add_argument('--use-wallet', action='store_true', help='Use lease wallet')
     opts = parser.parse_args()
 
     arm_object_grasp(opts)
