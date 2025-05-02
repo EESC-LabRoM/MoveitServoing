@@ -1,99 +1,75 @@
 #!/usr/bin/env python3
 
 import sys
-import time
-import os
-
 import rospy
-from sensor_msgs.msg import JointState
-
 import bosdyn.client
 import bosdyn.client.util
 from bosdyn.client.robot_state import RobotStateClient
+import moveit_commander
 
-# Predefined Spot connection parameters
 SPOT_HOSTNAME = "192.168.80.3"
 SPOT_USERNAME = "admin"
 SPOT_PASSWORD = "spotadmin2017"
 
-# List of Spot arm joint names in the order you'd like to publish them.
 ARM_JOINTS = [
-    "arm0.sh0",  # Shoulder_0
-    "arm0.sh1",  # Shoulder_1
-    "arm0.el0",  # Elbow_0
-    "arm0.el1",  # Elbow_1
-    "arm0.wr0",  # Wrist_0
-    "arm0.wr1",  # Wrist_1
-    "arm0.f1x",  # Gripper finger position
+    "arm0.sh0", "arm0.sh1", "arm0.el0",
+    "arm0.el1", "arm0.wr0", "arm0.wr1"
+]
+MOVEIT_JOINTS = [
+    "arm_sh0", "arm_sh1", "arm_el0",
+    "arm_el1", "arm_wr0", "arm_wr1"
 ]
 
+TOLERANCE = 0.01
+
+def has_significant_difference(state1, state2):
+    for j in state1:
+        if abs(state1[j] - state2.get(j, 0.0)) > TOLERANCE:
+            return True
+    return False
+
 def main():
-    """
-    Continuously publishes the current Spot arm joint positions (and velocities) as a ROS JointState.
-    """
+    rospy.init_node("sync_spot_arm_to_moveit", anonymous=True)
+    moveit_commander.roscpp_initialize(sys.argv)
+    group = moveit_commander.MoveGroupCommander("manipulator")
 
-    # Initialize the ROS node
-    rospy.init_node('spot_arm_joint_publisher', anonymous=True)
-
-    # Create a publisher for the JointState
-    pub = rospy.Publisher('/joint_states', JointState, queue_size=10)
-
-    # Create SDK and connect to the robot
-    bosdyn.client.util.setup_logging(verbose=False)
-    sdk = bosdyn.client.create_standard_sdk("SpotArmJointPublisher")
+    bosdyn.client.util.setup_logging()
+    sdk = bosdyn.client.create_standard_sdk("SpotArmSync")
     robot = sdk.create_robot(SPOT_HOSTNAME)
-    # Authenticate with predefined credentials
     robot.authenticate(SPOT_USERNAME, SPOT_PASSWORD)
     robot.time_sync.wait_for_sync()
+    state_client = robot.ensure_client(RobotStateClient.default_service_name)
 
-    # We only need RobotStateClient to read joint states. No lease required if we're not commanding the arm.
-    robot_state_client = robot.ensure_client(RobotStateClient.default_service_name)
+    rospy.loginfo("Conectado ao Spot. Sincronizando juntas com MoveIt...")
 
-    # Check the robot actually has an arm
-    if not robot.has_arm():
-        rospy.logerr("This Spot robot does not have an arm. Exiting.")
-        return 1
-
-    rospy.loginfo("Connected to Spot. Publishing arm joint states...")
-
-    # We will publish at 10 Hz (adjust as desired)
-    publish_rate = rospy.Rate(10)  # 10 Hz
+    last_joint_dict = None
+    rate = rospy.Rate(5)
 
     while not rospy.is_shutdown():
-        # Prepare the JointState message
-        joint_state_msg = JointState()
-        joint_state_msg.header.stamp = rospy.Time.now()
-
-        # Retrieve the latest RobotState
         try:
-            robot_state = robot_state_client.get_robot_state()
+            robot_state = state_client.get_robot_state()
         except Exception as e:
-            rospy.logerr(f"Failed to get robot state: {e}")
-            publish_rate.sleep()
+            rospy.logerr(f"Erro ao obter estado do Spot: {e}")
+            rate.sleep()
             continue
 
-        # Extract arm joint states
-        arm_joint_positions = {}
-        arm_joint_velocities = {}
-        for link in robot_state.kinematic_state.joint_states:
-            if link.name in ARM_JOINTS:
-                arm_joint_positions[link.name] = link.position.value
-                arm_joint_velocities[link.name] = link.velocity.value
+        joint_pos = {}
+        for joint in robot_state.kinematic_state.joint_states:
+            if joint.name in ARM_JOINTS:
+                joint_pos[joint.name] = joint.position.value
 
-        # Fill the JointState message in a consistent order
-        for joint_name in ARM_JOINTS:
-            joint_state_msg.name.append(joint_name.replace("0.", "_"))
-            joint_state_msg.position.append(arm_joint_positions.get(joint_name, 0.0))
-            joint_state_msg.velocity.append(arm_joint_velocities.get(joint_name, 0.0))
+        joint_values = [joint_pos.get(j, 0.0) for j in ARM_JOINTS]
+        joint_dict = dict(zip(MOVEIT_JOINTS, joint_values))
 
-        # Publish the message
-        pub.publish(joint_state_msg)
+        if last_joint_dict is None or has_significant_difference(joint_dict, last_joint_dict):
+            try:
+                group.set_joint_value_target(joint_dict)
+                group.go(wait=False)
+                last_joint_dict = joint_dict.copy()
+            except Exception as e:
+                rospy.logwarn(f"Erro ao mover o grupo: {e}")
 
-        publish_rate.sleep()
-
-    rospy.loginfo("Shutting down Spot arm joint publisher.")
-    return 0
-
+        rate.sleep()
 
 if __name__ == '__main__':
-    sys.exit(main())
+    main()

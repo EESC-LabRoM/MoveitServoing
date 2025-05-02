@@ -1,4 +1,3 @@
-### continuous_pose_to_spot.py
 #!/usr/bin/env python3
 import rospy
 import moveit_commander
@@ -15,6 +14,10 @@ from bosdyn.client.frame_helpers import ODOM_FRAME_NAME, get_a_tform_b
 from bosdyn.client.math_helpers import SE3Pose, Quat
 from bosdyn.client.lease import LeaseClient, LeaseWallet, add_lease_wallet_processors, LeaseKeepAlive
 from bosdyn.client.lease import ResourceAlreadyClaimedError
+
+import tf2_ros
+import tf2_geometry_msgs
+from geometry_msgs.msg import TransformStamped
 
 # Global variable to track the current gesture
 gesture = 0
@@ -60,9 +63,30 @@ def apply_wrist_lock(group, joint_name="arm_wr0"):
     group.set_path_constraints(cs)
 
 
+def get_tf_pose(tf_buffer, target_frame="wrist", reference_frame="world"):
+    """
+    Obtém a pose do frame `target_frame` em relação ao `reference_frame` usando TF.
+    """
+    try:
+        transform = tf_buffer.lookup_transform(reference_frame, target_frame, rospy.Time(0), rospy.Duration(1.0))
+        pose = PoseStamped()
+        pose.header = transform.header
+        pose.pose.position.x = transform.transform.translation.x
+        pose.pose.position.y = transform.transform.translation.y
+        pose.pose.position.z = transform.transform.translation.z
+        pose.pose.orientation = transform.transform.rotation
+        return pose.pose
+    except Exception as e:
+        rospy.logwarn("❗ TF lookup failed: %s", e)
+        return None
+
+
 def main():
     rospy.init_node("continuous_moveit_pose_to_spot_real", anonymous=True)
     rospy.Subscriber("/hand_gesture", Int32, gesture_callback)
+
+    tf_buffer = tf2_ros.Buffer()
+    tf_listener = tf2_ros.TransformListener(tf_buffer)
 
     # Inicializa o MoveIt
     moveit_commander.roscpp_initialize([])
@@ -108,10 +132,10 @@ def main():
     rospy.loginfo("Conectado ao Spot real. Iniciando sincronização contínua...")
     with lease_keepalive:
         robot.power_on(timeout_sec=20)
-        continuous_send_pose(spot_hostname, group, command_client, robot_state_client)
+        continuous_send_pose(spot_hostname, group, command_client, robot_state_client, tf_buffer)
 
 
-def continuous_send_pose(spot_hostname, group, command_client, robot_state_client):
+def continuous_send_pose(spot_hostname, group, command_client, robot_state_client, tf_buffer):
     rate = rospy.Rate(2)
     while not rospy.is_shutdown():
         global gesture
@@ -129,7 +153,12 @@ def continuous_send_pose(spot_hostname, group, command_client, robot_state_clien
             rospy.sleep(2.0)
             continue
 
-        sim_pose = get_simulated_end_effector_pose(group)
+        sim_pose = get_tf_pose(tf_buffer)
+        if sim_pose is None:
+            rospy.logwarn("⚠️ Não foi possível obter a pose do wrist.")
+            rate.sleep()
+            continue
+
         robot_state = robot_state_client.get_robot_state()
         odom_T_body = get_a_tform_b(robot_state.kinematic_state.transforms_snapshot,
                                     ODOM_FRAME_NAME, "body")
