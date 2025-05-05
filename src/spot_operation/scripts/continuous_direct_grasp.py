@@ -28,6 +28,7 @@ from ultralytics import YOLO
 from bosdyn.client.image import ImageClient
 from bosdyn.client.manipulation_api_client import ManipulationApiClient
 from bosdyn.api import geometry_pb2, manipulation_api_pb2, image_pb2
+from std_srvs.srv import Trigger
 
 
 class RobotClientManager:
@@ -367,6 +368,29 @@ class GraspManager:
         return rates
 
 
+class FingerCountClient:
+    """Calls /finger_count_node/get_finger_count until it gets 1 or 2."""
+    def __init__(self, service_name="/finger_count_node/get_finger_count"):
+        rospy.wait_for_service(service_name)
+        self._proxy = rospy.ServiceProxy(service_name, Trigger)
+
+    def request_mode(self):
+        """Blocks until receiving 1 (manual) or 2 (semi-autonomous)."""
+        while not rospy.is_shutdown():
+            try:
+                resp = self._proxy()
+            except rospy.ServiceException as e:
+                rospy.logwarn("FingerCount service failed: %s", e)
+                rospy.sleep(0.5)
+                continue
+
+            if resp.success and resp.message in ("1", "2"):
+                return int(resp.message)
+
+            rospy.loginfo("FingerCount returned '%s'. Retrying...", resp.message)
+            rospy.sleep(0.3)
+
+
 class SpotController:
     """Controlador principal do Spot."""
     
@@ -422,6 +446,12 @@ class SpotController:
         self.default_grasp_strategy = "front_yolo"
         # Estratégia fallback (para usar quando a principal falhar)
         self.fallback_grasp_strategy = "side_yolo"
+
+        # === Select operation mode using the service ===
+        finger_client = FingerCountClient()
+        mode_code = finger_client.request_mode()  # 1 or 2
+        self.mode = "manual" if mode_code == 1 else "semi"
+        rospy.loginfo("🚀 Operation mode selected: %s", self.mode.upper())
         
     def _gesture_callback(self, msg):
         """Callback para mensagens de gestos."""
@@ -459,10 +489,43 @@ class SpotController:
         rospy.loginfo("🤖 Saindo do modo de MANIPULAÇÃO. Retornando ao modo normal.")
             
     def _control_loop(self):
-        """Loop principal de controle."""
-        rate = rospy.Rate(2)  # 2 Hz como no código original
-        
+        """Main control loop."""
+        rate = rospy.Rate(2)  # 2 Hz as in the original code
+
         while not rospy.is_shutdown():
+
+            # --------------------------------------------------
+            # === MANUAL MODE (mode 1) =========================
+            # --------------------------------------------------
+            if self.mode == "manual":
+                # Open/close gripper based on hand_gesture
+                if self.current_gesture == 0:
+                    rospy.loginfo_throttle(1.0, "🖐 Gesto: ABRIR garra")
+                    self.robot_manager.open_gripper()
+                else:  # 1 = hold
+                    rospy.loginfo_throttle(1.0, "✊ Gesto: FECHAR garra")
+                    self.robot_manager.close_gripper()
+
+                # Only replicate TF pose → robot (no YOLO)
+                sim_pose = self.tf_manager.get_pose()
+                if sim_pose:
+                    robot_state = self.robot_manager.get_robot_state()
+                    odom_T_body = get_a_tform_b(robot_state.kinematic_state.transforms_snapshot,
+                                                ODOM_FRAME_NAME, "body")
+                    flat_body_T_hand = SE3Pose(
+                        x=sim_pose.position.x, y=sim_pose.position.y, z=sim_pose.position.z,
+                        rot=Quat(w=sim_pose.orientation.w, x=sim_pose.orientation.x,
+                                 y=sim_pose.orientation.y, z=sim_pose.orientation.z)
+                    )
+                    odom_T_hand = odom_T_body * flat_body_T_hand
+                    self.robot_manager.send_arm_command(odom_T_hand)
+
+                rate.sleep()
+                continue  # Go back to the top of the while loop
+
+            # --------------------------------------------------
+            # === SEMI-AUTONOMOUS (mode 2 – original) ==========
+            # --------------------------------------------------
             # Verifica se estamos no modo de manipulação
             if self.manipulation_mode:
                 # Verifica se recebemos o gesto para liberar o objeto

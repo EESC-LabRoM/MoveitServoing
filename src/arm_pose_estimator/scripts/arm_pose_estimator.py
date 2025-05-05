@@ -10,6 +10,7 @@ import tf2_ros
 import geometry_msgs.msg
 import mediapipe as mp
 import os
+from geometry_msgs.msg import Quaternion
 
 class ArmPoseEstimator:
     def __init__(self):
@@ -117,6 +118,9 @@ class ArmPoseEstimator:
         
         # Debug visualization flag
         self.debug_visualization = rospy.get_param('~debug_visualization', False)
+        
+        self.hand_quat = [0.0, 0.0, 0.0, 1.0]  # Default quaternion
+        rospy.Subscriber('/hand_roll_quat', Quaternion, self._orientation_callback)
         
         rospy.loginfo("Arm Pose Estimator Initialized.")
 
@@ -407,27 +411,35 @@ class ArmPoseEstimator:
     def publish_tf(self, point_marker, header):
         scale_factor = 984.0 / 650.0  # Scale factor to match dimensions
 
-        # Publish wrist transform relative to the world frame
         t = geometry_msgs.msg.TransformStamped()
         t.header.stamp = header.stamp
         t.header.frame_id = "world"
         t.child_frame_id = "wrist"
 
-        # Remap axes, apply scaling, and add offsets
-        t.transform.translation.x = float(point_marker[2, 0] * scale_factor) + 0.292  # Depth → X (forward) + offset
-        t.transform.translation.y = float(point_marker[0, 0] * scale_factor)         # Horizontal → Y (left)
-        t.transform.translation.z = float(point_marker[1, 0] * scale_factor) + 0.188  # Vertical → Z (up) + offset
+        # Position
+        t.transform.translation.x = float(point_marker[2, 0] * scale_factor) + 0.292
+        t.transform.translation.y = float(point_marker[0, 0] * scale_factor)
+        t.transform.translation.z = float(point_marker[1, 0] * scale_factor) + 0.188
 
-        # Identity quaternion for orientation
-        t.transform.rotation.x = 0.0
-        t.transform.rotation.y = 0.0
-        t.transform.rotation.z = 0.0
-        t.transform.rotation.w = 1.0
+        # Use the quaternion received from /hand_orientation
+        t.transform.rotation.x = self.hand_quat[0]
+        t.transform.rotation.y = self.hand_quat[1]
+        t.transform.rotation.z = self.hand_quat[2]
+        t.transform.rotation.w = self.hand_quat[3]
+
         self.tf_broadcaster.sendTransform(t)
-        rospy.loginfo_throttle(0.5, "Published wrist transform: [%.3f, %.3f, %.3f] (remapped with offsets)" %
-                       (point_marker[2, 0] * scale_factor + 0.292, 
-                        -point_marker[0, 0] * scale_factor, 
-                        point_marker[1, 0] * scale_factor + 0.188))
+        rospy.loginfo_throttle(
+            0.5,
+            "Published wrist TF pos=[%.3f, %.3f, %.3f] quat=[%.3f, %.3f, %.3f, %.3f]",
+            t.transform.translation.x,
+            t.transform.translation.y,
+            t.transform.translation.z,
+            self.hand_quat[0], self.hand_quat[1], self.hand_quat[2], self.hand_quat[3]
+        )
+
+    def _orientation_callback(self, msg: Quaternion):
+        # Update the quaternion when a new message is received
+        self.hand_quat = [msg.x, msg.y, msg.z, msg.w]
 
 def main():
     try:
