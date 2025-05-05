@@ -9,27 +9,24 @@ from collections import deque
 import mediapipe as mp
 from mediapipe.tasks.python.core.base_options import BaseOptions
 from mediapipe.tasks.python.vision import GestureRecognizer, GestureRecognizerOptions, RunningMode
-from mediapipe.tasks.python.vision import GestureRecognizerResult
 
 class GestureClassifierNode:
     def __init__(self):
         rospy.init_node('gesture_classifier_node')
 
-        # ROS parameters
         model_path = rospy.get_param('~model_path', '/root/ws_moveit/src/arm_pose_estimator/models/gesture_recognizer.task')
         queue_size = rospy.get_param('~queue_size', 5)
         topic_in = rospy.get_param('~input_topic', '/camera/color/image_raw')
         topic_out = rospy.get_param('~output_topic', '/hand_gesture')
 
-        # Setup
         self.bridge = CvBridge()
         self.pub = rospy.Publisher(topic_out, Int32, queue_size=1)
         self.queue = deque(maxlen=queue_size)
 
-        # Initialize gesture to 0
-        self.pub.publish(0)
+        # Inicializa com gesto 0
+        self.last_published = 0
+        self.pub.publish(self.last_published)
 
-        # Configure MediaPipe GestureRecognizer for live stream
         options = GestureRecognizerOptions(
             base_options=BaseOptions(model_asset_path=model_path),
             running_mode=RunningMode.LIVE_STREAM,
@@ -37,25 +34,22 @@ class GestureClassifierNode:
         )
         self.recognizer = GestureRecognizer.create_from_options(options)
 
-        # Subscribe to image topic
         self.sub = rospy.Subscriber(topic_in, Image, self._on_image, queue_size=1)
         rospy.loginfo('GestureClassifierNode iniciado, esperando imagens em %s', topic_in)
 
     def _on_image(self, msg: Image):
-        #rospy.loginfo_throttle(5, "Frame recebido em %s", msg.header.stamp)  # a cada 5 s
-        # Convert ROS Image to RGB numpy
         try:
             bgr = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         except Exception as e:
-            rospy.logerr('CvBridge error: %s', e)
+            rospy.logerr('Erro ao converter imagem: %s', e)
             return
+
         rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
 
-        # Create MediaPipe Image
         try:
             mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
         except Exception as e:
-            rospy.logerr('Error creating MediaPipe Image: %s', e)
+            rospy.logerr('Erro ao criar imagem do MediaPipe: %s', e)
             return
 
         timestamp_ms = msg.header.stamp.to_nsec() // 1_000_000
@@ -63,32 +57,38 @@ class GestureClassifierNode:
 
     def _on_gesture_result(self, result, output_image, timestamp_ms):
         if not result.gestures:
-            self.pub.publish(0)  # Reset gesture to 0 if no gestures are detected
+            rospy.loginfo("Nenhum gesto detectado (mão ausente ou não reconhecida)")
             return
 
         category = result.gestures[0][0]
+        name = category.category_name.lower()
+        score = category.score
 
-        # Só considera se o score for minimamente confiável
-        if category.score < 0.6:
-            self.pub.publish(0)  # Reset gesture to 0 if confidence is too low
+        if score < 0.6:
+            rospy.loginfo(f"Gesto com baixa confiança ({score:.2f}) → ignorado")
             return
 
-        # Valida o nome do gesto (tudo lowercase pra segurança)
-        name = category.category_name.lower()
+        if name == 'none':
+            rospy.loginfo("Gesto detectado foi 'none' → ignorado")
+            return
+
         if name == 'closed_fist':
             val = 1
         elif name == 'open_palm':
             val = 0
         else:
-            self.pub.publish(0)  # Reset gesture to 0 for unrecognized gestures
+            rospy.loginfo(f"Gesto '{name}' não reconhecido → ignorado")
             return
 
         # Filtro de suavização
         self.queue.append(val)
         mode_val = int(np.argmax(np.bincount(np.array(self.queue))))
 
-        self.pub.publish(mode_val)
-        rospy.loginfo('Published gesture: %d', mode_val)
+        # Só publica se mudou
+        if mode_val != self.last_published:
+            rospy.loginfo(f"Gesto detectado: {name} (score: {score:.2f}) → publicado: {mode_val}")
+            self.pub.publish(mode_val)
+            self.last_published = mode_val
 
     def run(self):
         rospy.spin()

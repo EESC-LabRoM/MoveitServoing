@@ -112,7 +112,7 @@ def main():
 
 
 def continuous_send_pose(spot_hostname, group, command_client, robot_state_client):
-    rate = rospy.Rate(2)
+    rate = rospy.Rate(100)
     while not rospy.is_shutdown():
         global gesture
         if gesture == 1:

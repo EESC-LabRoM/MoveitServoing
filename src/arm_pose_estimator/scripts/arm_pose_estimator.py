@@ -170,7 +170,11 @@ class ArmPoseEstimator:
     def calibrate(self, color_image):
         # Detect an ArUco marker to define the reference (calibration) frame.
         aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_50)
-        parameters = aruco.DetectorParameters()  # use available constructor
+        # Tenta usar o método criador, mas cai pro construtor direto se não existir
+        try:
+            parameters = aruco.DetectorParameters_create()
+        except AttributeError:
+            parameters = aruco.DetectorParameters()
         corners, ids, _ = aruco.detectMarkers(color_image, aruco_dict, parameters=parameters)
 
         # Create a copy of the image for visualization
