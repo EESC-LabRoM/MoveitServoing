@@ -9,6 +9,8 @@ from geometry_msgs.msg import Quaternion
 import time
 import math
 from tf.transformations import quaternion_from_euler
+from std_msgs.msg import Int32
+from collections import deque
 
 # ---------- One‑Euro filter (igual antes, só compactei) ----------
 class OneEuroFilter:
@@ -60,6 +62,11 @@ class HandOrientationEstimator:
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber("/camera/color/image_raw", Image, self.image_callback)
         self.quat_pub = rospy.Publisher("/hand_roll_quat", Quaternion, queue_size=10)
+        self.current_gesture = 0
+        self.block_duration = 2.0        # Time to hold the quaternion (seconds)
+        self.block_until = 0.0           # Timestamp until when to block
+        self.last_quat_msg = None        # Stores the last quaternion
+        rospy.Subscriber("/hand_gesture", Int32, self._gesture_cb)
 
         # MediaPipe
         mp_hands = mp.solutions.hands
@@ -70,7 +77,26 @@ class HandOrientationEstimator:
         # Filters for 21 landmarks (adjusted parameters for smoother initialization)
         self.filters = [OneEuroFilter(freq=30, min_cutoff=0.4, beta=0.1) for _ in range(21)]
 
+        # Buffer for delay
+        self.pub_delay = rospy.Duration(0.20)     # 200 ms
+        self.queue = deque()                      # [(rospy.Time, Quaternion), ...]
+        # Timer to periodically publish delayed messages
+        rospy.Timer(rospy.Duration(0.01), self._publish_delayed)
+
+    def _gesture_cb(self, msg):
+        prev = self.current_gesture
+        self.current_gesture = msg.data
+        # On transition from gesture 0 to 1, start the block timer
+        if prev == 0 and self.current_gesture == 1:
+            self.block_until = time.time() + self.block_duration
+
     def image_callback(self, msg):
+        t_now = time.time()
+        # If within the block period, republish the last quaternion and exit
+        if self.current_gesture == 1 and t_now < self.block_until and self.last_quat_msg:
+            self.quat_pub.publish(self.last_quat_msg)
+            return
+
         if msg is None:
             return
         try:
@@ -102,13 +128,23 @@ class HandOrientationEstimator:
             # Create quaternion with only roll
             qx, qy, qz, qw = quaternion_from_euler(0, 0, roll_angle)
 
-            # Publish quaternion
+            # Save the quaternion for reuse during the block period
             quat_msg = Quaternion()
             quat_msg.x = -qz
             quat_msg.y = qy
             quat_msg.z = qx
             quat_msg.w = qw
-            self.quat_pub.publish(quat_msg)
+            self.last_quat_msg = quat_msg
+
+            # Add to buffer with current timestamp
+            self.queue.append((rospy.Time.now(), quat_msg))
+
+    def _publish_delayed(self, event):
+        """Publish all quaternions in the buffer older than pub_delay."""
+        now = rospy.Time.now()
+        while self.queue and (now - self.queue[0][0] >= self.pub_delay):
+            _, qm = self.queue.popleft()
+            self.quat_pub.publish(qm)
 
     def run(self):
         rospy.spin()

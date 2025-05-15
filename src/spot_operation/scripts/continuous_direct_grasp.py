@@ -30,6 +30,10 @@ from bosdyn.client.manipulation_api_client import ManipulationApiClient
 from bosdyn.api import geometry_pb2, manipulation_api_pb2, image_pb2
 from std_srvs.srv import Trigger
 
+import time
+import math
+from bosdyn.client.robot_command import RobotCommandBuilder
+
 
 class RobotClientManager:
     """Gerencia conexões e clientes do Spot."""
@@ -109,10 +113,13 @@ class RobotClientManager:
         gripper_command = RobotCommandBuilder.claw_gripper_open_command()
         return self.command_client.robot_command(gripper_command)
         
-    def close_gripper(self):
-        """Fecha a garra do robô."""
-        gripper_command = RobotCommandBuilder.claw_gripper_close_command()
-        return self.command_client.robot_command(gripper_command)
+    def close_gripper(self, block=False, timeout_sec=2.0):
+        """Fecha a garra. Se block=True, espera o comando terminar."""
+        gripper_cmd = RobotCommandBuilder.claw_gripper_close_command()
+        cmd_id = self.command_client.robot_command(gripper_cmd)
+        if block:
+            self.command_client.block_until_cmd_id(cmd_id, timeout_sec=timeout_sec)
+        return cmd_id
 
 
 class MoveItManager:
@@ -391,10 +398,24 @@ class FingerCountClient:
             rospy.sleep(0.3)
 
 
+def compute_attractive(current: np.ndarray, target: np.ndarray, k_att: float = 0.2) -> np.ndarray:
+    """Compute a *gentle* attractive force.
+
+    Args:
+        current: np.array([x, y, z]) – end‑effector in odom.
+        target : np.array([x, y, z]) – object position in odom.
+        k_att  : small gain.
+    Returns:
+        np.array – delta vector toward the target.
+    """
+    return k_att * (target - current)
+
+
 class SpotController:
-    """Controlador principal do Spot."""
-    
-    def __init__(self, spot_hostname="192.168.80.3", model_path="/root/ws_moveit/src/spot_operation/scripts/yolo11n.pt", 
+    """Controller with light potential field support in MANUAL mode."""
+
+    def __init__(self, spot_hostname="192.168.80.3",
+                 model_path="/root/ws_moveit/src/spot_operation/scripts/yolo11n.pt",
                  allowed_objects_csv="/root/ws_moveit/src/spot_operation/config/allowed_objects.csv"):
         # Inicializa ROS
         rospy.init_node("continuous_moveit_pose_to_spot_real", anonymous=True)
@@ -452,6 +473,11 @@ class SpotController:
         mode_code = finger_client.request_mode()  # 1 or 2
         self.mode = "manual" if mode_code == 1 else "semi"
         rospy.loginfo("🚀 Operation mode selected: %s", self.mode.upper())
+
+        # === PF state ===
+        self._pf_target_odom = None  # np.array([x, y, z])
+        self._last_detection_time = 0.0
+        self._target_valid_duration = 3.0  # Keep target valid for 3 seconds
         
     def _gesture_callback(self, msg):
         """Callback para mensagens de gestos."""
@@ -480,52 +506,86 @@ class SpotController:
         self.robot_manager.open_gripper()
         rospy.sleep(3.0)
         
-        # Fecha a garra novamente
+        # Fecha a garra novamente com bloqueio
         rospy.loginfo("Fechando garra...")
-        self.robot_manager.close_gripper()
+        self.robot_manager.close_gripper(block=True)
         
         # Sai do modo de manipulação
         self.manipulation_mode = False
         rospy.loginfo("🤖 Saindo do modo de MANIPULAÇÃO. Retornando ao modo normal.")
-            
+
+
     def _control_loop(self):
         """Main control loop."""
-        rate = rospy.Rate(2)  # 2 Hz as in the original code
+        # Ensure safety variables are initialized
+        self.frozen_orientation = None
+        self.is_orientation_locked = False
+
+        rate = rospy.Rate(5)  # 5 Hz gives smoother PF updates
 
         while not rospy.is_shutdown():
-
-            # --------------------------------------------------
-            # === MANUAL MODE (mode 1) =========================
-            # --------------------------------------------------
+            now = time.time()
+            # -------------- MANUAL (MODE 1) --------------------------------
             if self.mode == "manual":
-                # Open/close gripper based on hand_gesture
+                # Update target every 1 second to save bandwidth
+                if now - self._last_detection_time > 1.0:
+                    new_target = self._yolo_depth_deproject()
+                    if new_target is not None:
+                        self._pf_target_odom = new_target
+                        self._last_detection_time = now
+                    elif now - self._last_detection_time > self._target_valid_duration:
+                        self._pf_target_odom = None  # Clear target if too old
+
+                # Gripper command based on gesture
                 if self.current_gesture == 0:
-                    rospy.loginfo_throttle(1.0, "🖐 Gesto: ABRIR garra")
                     self.robot_manager.open_gripper()
-                else:  # 1 = hold
-                    rospy.loginfo_throttle(1.0, "✊ Gesto: FECHAR garra")
+                else:
                     self.robot_manager.close_gripper()
 
-                # Only replicate TF pose → robot (no YOLO)
                 sim_pose = self.tf_manager.get_pose()
-                if sim_pose:
-                    robot_state = self.robot_manager.get_robot_state()
-                    odom_T_body = get_a_tform_b(robot_state.kinematic_state.transforms_snapshot,
-                                                ODOM_FRAME_NAME, "body")
-                    flat_body_T_hand = SE3Pose(
-                        x=sim_pose.position.x, y=sim_pose.position.y, z=sim_pose.position.z,
-                        rot=Quat(w=sim_pose.orientation.w, x=sim_pose.orientation.x,
-                                 y=sim_pose.orientation.y, z=sim_pose.orientation.z)
-                    )
-                    odom_T_hand = odom_T_body * flat_body_T_hand
-                    self.robot_manager.send_arm_command(odom_T_hand)
+                if sim_pose is None:
+                    rate.sleep()
+                    continue
+
+                # --------------- build current pose --------------------
+                current_pos = np.array([sim_pose.position.x,
+                                         sim_pose.position.y,
+                                         sim_pose.position.z])
+                target_pos = self._pf_target_odom
+
+                use_pf = (target_pos is not None and self.current_gesture == 0)
+
+                if use_pf:
+                    dist = np.linalg.norm(target_pos - current_pos)
+                    # atrai só se estiver MAIS PERTO que 40 cm
+                    if dist < 0.40:
+                        delta = compute_attractive(current_pos, target_pos, k_att=0.2)
+                        new_pos = current_pos + delta
+                    else:
+                        new_pos = current_pos
+                else:
+                    new_pos = current_pos
+
+                # --------------- send command -------------------------
+                robot_state = self.robot_manager.get_robot_state()
+                odom_T_body = get_a_tform_b(robot_state.kinematic_state.transforms_snapshot,
+                                            ODOM_FRAME_NAME, "body")
+                quat_to_use = (self.frozen_orientation if self.is_orientation_locked
+                               else sim_pose.orientation)
+                flat_body_T_hand = SE3Pose(x=new_pos[0], y=new_pos[1], z=new_pos[2],
+                                           rot=Quat(w=quat_to_use.w,
+                                                    x=quat_to_use.x,
+                                                    y=quat_to_use.y,
+                                                    z=quat_to_use.z))
+                odom_T_hand = odom_T_body * flat_body_T_hand
+                self.robot_manager.send_arm_command(odom_T_hand)
+
+                self._show_debug_overlay(use_pf)  # Show debug visualization
 
                 rate.sleep()
-                continue  # Go back to the top of the while loop
+                continue  # restart loop
 
-            # --------------------------------------------------
-            # === SEMI-AUTONOMOUS (mode 2 – original) ==========
-            # --------------------------------------------------
+            # ----------------- (Rest of original _control_loop unchanged) ----
             # Verifica se estamos no modo de manipulação
             if self.manipulation_mode:
                 # Verifica se recebemos o gesto para liberar o objeto
@@ -544,15 +604,17 @@ class SpotController:
                         )
                         
                         # Aplica transformação da simulação
+                        quat_to_use = (self.frozen_orientation if self.is_orientation_locked
+                                       else sim_pose.orientation)
                         flat_body_T_hand = SE3Pose(
                             x=sim_pose.position.x,
                             y=sim_pose.position.y,
                             z=sim_pose.position.z,
                             rot=Quat(
-                                w=sim_pose.orientation.w,
-                                x=sim_pose.orientation.x,
-                                y=sim_pose.orientation.y,
-                                z=sim_pose.orientation.z
+                                w=quat_to_use.w,
+                                x=quat_to_use.x,
+                                y=quat_to_use.y,
+                                z=quat_to_use.z
                             )
                         )
                         
@@ -573,6 +635,21 @@ class SpotController:
             if self.current_gesture == 1:
                 rospy.loginfo("✋ Gesto de agarrar detectado!")
                 
+                # Congela orientação atual antes de fechar a garra
+                sim_pose = self.tf_manager.get_pose()
+                if sim_pose:
+                    self.frozen_orientation = sim_pose.orientation
+                    self.is_orientation_locked = True
+                    rospy.loginfo("🔒 Orientação congelada durante fechamento da garra")
+
+                # Fecha a garra (manda o comando)
+
+                # Fecha a garra e espera resposta
+                self.robot_manager.close_gripper(block=True, timeout_sec=2.0)
+
+                rospy.loginfo("✅ Garra fechada. Voltando a liberar orientação")
+                self.is_orientation_locked = False
+
                 # Tenta executar a estratégia primária
                 result = self.grasp_manager.execute_grasp(self.default_grasp_strategy, self.robot_manager)
                 
@@ -613,15 +690,17 @@ class SpotController:
             )
             
             # Aplica transformação da simulação
+            quat_to_use = (self.frozen_orientation if self.is_orientation_locked
+                           else sim_pose.orientation)
             flat_body_T_hand = SE3Pose(
                 x=sim_pose.position.x,
                 y=sim_pose.position.y,
                 z=sim_pose.position.z,
                 rot=Quat(
-                    w=sim_pose.orientation.w,
-                    x=sim_pose.orientation.x,
-                    y=sim_pose.orientation.y,
-                    z=sim_pose.orientation.z
+                    w=quat_to_use.w,
+                    x=quat_to_use.x,
+                    y=quat_to_use.y,
+                    z=quat_to_use.z
                 )
             )
             
@@ -635,6 +714,282 @@ class SpotController:
                          odom_T_hand.x, odom_T_hand.y, odom_T_hand.z)
                          
             rate.sleep()
+
+    def _yolo_depth_deproject(self):
+        """Detecta o objeto em 'hand_color_image' e retorna as coordenadas 3D no quadro de coordenadas do robô."""
+        try:
+            rgb_resp, depth_resp = self.robot_manager.image_client.get_image_from_sources(
+                ["hand_color_image", "hand_depth_in_hand_color_frame"])
+        except Exception as exc:
+            rospy.logwarn_throttle(2.0, "Falha ao obter imagem: %s", exc)
+            return None
+
+        # --- Decodifica a imagem RGB ---
+        rgb_arr = np.frombuffer(rgb_resp.shot.image.data, dtype=np.uint8)
+        if rgb_resp.shot.image.format == image_pb2.Image.FORMAT_RAW:
+            rgb_img = rgb_arr.reshape(rgb_resp.shot.image.rows, rgb_resp.shot.image.cols, 1)
+            rgb_img = cv2.cvtColor(rgb_img, cv2.COLOR_GRAY2BGR)
+        else:
+            rgb_img = cv2.imdecode(rgb_arr, cv2.IMREAD_COLOR)
+        self._debug_img = rgb_img.copy()
+
+        # --- Decodifica a profundidade logo em seguida ---
+        depth_np = np.frombuffer(depth_resp.shot.image.data, dtype=np.uint16).reshape(
+            depth_resp.shot.image.rows, depth_resp.shot.image.cols)
+        depth_rows, depth_cols = depth_np.shape
+
+        # --- Obtém a orientação da garra ---
+        sim_pose = self.tf_manager.get_pose()
+        if sim_pose is None:
+            rospy.logwarn("Falha ao obter a pose da garra.")
+            return None
+
+        # --- Calcula o ângulo de rotação completo a partir do quaternion ---
+        quat = sim_pose.orientation
+        # Extrai os ângulos de Euler (roll, pitch, yaw) do quaternion
+        # Fórmula para converter quaternion para ângulos de Euler (em radianos)
+        # Roll (rotação em torno do eixo X)
+        sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z)
+        cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y)
+        roll = math.atan2(sinr_cosp, cosr_cosp)
+
+        # Pitch (rotação em torno do eixo Y)
+        sinp = 2 * (quat.w * quat.y - quat.z * quat.x)
+        if abs(sinp) >= 1:
+            pitch = math.copysign(math.pi / 2, sinp)  # Usa 90 graus se sinp for +/- 1
+        else:
+            pitch = math.asin(sinp)
+
+        # Yaw (rotação em torno do eixo Z)
+        siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y)
+        cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z)
+        yaw = math.atan2(siny_cosp, cosy_cosp)
+
+        # Convertendo para graus
+        roll_deg = roll * 180.0 / math.pi
+        pitch_deg = pitch * 180.0 / math.pi
+        yaw_deg = yaw * 180.0 / math.pi
+
+        # No caso da câmera da garra, geralmente uma combinação das rotações é mais útil
+        # Dependendo da orientação da câmera em relação à garra
+        # Vamos experimentar usar o ângulo combinado que melhor representa a rotação visual
+        angle_deg = yaw_deg  # Começamos com yaw, que é a rotação em Z
+
+        # Se a câmera estiver montada de forma que o eixo principal aponte no sentido do X ou Y do robô,
+        # podemos precisar usar roll ou pitch em vez de yaw
+        if abs(roll_deg) > abs(yaw_deg) and abs(roll_deg) > abs(pitch_deg):
+            angle_deg = roll_deg
+        elif abs(pitch_deg) > abs(yaw_deg) and abs(pitch_deg) > abs(roll_deg):
+            angle_deg = pitch_deg
+
+        # Log para debug
+        rospy.loginfo(f"Ângulos de Euler: roll={roll_deg:.2f}°, pitch={pitch_deg:.2f}°, yaw={yaw_deg:.2f}°")
+        rospy.loginfo(f"Usando ângulo de rotação: {angle_deg:.2f}°")
+
+        # --- Rotação da imagem usando abordagem mais robusta ---
+        h, w = rgb_img.shape[:2]
+        center = (w // 2, h // 2)
+        rotation_matrix_2d = cv2.getRotationMatrix2D(center, -angle_deg, 1.0)
+        aligned_image = cv2.warpAffine(rgb_img, rotation_matrix_2d, (w, h), 
+                                    flags=cv2.INTER_LINEAR, 
+                                    borderMode=cv2.BORDER_CONSTANT,
+                                    borderValue=(0, 0, 0))
+        
+        # --- Salva a imagem rotacionada para visualização de debug ---
+        self._debug_img_rotated = aligned_image.copy()
+
+        # --- Detecta e filtra objetos na imagem rotacionada ---
+        boxes, _, names = self.object_detector.detect_objects(aligned_image)
+        candidates = self.object_detector.filter_allowed_objects(boxes, names)
+        if not candidates:
+            self._debug_box = None
+            self._debug_box_original = None
+            self._debug_dist_m = None
+            return None
+
+        # --- Seleciona o melhor candidato ---
+        _, _, idx = candidates[0]
+        x1, y1, x2, y2 = boxes[idx]
+        cx, cy = int((x1 + x2) / 2), int((y1 + y2) / 2)
+        
+        # --- Armazena o box para visualização na imagem rotacionada ---
+        self._debug_box_rotated = (int(x1), int(y1), int(x2), int(y2))
+        
+        # --- Projeta o box de volta para a imagem original ---
+        h, w = aligned_image.shape[:2]
+        center = (w // 2, h // 2)
+
+        # Matriz de rotação inversa (usando o negativo do ângulo)
+        inv_rotation_matrix_2d = cv2.getRotationMatrix2D(center, angle_deg, 1.0)
+
+        # Pontos a serem transformados: cantos e centro do objeto
+        points = np.array([[x1, y1], [x2, y2], [cx, cy]], dtype=np.float32).reshape(-1, 1, 2)
+
+        # Aplica a transformação inversa
+        transformed_points = cv2.transform(points, inv_rotation_matrix_2d)
+
+        # Extrai os pontos transformados
+        x1_orig, y1_orig = transformed_points[0][0]
+        x2_orig, y2_orig = transformed_points[1][0]
+        cx_orig, cy_orig = transformed_points[2][0]
+
+        # Converte para inteiros e garante que estão dentro dos limites da imagem
+        depth_rows, depth_cols = depth_np.shape
+        cx_orig_int = min(max(0, int(cx_orig)), depth_cols - 1)
+        cy_orig_int = min(max(0, int(cy_orig)), depth_rows - 1)
+
+        # Armazena o box para visualização na imagem original
+        self._debug_box = (int(x1_orig), int(y1_orig), int(x2_orig), int(y2_orig))
+        self._debug_center_orig = (int(cx_orig), int(cy_orig))
+
+        # --- Alinhamento da profundidade (usando coordenadas na imagem original) ---
+        depth_np = np.frombuffer(depth_resp.shot.image.data, dtype=np.uint16).reshape(
+            depth_resp.shot.image.rows, depth_resp.shot.image.cols)
+
+        # Converte para inteiros e garante que estão dentro dos limites da imagem
+        depth_rows, depth_cols = depth_np.shape
+        x1_orig_safe = min(max(0, int(x1_orig)), depth_cols - 1)
+        y1_orig_safe = min(max(0, int(y1_orig)), depth_rows - 1)
+        x2_orig_safe = min(max(0, int(x2_orig)), depth_cols - 1)
+        y2_orig_safe = min(max(0, int(y2_orig)), depth_rows - 1)
+        cx_orig_safe = min(max(0, int(cx_orig)), depth_cols - 1)
+        cy_orig_safe = min(max(0, int(cy_orig)), depth_rows - 1)
+
+        # Armazena o box para visualização na imagem original
+        self._debug_box = (x1_orig_safe, y1_orig_safe, x2_orig_safe, y2_orig_safe)
+        self._debug_center_orig = (cx_orig_safe, cy_orig_safe)
+
+        # Usa o centro do objeto na imagem original para obter a profundidade
+        raw_mm = int(depth_np[cy_orig_safe, cx_orig_safe])
+
+        min_depth_mm = 300   # 30 cm
+        max_depth_mm = 3000  # 3 m
+
+        depth_mm = raw_mm if (min_depth_mm <= raw_mm <= max_depth_mm) else min_depth_mm
+        depth_m = depth_mm / 1000.0
+
+        self._debug_dist_m = depth_m  # Salva a distância em metros
+
+        # --- De-projeção do pixel -> quadro de câmera (usando coordenadas na imagem original) ---
+        pinhole = depth_resp.source.pinhole
+        fx = pinhole.intrinsics.focal_length.x
+        fy = pinhole.intrinsics.focal_length.y
+        cx0 = pinhole.intrinsics.principal_point.x
+        cy0 = pinhole.intrinsics.principal_point.y
+        x_cam = (cx_orig - cx0) * depth_m / fx
+        y_cam = (cy_orig - cy0) * depth_m / fy
+        z_cam = depth_m
+
+        # --- Quadro de câmera → quadro de odom ---
+        try:
+            odom_T_cam = get_a_tform_b(depth_resp.shot.transforms_snapshot,
+                                     ODOM_FRAME_NAME,
+                                     depth_resp.shot.frame_name_image_sensor)
+        except Exception as exc:
+            rospy.logwarn_throttle(2.0, "Falha ao obter a transformação cam→odom: %s", exc)
+            return None
+        cam_T_obj = SE3Pose(x_cam, y_cam, z_cam, Quat())
+        odom_T_obj = odom_T_cam * cam_T_obj
+        return np.array([odom_T_obj.x, odom_T_obj.y, odom_T_obj.z])
+
+    def _show_debug_overlay(self, pf_active: bool):
+        """Displays image with bounding box, distance, and PF status."""
+        if getattr(self, "_debug_img", None) is None:
+            return  # Nothing to display
+
+        # Cria visualização para imagem original
+        vis_orig = self._debug_img.copy()
+        if self._debug_box:
+            x1, y1, x2, y2 = self._debug_box
+            color = (0, 255, 0) if pf_active else (0, 0, 255)
+            cv2.rectangle(vis_orig, (x1, y1), (x2, y2), color, 2)
+            
+            # Desenha o centro do objeto
+            if hasattr(self, "_debug_center_orig"):
+                cx, cy = self._debug_center_orig
+                cv2.circle(vis_orig, (cx, cy), 4, color, -1)
+                
+            if self._debug_dist_m:
+                cv2.putText(vis_orig, f"{self._debug_dist_m:.2f} m",
+                          (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX,
+                          0.6, color, 2)
+
+        # Adiciona indicação da orientação da garra (como uma seta)
+        sim_pose = self.tf_manager.get_pose()
+        if sim_pose is not None:
+            h, w = vis_orig.shape[:2]
+            center_x, center_y = w // 2, h // 2
+            arrow_length = 50
+            quat = sim_pose.orientation
+            # Cria vetor de direção simplificado a partir do quaternion
+            # Este é um cálculo simplificado para visualização
+            dx = 2 * (quat.x * quat.z + quat.w * quat.y)
+            dy = 2 * (quat.y * quat.z - quat.w * quat.x)
+            dz = 1 - 2 * (quat.x * quat.x + quat.y * quat.y)
+            
+            # Desenha seta de orientação
+            end_x = int(center_x + arrow_length * dx)
+            end_y = int(center_y + arrow_length * dy)
+            cv2.arrowedLine(vis_orig, (center_x, center_y), (end_x, end_y), (255, 0, 0), 2)
+
+        # Display PF status na imagem original
+        txt = "PF: ON" if pf_active else "PF: OFF"
+        cv2.putText(vis_orig, txt, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8, (255, 255, 0), 2)
+        cv2.putText(vis_orig, "ORIGINAL", (10, 60), cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8, (255, 255, 0), 2)
+
+        # Cria visualização para imagem rotacionada
+        if hasattr(self, "_debug_img_rotated"):
+            vis_rot = self._debug_img_rotated.copy()
+            if hasattr(self, "_debug_box_rotated"):
+                x1, y1, x2, y2 = self._debug_box_rotated
+                color = (0, 255, 0) if pf_active else (0, 0, 255)
+                cv2.rectangle(vis_rot, (x1, y1), (x2, y2), color, 2)
+                cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+                cv2.circle(vis_rot, (cx, cy), 4, color, -1)
+                
+            # Adiciona texto para identificar a imagem rotacionada
+            cv2.putText(vis_rot, "ROTACIONADA", (10, 60), cv2.FONT_HERSHEY_SIMPLEX,
+                        0.8, (255, 255, 0), 2)
+                
+            # Combina as duas imagens lado a lado
+            h1, w1 = vis_orig.shape[:2]
+            h2, w2 = vis_rot.shape[:2]
+            h = max(h1, h2)
+            w = w1 + w2
+            combined = np.zeros((h, w, 3), dtype=np.uint8)
+            combined[:h1, :w1] = vis_orig
+            combined[:h2, w1:w1+w2] = vis_rot
+                
+            cv2.imshow("debug_view", combined)
+        else:
+            # Se a imagem rotacionada não estiver disponível, mostre apenas a original
+            cv2.imshow("debug_view", vis_orig)
+            
+        cv2.waitKey(1)
+
+def get_rotation_matrix_from_quat(quat):
+    """Converte o quaternion da orientação da garra para uma matriz de rotação 3x3."""
+    q = np.array([quat.x, quat.y, quat.z, quat.w])
+    norm_q = np.dot(q, q)
+    if norm_q < np.finfo(float).eps:
+        return np.eye(3)
+    q *= math.sqrt(2.0 / norm_q)
+    q_outer = np.outer(q, q)
+    return np.array([
+        [1.0 - q_outer[1, 1] - q_outer[2, 2], q_outer[0, 1] - q[2], q_outer[0, 2] + q[1]],
+        [q_outer[0, 1] + q[2], 1.0 - q_outer[0, 0] - q_outer[2, 2], q_outer[1, 2] - q[0]],
+        [q_outer[0, 2] - q[1], q_outer[1, 2] + q[0], 1.0 - q_outer[0, 0] - q_outer[1, 1]]
+    ])
+
+def rotate_image(image, rotation_matrix):
+    """Aplica a rotação à imagem usando a matriz de rotação."""
+    h, w = image.shape[:2]
+    center = (w // 2, h // 2)
+    rotation_matrix_2d = cv2.getRotationMatrix2D(center, 0, 1.0)
+    rotation_matrix_2d[:2, :2] = rotation_matrix[:2, :2]
+    return cv2.warpAffine(image, rotation_matrix_2d, (w, h))
 
 
 def main():

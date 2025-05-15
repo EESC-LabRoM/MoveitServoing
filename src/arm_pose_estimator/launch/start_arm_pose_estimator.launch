@@ -51,5 +51,13 @@
     <param name="parent_frame" value="camera_color_optical_frame"/>
     <param name="child_frame" value="hand_frame"/>
   </node>
+
+  <!-- Launch the finger count service node -->
+  <node name="finger_count_node" pkg="arm_pose_estimator" type="finger_count.py"
+        output="screen" launch-prefix="bash -c 'sleep 5; $0 $@'">
+    <!-- Specify parameters for the finger count service -->
+    <param name="input_topic" value="/camera/color/image_raw"/>
+    <param name="stable_frames" value="5"/>
+  </node>
 </launch>
 

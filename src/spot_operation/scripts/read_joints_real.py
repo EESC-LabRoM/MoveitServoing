@@ -63,14 +63,11 @@ def main():
 
         if last_joint_dict is None or has_significant_difference(joint_dict, last_joint_dict):
             try:
-                # Update MoveIt's internal state with the real robot's joint positions
-                robot_state = group.get_current_state()
-                robot_state.joint_state.name = list(joint_dict.keys())
-                robot_state.joint_state.position = list(joint_dict.values())
-                group.set_start_state(robot_state)
+                group.set_joint_value_target(joint_dict)
+                group.go(wait=False)
                 last_joint_dict = joint_dict.copy()
             except Exception as e:
-                rospy.logwarn(f"Erro ao atualizar o estado do grupo: {e}")
+                rospy.logwarn(f"Erro ao mover o grupo: {e}")
 
         rate.sleep()
 
