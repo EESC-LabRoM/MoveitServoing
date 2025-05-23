@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Launch the RealSense camera with improved configuration -->
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="align_depth" value="true"/>
+    <arg name="depth_width" value="640"/>
+    <arg name="depth_height" value="480"/>
+    <arg name="depth_fps" value="30"/>
+    <arg name="color_width" value="640"/>
+    <arg name="color_height" value="480"/>
+    <arg name="color_fps" value="30"/>
+    <arg name="enable_color" value="true"/>
+    <arg name="enable_depth" value="true"/>
+    <!-- Explicitly set the camera path for your node -->
+    <arg name="camera" value="camera"/>
+    <!-- Add these parameters to improve reliability -->
+    <arg name="initial_reset" value="true"/>
+    <arg name="reconnect_timeout" value="6.0"/>
+  </include>
+
+  <!-- Add short delay to ensure camera is fully started -->
+  <node pkg="rostopic" type="rostopic" name="wait_for_camera"
+        args="hz /camera/color/image_raw -w 10" output="screen"/>
+
+  <node name="arm_pose_estimator" pkg="arm_pose_estimator" type="arm_pose_estimator.py"
+        output="screen" launch-prefix="bash -c 'sleep 5; $0 $@'">
+    <!-- Explicitly specify topics to use -->
+    <param name="color_topic" value="/camera/color/image_raw"/>
+    <param name="depth_topic" value="/camera/aligned_depth_to_color/image_raw"/>
+    <param name="camera_info_topic" value="/camera/aligned_depth_to_color/camera_info"/>
+    <!-- Enable debug visualization -->
+    <param name="debug_visualization" value="true"/>
+    <!-- Set ArUco marker size in meters -->
+    <param name="marker_size" value="0.2"/>
+  </node>
+
+  <!-- Launch the hand pose estimator node -->
+  <node name="hand_pose_estimator" pkg="arm_pose_estimator" type="hand_pose_estimator.py"
+        output="screen" launch-prefix="bash -c 'sleep 5; $0 $@'">
+    <!-- Specify parameters for the hand pose estimator -->
+    <param name="model_path" value="$(find arm_pose_estimator)/models/gesture_recognizer.task"/>
+    <param name="queue_size" value="10"/>
+    <param name="input_topic" value="/camera/color/image_raw"/>
+    <param name="output_topic" value="/hand_gesture"/>
+  </node>
+
+  <!-- Launch the hand orientation estimator node -->
+  <node name="hand_orientation_estimator" pkg="arm_pose_estimator" type="hand_orientation_estimator.py"
+        output="screen" launch-prefix="bash -c 'sleep 5; $0 $@'">
+    <!-- Specify parameters for the hand orientation estimator -->
+    <param name="parent_frame" value="camera_color_optical_frame"/>
+    <param name="child_frame" value="hand_frame"/>
+  </node>
+
+  <!-- Launch the finger count service node -->
+  <node name="finger_count_node" pkg="arm_pose_estimator" type="finger_count.py"
+        output="screen" launch-prefix="bash -c 'sleep 5; $0 $@'">
+    <!-- Specify parameters for the finger count service -->
+    <param name="input_topic" value="/camera/color/image_raw"/>
+    <param name="stable_frames" value="5"/>
+  </node>
+</launch>
+

@@ -1,0 +1,7 @@
+<launch>
+    <!-- Include start_arm_pose_estimator.launch -->
+    <include file="$(find arm_pose_estimator)/launch/start_arm_pose_estimator.launch" />
+
+    <!-- Include demo_gazebo.launch -->
+    <include file="$(find spot_moveit_config)/launch/demo_gazebo.launch" />
+</launch>
