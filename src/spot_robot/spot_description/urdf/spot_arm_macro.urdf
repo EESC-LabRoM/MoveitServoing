@@ -13,15 +13,7 @@
       <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
     </gazebo>
 
-
-    <link name="world"/>
-    <joint name="world_joint" type="fixed">
-      <parent link="world"/>
-      <child link="body"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
-
-
+    <!-- Ensure the body link is the first link -->
     <link name="${tf_prefix}body">
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -33,8 +25,17 @@
       <gazebo>
         <static>true</static>
       </gazebo>
-
     </link>
+
+    <!-- Comment out the world link and its joint -->
+    <!--
+    <link name="world"/>
+    <joint name="world_joint" type="fixed">
+      <parent link="world"/>
+      <child link="body"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    -->
 
     <link name="${tf_prefix}arm_link_sh0">
       <visual>

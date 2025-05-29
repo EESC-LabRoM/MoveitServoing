@@ -1,2 +1,11 @@
+# Conteúdo para src/spot_robot/spot_moveit_config/config/sensors_3d.yaml
 sensors:
-  []
+  - sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+    point_cloud_topic: /zed2i/zed_node/point_cloud/cloud_registered # Tópico da nuvem de pontos da ZED
+    max_range: 5.0             # Distância máxima de detecção da ZED (ajuste conforme necessário)
+    point_subsample: 1         # Usa todos os pontos (1=todos, 2=metade, etc.)
+    padding_offset: 0.05       # Adiciona uma margem de segurança aos obstáculos (5cm)
+    padding_scale: 1.0         # Escala da margem de segurança
+    max_update_rate: 5.0       # Taxa máxima de atualização da planning scene (Hz)
+    filtered_cloud_topic: /moveit_octomap/filtered_cloud # Tópico para debug da nuvem filtrada (opcional)
+    # octomap_frame: "map" # Já deve ser inferido do point_cloud_topic se ele tiver frame_id 'map'

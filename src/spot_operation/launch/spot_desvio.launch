@@ -1,0 +1,23 @@
+<launch>
+
+  <arg name="rviz" default="true" />
+  <arg name="marker_size" default="0.2" /> <arg name="target_aruco_id" default="0" />
+
+  <include file="$(find zed_wrapper)/launch/zed2i.launch">
+    </include>
+
+  <node name="zed_aruco_publisher" pkg="spot_operation" type="zed_aruco_detector.py" output="screen">
+    <param name="marker_size" value="$(arg marker_size)" />
+    <param name="target_id" value="$(arg target_aruco_id)" />
+    </node>
+
+  <include file="$(find spot_moveit_config)/launch/demo.launch">
+    <arg name="use_rviz" value="$(arg rviz)" />
+    </include>
+
+  <node name="spot_aruco_localizer" pkg="spot_operation" type="spot_aruco_localizer.py" output="screen">
+    <param name="marker_size" value="$(arg marker_size)" />
+    <param name="target_id" value="$(arg target_aruco_id)" />
+    </node>
+
+</launch>
