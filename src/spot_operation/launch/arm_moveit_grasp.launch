@@ -1,0 +1,13 @@
+<launch>
+  <!-- Start arm_pose_estimator -->
+  <include file="$(find arm_pose_estimator)/launch/start_arm_pose_estimator.launch" />
+
+  <!-- Delay de 10 segundos -->
+  <node pkg="roscpp_tutorials" type="sleep" name="sleep_10s" args="10" />
+
+  <!-- Start spot_moveit_config demo -->
+  <include file="$(find spot_moveit_config)/launch/demo.launch" />
+
+  <!-- Run continuous_direct_grasp.py as a node -->
+  <node pkg="spot_operation" type="continuous_direct_grasp.py" name="continuous_direct_grasp" output="screen" launch-prefix="python3" />
+</launch>

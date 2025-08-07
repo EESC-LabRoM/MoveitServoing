@@ -413,7 +413,7 @@ class ArmPoseEstimator:
 
         t = geometry_msgs.msg.TransformStamped()
         t.header.stamp = header.stamp
-        t.header.frame_id = "world"
+        t.header.frame_id = "body"
         t.child_frame_id = "wrist"
 
         # Position

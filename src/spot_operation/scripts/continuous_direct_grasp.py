@@ -114,11 +114,10 @@ class RobotClientManager:
         return self.command_client.robot_command(gripper_command)
         
     def close_gripper(self, block=False, timeout_sec=2.0):
-        """Fecha a garra. Se block=True, espera o comando terminar."""
+        """Fecha a garra. O parâmetro 'block' é ignorado pois não há suporte para block_until_cmd_id."""
         gripper_cmd = RobotCommandBuilder.claw_gripper_close_command()
         cmd_id = self.command_client.robot_command(gripper_cmd)
-        if block:
-            self.command_client.block_until_cmd_id(cmd_id, timeout_sec=timeout_sec)
+        # block_until_cmd_id removido pois não existe na API
         return cmd_id
 
 
@@ -177,7 +176,7 @@ class TFManager:
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         
-    def get_pose(self, target_frame="wrist", reference_frame="world", timeout=1.0):
+    def get_pose(self, target_frame="wrist", reference_frame="body", timeout=1.0):
         """Obtém a pose de um frame em relação a outro usando TF."""
         try:
             transform = self.tf_buffer.lookup_transform(
@@ -697,10 +696,10 @@ class SpotController:
                 y=sim_pose.position.y,
                 z=sim_pose.position.z,
                 rot=Quat(
-                    w=quat_to_use.w,
-                    x=quat_to_use.x,
-                    y=quat_to_use.y,
-                    z=quat_to_use.z
+                    w=1.0,
+                    x=0.0,
+                    y=0.0,
+                    z=0.0
                 )
             )
             

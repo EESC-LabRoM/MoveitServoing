@@ -206,11 +206,16 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 catkin_install_python(PROGRAMS
-scripts/send_pose_to_goal.py
-  scripts/sync_real_arm_to_sim.py
-  scripts/read_joints_real.py
-  scripts/read_pose_sim.py
-  scripts/send_pose_to_real_spot.py
+  scripts/arm_grasp.py
+  scripts/arm_grasp_yolo.py
+  scripts/aruco_detect.py
+  scripts/continuous_direct.py
+  scripts/continuous_direct_grasp.py
   scripts/continuous_pose_to_spot.py
+  scripts/object_detection.py
+  scripts/read_joints_real.py
+  scripts/spot_aruco_detector.py
+  scripts/spot_aruco_localizer.py
+  scripts/zed_aruco_detector.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Declare arguments -->
+  <arg name="rviz" default="false" doc="Whether to launch RViz"/>
+
+  <!-- Start RealSense camera and all hand/arm pose estimators -->
+  <include file="$(find arm_pose_estimator)/launch/start_arm_pose_estimator.launch" />
+
+  <!-- Start MoveIt for planning -->
+  <include file="$(find spot_moveit_config)/launch/demo.launch" />
+
+  <!-- Start the latency logger -->
+  <node pkg="spot_latency_logger" type="latency_logger.py" name="latency_logger" output="screen">
+    <!-- Configure output directory -->
+    <param name="output_dir" value="/tmp/spot_latency_logs"/>
+    <!-- Maximum age for incomplete cycles (seconds) -->
+    <param name="max_cycle_age_sec" value="10.0"/>
+    <!-- Buffer size for completed cycles -->
+    <param name="buffer_size" value="100"/>
+  </node>
+
+  <!-- Start the main Spot teleoperation controller with latency measurement -->
+  <node pkg="spot_operation" type="continuous_direct_grasp.py" name="continuous_direct_grasp" 
+        output="screen" launch-prefix="python3">
+    <!-- Spot connection parameters -->
+    <param name="spot_hostname" value="192.168.80.3"/>
+    <!-- YOLO model path -->
+    <param name="model_path" value="/root/ws_moveit/src/spot_operation/scripts/yolo11n.pt"/>
+    <!-- Allowed objects CSV -->
+    <param name="allowed_objects_csv" value="/root/ws_moveit/src/spot_operation/config/allowed_objects.csv"/>
+  </node>
+
+  <!-- Optional: RViz for visualization -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find spot_moveit_config)/config/moveit.rviz" 
+        if="$(arg rviz)" output="screen"/>
+  
+</launch>
