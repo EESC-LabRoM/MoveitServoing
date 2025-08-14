@@ -2,10 +2,13 @@
 import rospy
 import moveit_commander
 from moveit_msgs.msg import JointConstraint, Constraints
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, Pose
 import subprocess
 from std_msgs.msg import Int32
 from abc import ABC, abstractmethod
+
+# Latency measurement imports
+from spot_latency_logger.msg import YoloDetection, SpotCommand, SpotFeedback
 
 import bosdyn.client
 import bosdyn.client.util
@@ -38,7 +41,8 @@ from bosdyn.client.robot_command import RobotCommandBuilder
 class RobotClientManager:
     """Gerencia conexões e clientes do Spot."""
     
-    def __init__(self, hostname="192.168.80.3", username="admin", password="spotadmin2017"):
+    def __init__(self, hostname="192.168.80.3", username="admin", password="spotadmin2017",
+                 cmd_pub=None, feedback_pub=None):
         self.hostname = hostname
         self.username = username
         self.password = password
@@ -51,6 +55,9 @@ class RobotClientManager:
         self.manipulation_client = None
         self.lease_keepalive = None
         self.lease_wallet = None
+        # Publishers para latência (opcionais, não alteram comportamento)
+        self._cmd_pub = cmd_pub
+        self._feedback_pub = feedback_pub
         
     def connect(self):
         """Estabelece conexão com o robô e inicializa clientes necessários."""
@@ -100,24 +107,67 @@ class RobotClientManager:
         
     def send_arm_command(self, odom_T_hand):
         """Envia comando de posição para o braço."""
+        # T5: publica intenção de comando
+        if self._cmd_pub:
+            cmd_msg = SpotCommand()
+            cmd_msg.header.stamp = rospy.Time.now()
+            cmd_msg.command_type = "arm_pose"
+            cmd_msg.has_pose = False  # manter sem pose para não alterar comportamento
+            self._cmd_pub.publish(cmd_msg)
         arm_command = RobotCommandBuilder.arm_pose_command(
             odom_T_hand.x, odom_T_hand.y, odom_T_hand.z,
             odom_T_hand.rot.w, odom_T_hand.rot.x,
             odom_T_hand.rot.y, odom_T_hand.rot.z,
             ODOM_FRAME_NAME, 0.5
         )
-        return self.command_client.robot_command(arm_command)
+        cmd_id = self.command_client.robot_command(arm_command)
+        # T6: confirmação imediata de envio (não é sucesso de execução)
+        if self._feedback_pub:
+            fb = SpotFeedback()
+            fb.header.stamp = rospy.Time.now()
+            fb.command_type = "arm_pose"
+            fb.success = True
+            fb.message = "command_dispatched"
+            self._feedback_pub.publish(fb)
+        return cmd_id
         
     def open_gripper(self):
         """Abre a garra do robô."""
+        if self._cmd_pub:
+            cmd_msg = SpotCommand()
+            cmd_msg.header.stamp = rospy.Time.now()
+            cmd_msg.command_type = "gripper_open"
+            cmd_msg.has_pose = False
+            self._cmd_pub.publish(cmd_msg)
         gripper_command = RobotCommandBuilder.claw_gripper_open_command()
-        return self.command_client.robot_command(gripper_command)
+        cmd_id = self.command_client.robot_command(gripper_command)
+        if self._feedback_pub:
+            fb = SpotFeedback()
+            fb.header.stamp = rospy.Time.now()
+            fb.command_type = "gripper_open"
+            fb.success = True
+            fb.message = "command_dispatched"
+            self._feedback_pub.publish(fb)
+        return cmd_id
         
     def close_gripper(self, block=False, timeout_sec=2.0):
         """Fecha a garra. O parâmetro 'block' é ignorado pois não há suporte para block_until_cmd_id."""
+        if self._cmd_pub:
+            cmd_msg = SpotCommand()
+            cmd_msg.header.stamp = rospy.Time.now()
+            cmd_msg.command_type = "gripper_close"
+            cmd_msg.has_pose = False
+            self._cmd_pub.publish(cmd_msg)
         gripper_cmd = RobotCommandBuilder.claw_gripper_close_command()
         cmd_id = self.command_client.robot_command(gripper_cmd)
         # block_until_cmd_id removido pois não existe na API
+        if self._feedback_pub:
+            fb = SpotFeedback()
+            fb.header.stamp = rospy.Time.now()
+            fb.command_type = "gripper_close"
+            fb.success = True
+            fb.message = "command_dispatched"
+            self._feedback_pub.publish(fb)
         return cmd_id
 
 
@@ -259,9 +309,12 @@ class GraspStrategyBase(ABC):
 class YOLOGraspStrategy(GraspStrategyBase):
     """Estratégia de grasp baseada em detecção YOLO."""
     
-    def __init__(self, detector, image_source="hand_color_image"):
+    def __init__(self, detector, image_source="hand_color_image", cmd_pub=None, feedback_pub=None, yolo_pub=None):
         self.detector = detector
         self.image_source = image_source
+        self.cmd_pub = cmd_pub
+        self.feedback_pub = feedback_pub
+        self.yolo_pub = yolo_pub
         
     def execute(self, robot_manager):
         """Executa grasp com base na detecção YOLO."""
@@ -275,6 +328,13 @@ class YOLOGraspStrategy(GraspStrategyBase):
         # Detecta e filtra objetos
         boxes, _, names = self.detector.detect_objects(image)
         candidates = self.detector.filter_allowed_objects(boxes, names)
+        
+        # Publica detecção YOLO para medição de latência
+        if candidates and self.yolo_pub:
+            yolo_msg = YoloDetection()
+            yolo_msg.header.stamp = rospy.Time.now()
+            yolo_msg.object_class = names[candidates[0][2]]  # Nome do objeto detectado
+            self.yolo_pub.publish(yolo_msg)
         
         if not candidates:
             rospy.logwarn("[GRASP] Nenhum objeto permitido detectado na imagem.")
@@ -294,6 +354,15 @@ class YOLOGraspStrategy(GraspStrategyBase):
         )
         
         req = manipulation_api_pb2.ManipulationApiRequest(pick_object_in_image=pick)
+        
+        # Publica comando para medição de latência
+        if self.cmd_pub:
+            cmd_msg = SpotCommand()
+            cmd_msg.header.stamp = rospy.Time.now()
+            cmd_msg.command_type = "manipulation_api"
+            cmd_msg.has_pose = False
+            self.cmd_pub.publish(cmd_msg)
+        
         cmd_resp = robot_manager.manipulation_client.manipulation_api_command(req, timeout=5.0)
         
         # Monitora feedback
@@ -311,8 +380,24 @@ class YOLOGraspStrategy(GraspStrategyBase):
             rospy.loginfo(f"[GRASP] Estado = {state}")
             
             if fb.current_state == manipulation_api_pb2.MANIP_STATE_GRASP_SUCCEEDED:
+                # Publica feedback de sucesso para medição de latência
+                if self.feedback_pub:
+                    feedback_msg = SpotFeedback()
+                    feedback_msg.header.stamp = rospy.Time.now()
+                    feedback_msg.command_type = "manipulation_api"
+                    feedback_msg.success = True
+                    feedback_msg.message = "MANIP_STATE_GRASP_SUCCEEDED"
+                    self.feedback_pub.publish(feedback_msg)
                 return True
             elif fb.current_state == manipulation_api_pb2.MANIP_STATE_GRASP_FAILED:
+                # Publica feedback de falha para medição de latência
+                if self.feedback_pub:
+                    feedback_msg = SpotFeedback()
+                    feedback_msg.header.stamp = rospy.Time.now()
+                    feedback_msg.command_type = "manipulation_api"
+                    feedback_msg.success = False
+                    feedback_msg.message = "MANIP_STATE_GRASP_FAILED"
+                    self.feedback_pub.publish(feedback_msg)
                 return False
                 
             rospy.sleep(poll_interval)
@@ -376,9 +461,10 @@ class GraspManager:
 
 class FingerCountClient:
     """Calls /finger_count_node/get_finger_count until it gets 1 or 2."""
-    def __init__(self, service_name="/finger_count_node/get_finger_count"):
+    def __init__(self, service_name="/finger_count_node/get_finger_count", finger_count_pub=None):
         rospy.wait_for_service(service_name)
         self._proxy = rospy.ServiceProxy(service_name, Trigger)
+        self._finger_count_pub = finger_count_pub
 
     def request_mode(self):
         """Blocks until receiving 1 (manual) or 2 (semi-autonomous)."""
@@ -391,6 +477,12 @@ class FingerCountClient:
                 continue
 
             if resp.success and resp.message in ("1", "2"):
+                # Publica T3_finger_count para medição de latência
+                if self._finger_count_pub:
+                    from std_msgs.msg import Header
+                    finger_msg = Header()
+                    finger_msg.stamp = rospy.Time.now()
+                    self._finger_count_pub.publish(finger_msg)
                 return int(resp.message)
 
             rospy.loginfo("FingerCount returned '%s'. Retrying...", resp.message)
@@ -419,6 +511,14 @@ class SpotController:
         # Inicializa ROS
         rospy.init_node("continuous_moveit_pose_to_spot_real", anonymous=True)
         
+        # Publishers para medição de latência
+        self.yolo_pub = rospy.Publisher('/yolo/detection', YoloDetection, queue_size=1)
+        self.cmd_pub = rospy.Publisher('/spot/cmd_sent', SpotCommand, queue_size=1)
+        self.feedback_pub = rospy.Publisher('/spot/exec_done', SpotFeedback, queue_size=1)
+        # Publisher para T3 finger count (usando Header como mensagem simples)
+        from std_msgs.msg import Header
+        self.finger_count_pub = rospy.Publisher('/finger_count_result', Header, queue_size=1)
+        
         # Configuração de gestos
         self.current_gesture = 0
         self.manipulation_mode = False
@@ -432,7 +532,11 @@ class SpotController:
         self.moveit_manager.apply_wrist_lock()
             
         # Conecta ao Spot
-        self.robot_manager = RobotClientManager(hostname=spot_hostname)
+        self.robot_manager = RobotClientManager(
+            hostname=spot_hostname,
+            cmd_pub=self.cmd_pub,
+            feedback_pub=self.feedback_pub
+        )
         
         if not self.robot_manager.connect():
             rospy.logerr("Falha ao conectar ao Spot. Abortando.")
@@ -451,14 +555,20 @@ class SpotController:
         # Câmera principal (frontal)
         front_grasp = YOLOGraspStrategy(
             detector=self.object_detector,
-            image_source="hand_color_image"
+            image_source="hand_color_image",
+            cmd_pub=self.cmd_pub,
+            feedback_pub=self.feedback_pub,
+            yolo_pub=self.yolo_pub
         )
         self.grasp_manager.register_strategy("front_yolo", front_grasp)
         
         # Câmera lateral (se disponível)
         side_grasp = YOLOGraspStrategy(
             detector=self.object_detector,
-            image_source="frontleft_fisheye_image"
+            image_source="frontleft_fisheye_image",
+            cmd_pub=self.cmd_pub,
+            feedback_pub=self.feedback_pub,
+            yolo_pub=self.yolo_pub
         )
         self.grasp_manager.register_strategy("side_yolo", side_grasp)
         
@@ -468,7 +578,7 @@ class SpotController:
         self.fallback_grasp_strategy = "side_yolo"
 
         # === Select operation mode using the service ===
-        finger_client = FingerCountClient()
+        finger_client = FingerCountClient(finger_count_pub=self.finger_count_pub)
         mode_code = finger_client.request_mode()  # 1 or 2
         self.mode = "manual" if mode_code == 1 else "semi"
         rospy.loginfo("🚀 Operation mode selected: %s", self.mode.upper())
@@ -800,6 +910,7 @@ class SpotController:
         # --- Detecta e filtra objetos na imagem rotacionada ---
         boxes, _, names = self.object_detector.detect_objects(aligned_image)
         candidates = self.object_detector.filter_allowed_objects(boxes, names)
+        
         if not candidates:
             self._debug_box = None
             self._debug_box_original = None

@@ -277,8 +277,14 @@ class LatencyAnalyzer:
 
 def main():
     """Main entry point for the latency analyzer."""
+    # Default directory - logs folder in the package
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    package_dir = os.path.dirname(script_dir)
+    default_csv_dir = os.path.join(package_dir, "logs")
+    
     parser = argparse.ArgumentParser(description="Analyze Spot teleoperation latency data")
-    parser.add_argument("csv_directory", help="Directory containing latency CSV files")
+    parser.add_argument("csv_directory", nargs='?', default=default_csv_dir,
+                       help=f"Directory containing latency CSV files (default: {default_csv_dir})")
     parser.add_argument("--output-dir", help="Output directory for analysis results")
     parser.add_argument("--summary-only", action="store_true", 
                        help="Only print summary statistics without generating plots")

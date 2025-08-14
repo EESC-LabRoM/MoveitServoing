@@ -11,8 +11,8 @@
 
   <!-- Start the latency logger -->
   <node pkg="spot_latency_logger" type="latency_logger.py" name="latency_logger" output="screen">
-    <!-- Configure output directory -->
-    <param name="output_dir" value="/tmp/spot_latency_logs"/>
+    <!-- Configure output directory (default: logs folder in package) -->
+    <param name="output_dir" value="$(find spot_latency_logger)/logs"/>
     <!-- Maximum age for incomplete cycles (seconds) -->
     <param name="max_cycle_age_sec" value="10.0"/>
     <!-- Buffer size for completed cycles -->

@@ -69,7 +69,7 @@ class LatencyMeasurement:
             
     def is_complete(self):
         """Check if all required timestamps are available."""
-        required_events = ['T1_image', 'T2_gesture', 'T5_command', 'T6_feedback']
+        required_events = ['T1_image', 'T2_gesture_recv', 'T5_command_recv', 'T6_feedback_recv']
         return all(event in self.timestamps for event in required_events)
         
     def get_latencies(self):
@@ -80,15 +80,25 @@ class LatencyMeasurement:
         latencies = {}
         timestamps = self.timestamps
         
-        # Basic pipeline latencies
-        latencies['perception_latency'] = (timestamps['T2_gesture'] - timestamps['T1_image']).to_sec()
-        latencies['decision_latency'] = (timestamps['T5_command'] - timestamps['T2_gesture']).to_sec()
-        latencies['execution_latency'] = (timestamps['T6_feedback'] - timestamps['T5_command']).to_sec()
-        latencies['total_latency'] = (timestamps['T6_feedback'] - timestamps['T1_image']).to_sec()
+        # Perception: sensor→reconhecimento (mesmo frame timestamp)
+        if 'T1_image' in timestamps and 'T2_gesture' in timestamps:
+            latencies['perception_latency'] = (timestamps['T2_gesture'] - timestamps['T1_image']).to_sec()
+        
+        # Decision: do callback do gesto até o callback do comando (recv_ts)
+        if 'T2_gesture_recv' in timestamps and 'T5_command_recv' in timestamps:
+            latencies['decision_latency'] = (timestamps['T5_command_recv'] - timestamps['T2_gesture_recv']).to_sec()
+        
+        # Execution: do callback do comando até o callback do feedback (recv_ts)
+        if 'T5_command_recv' in timestamps and 'T6_feedback_recv' in timestamps:
+            latencies['execution_latency'] = (timestamps['T6_feedback_recv'] - timestamps['T5_command_recv']).to_sec()
+        
+        # Total E2E: captura do frame até receber feedback
+        if 'T1_image' in timestamps and 'T6_feedback_recv' in timestamps:
+            latencies['total_latency'] = (timestamps['T6_feedback_recv'] - timestamps['T1_image']).to_sec()
         
         # Optional latencies if data is available
-        if 'T3_finger_count' in timestamps:
-            latencies['finger_count_latency'] = (timestamps['T3_finger_count'] - timestamps['T2_gesture']).to_sec()
+        if 'T3_finger_count_recv' in timestamps and 'T2_gesture_recv' in timestamps:
+            latencies['finger_count_latency'] = (timestamps['T3_finger_count_recv'] - timestamps['T2_gesture_recv']).to_sec()
             
         if 'T4a_wrist_tf' in timestamps:
             latencies['wrist_tf_latency'] = (timestamps['T4a_wrist_tf'] - timestamps['T1_image']).to_sec()
@@ -106,7 +116,13 @@ class LatencyLogger:
         rospy.init_node('latency_logger', anonymous=False)
         
         # Configuration
-        self.csv_output_dir = rospy.get_param('~output_dir', '/tmp/spot_latency_logs')
+        # Get the package directory and create logs folder inside it
+        import rospkg
+        rospack = rospkg.RosPack()
+        package_path = rospack.get_path('spot_latency_logger')
+        default_log_dir = os.path.join(package_path, 'logs')
+        
+        self.csv_output_dir = rospy.get_param('~output_dir', default_log_dir)
         self.max_cycle_age = rospy.get_param('~max_cycle_age_sec', 10.0)  # Seconds
         self.buffer_size = rospy.get_param('~buffer_size', 100)
         
@@ -158,7 +174,8 @@ class LatencyLogger:
         # Write header
         header = [
             'cycle_id', 'timestamp', 'mode',
-            'T1_image', 'T2_gesture', 'T3_finger_count', 'T4a_wrist_tf', 'T4b_yolo', 'T5_command', 'T6_feedback',
+            'T1_image', 'T2_gesture', 'T4a_wrist_tf', 'T4b_yolo', 'T5_command', 'T6_feedback',
+            'T1_image_recv', 'T2_gesture_recv', 'T3_finger_count_recv', 'T5_command_recv', 'T6_feedback_recv',
             'perception_latency', 'decision_latency', 'execution_latency', 'total_latency',
             'finger_count_latency', 'wrist_tf_latency', 'yolo_detection_latency',
             'gesture_value', 'finger_count', 'command_type', 'success'
@@ -180,6 +197,10 @@ class LatencyLogger:
         
         # T2: Hand gesture
         rospy.Subscriber('/hand_gesture', Int32, self._on_gesture, queue_size=1)
+        
+        # T3: Finger count result (from continuous_direct_grasp.py)
+        from std_msgs.msg import Header
+        rospy.Subscriber('/finger_count_result', Header, self._on_finger_count_result, queue_size=1)
         
         # T4a: TF broadcasts (wrist frame)
         rospy.Subscriber('/tf', TFMessage, self._on_tf, queue_size=10)
@@ -229,6 +250,9 @@ class LatencyLogger:
                 'height': msg.height,
                 'encoding': msg.encoding
             })
+            measurement.add_timestamp('T1_image_recv', rospy.Time.now(), {
+                'recv_context': 'callback_entry'
+            })
             self.active_cycles[cycle_id] = measurement
             
         self._log_event('T1_image', cycle_id, data=f"{msg.width}x{msg.height}")
@@ -237,15 +261,27 @@ class LatencyLogger:
     def _on_gesture(self, msg):
         """T2: Handle hand gesture callback."""
         self.latest_gesture_value = msg.data
-        timestamp = rospy.Time.now()
+        
+        # Use o carimbo do último frame da câmera para capture_ts
+        if self.latest_image_timestamp is None:
+            rospy.logwarn("Sem T1 ainda; ignorando gesto")
+            return
+            
+        capture_ts = self.latest_image_timestamp         # mesmo do T1
+        recv_ts = rospy.Time.now()                       # momento que recebemos o gesto
         
         # Find the most recent active cycle
-        cycle_id = self._find_recent_cycle_for_timestamp(timestamp)
+        cycle_id = self._find_recent_cycle_for_timestamp(capture_ts)
         if cycle_id:
             with self.lock:
                 if cycle_id in self.active_cycles:
-                    self.active_cycles[cycle_id].add_timestamp('T2_gesture', timestamp, {
+                    m = self.active_cycles[cycle_id]
+                    m.add_timestamp('T2_gesture', capture_ts, {
                         'gesture_value': msg.data
+                    })
+                    m.add_timestamp('T2_gesture_recv', recv_ts, {
+                        'gesture_value': msg.data,
+                        'recv_context': 'callback_entry'
                     })
                     
             self._log_event('T2_gesture', cycle_id, data=msg.data)
@@ -254,6 +290,16 @@ class LatencyLogger:
             # Trigger finger count service if needed
             if msg.data == 1:  # Manual mode gesture
                 self._call_finger_count_service(cycle_id)
+                
+    def _on_finger_count_result(self, msg):
+        """T3: Handle finger count result from continuous_direct_grasp.py (debug only)."""
+        timestamp = msg.stamp
+        cycle_id = self._find_recent_cycle_for_timestamp(timestamp)
+        
+        # Log for debugging but don't save timestamps (service call handles that)
+        if cycle_id:
+            self._log_event('T3_finger_count_debug', cycle_id, data='detected_from_topic')
+            rospy.logdebug(f"T3 - Finger count topic result: {cycle_id} (debug only)")
                 
     def _call_finger_count_service(self, cycle_id):
         """T3: Call finger count service and measure response time."""
@@ -268,10 +314,12 @@ class LatencyLogger:
                 
                 with self.lock:
                     if cycle_id in self.active_cycles:
-                        self.active_cycles[cycle_id].add_timestamp('T3_finger_count', end_time, {
+                        m = self.active_cycles[cycle_id]
+                        m.add_timestamp('T3_finger_count_recv', end_time, {
                             'success': response.success,
                             'finger_count': response.message if response.success else 'failed',
-                            'service_duration': (end_time - start_time).to_sec()
+                            'service_duration': (end_time - start_time).to_sec(),
+                            'recv_context': 'service_response'
                         })
                         
                 self._log_event('T3_finger_count', cycle_id, 
@@ -322,14 +370,21 @@ class LatencyLogger:
             
     def _on_spot_command(self, msg):
         """T5: Handle Spot command sent."""
-        timestamp = msg.header.stamp
-        cycle_id = self._find_recent_cycle_for_timestamp(timestamp)
+        capture_like = msg.header.stamp                  # timestamp da mensagem (referência)
+        recv_ts = rospy.Time.now()                       # momento que recebemos no logger
+        
+        cycle_id = self._find_recent_cycle_for_timestamp(capture_like)
         
         if cycle_id:
             with self.lock:
                 if cycle_id in self.active_cycles:
-                    self.active_cycles[cycle_id].add_timestamp('T5_command', timestamp, {
+                    m = self.active_cycles[cycle_id]
+                    m.add_timestamp('T5_command', capture_like, {
                         'command_type': msg.command_type
+                    })
+                    m.add_timestamp('T5_command_recv', recv_ts, {
+                        'command_type': msg.command_type,
+                        'recv_context': 'callback_entry'
                     })
                     
             self._log_event('T5_command', cycle_id, data=msg.command_type)
@@ -337,20 +392,28 @@ class LatencyLogger:
             
     def _on_spot_feedback(self, msg):
         """T6: Handle Spot execution feedback."""
-        timestamp = msg.header.stamp
-        cycle_id = self._find_recent_cycle_for_timestamp(timestamp)
+        capture_like = msg.header.stamp                  # timestamp da mensagem (referência)
+        recv_ts = rospy.Time.now()                       # momento que recebemos no logger
+        
+        cycle_id = self._find_recent_cycle_for_timestamp(capture_like)
         
         if cycle_id:
             with self.lock:
                 if cycle_id in self.active_cycles:
-                    self.active_cycles[cycle_id].add_timestamp('T6_feedback', timestamp, {
+                    m = self.active_cycles[cycle_id]
+                    m.add_timestamp('T6_feedback', capture_like, {
                         'success': msg.success,
                         'message': msg.message
                     })
+                    m.add_timestamp('T6_feedback_recv', recv_ts, {
+                        'success': msg.success,
+                        'message': msg.message,
+                        'recv_context': 'callback_entry'
+                    })
                     
                     # Mark cycle as completed if all required data is available
-                    if self.active_cycles[cycle_id].is_complete():
-                        self.active_cycles[cycle_id].completed = True
+                    if m.is_complete():
+                        m.completed = True
                         self.completed_cycles.append(self.active_cycles.pop(cycle_id))
                         
             self._log_event('T6_feedback', cycle_id, data=f"success:{msg.success}")
@@ -360,7 +423,7 @@ class LatencyLogger:
         """Find the most recent active cycle for a given timestamp."""
         with self.lock:
             # Look for cycles within a reasonable time window (e.g., 2 seconds)
-            max_age = rospy.Duration(2.0)
+            max_age = rospy.Duration(5.0)
             best_cycle = None
             best_time_diff = float('inf')
             
@@ -427,11 +490,15 @@ class LatencyLogger:
             mode,
             timestamps.get('T1_image', rospy.Time(0)).to_sec(),
             timestamps.get('T2_gesture', rospy.Time(0)).to_sec(),
-            timestamps.get('T3_finger_count', rospy.Time(0)).to_sec(),
             timestamps.get('T4a_wrist_tf', rospy.Time(0)).to_sec(),
             timestamps.get('T4b_yolo', rospy.Time(0)).to_sec(),
             timestamps.get('T5_command', rospy.Time(0)).to_sec(),
             timestamps.get('T6_feedback', rospy.Time(0)).to_sec(),
+            timestamps.get('T1_image_recv', rospy.Time(0)).to_sec(),
+            timestamps.get('T2_gesture_recv', rospy.Time(0)).to_sec(),
+            timestamps.get('T3_finger_count_recv', rospy.Time(0)).to_sec(),
+            timestamps.get('T5_command_recv', rospy.Time(0)).to_sec(),
+            timestamps.get('T6_feedback_recv', rospy.Time(0)).to_sec(),
             latencies.get('perception_latency', ''),
             latencies.get('decision_latency', ''),
             latencies.get('execution_latency', ''),

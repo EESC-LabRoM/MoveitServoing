@@ -47,16 +47,16 @@ This single launch file starts:
    - Open palm = Move arm to hand position
    - Closed fist = Hold position/grasp object
 
-3. **Data Collection**: The system automatically logs all latency measurements to CSV files in `/tmp/spot_latency_logs/`
+3. **Data Collection**: The system automatically logs all latency measurements to CSV files in `src/spot_latency_logger/logs/`
 
 ### 4. Analyze Results
 
 ```bash
 # View summary statistics only
-python3 src/spot_latency_logger/scripts/analyze_latency.py /tmp/spot_latency_logs --summary-only
+python3 src/spot_latency_logger/scripts/analyze_latency.py src/spot_latency_logger/logs --summary-only
 
 # Generate full analysis report with plots
-python3 src/spot_latency_logger/scripts/analyze_latency.py /tmp/spot_latency_logs
+python3 src/spot_latency_logger/scripts/analyze_latency.py src/spot_latency_logger/logs
 ```
 
 ## Output Files
@@ -83,7 +83,7 @@ python3 src/spot_latency_logger/scripts/analyze_latency.py /tmp/spot_latency_log
 
 ```xml
 <!-- Latency logger parameters -->
-<param name="output_dir" value="/path/to/logs"/>           <!-- Default: /tmp/spot_latency_logs -->
+<param name="output_dir" value="/path/to/logs"/>           <!-- Default: src/spot_latency_logger/logs -->
 <param name="max_cycle_age_sec" value="10.0"/>             <!-- Default: 10.0 seconds -->
 <param name="buffer_size" value="100"/>                    <!-- Default: 100 cycles -->
 
